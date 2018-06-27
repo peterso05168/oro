@@ -1,0 +1,283 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	template="../tp-container.xhtml">
+
+	<ui:define name="breadcrumb-1">
+		<li><a title="">#{msgs['profile.title']}</a><i
+			class="ti-angle-right"></i></li>
+	</ui:define>
+
+	<ui:define name="title">
+        #{msgs['profile.title']}
+    </ui:define>
+
+	<ui:define name="main-content">
+		<p:tabView id="profileTabView" activeIndex="0">
+			<p:tab title="#{msgs['profile.tab1.title']}">
+				<h:form id="formA">
+					<p:messages id="msgs" closable="true" />
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="LoginId"
+							value="#{msgs['profile.login.id.label']}" />
+						<p:inputText id="LoginId"
+							value="#{myProfileView.userAccountVO.loginName}" disabled="true" />
+						<p:outputLabel for="Email"
+							value="#{msgs['profile.email.address.label']}" />
+						<p:inputText id="Email"
+							value="#{myProfileView.userAccountVO.userProfile.emailAddress}"
+							disabled="true" />
+						<p:outputLabel for="EngName"
+							value="#{msgs['profile.user.name.eng.label']}" />
+						<p:inputText id="EngName"
+							value="#{myProfileView.userAccountVO.userProfile.engName}"
+							required="true"
+							requiredMessage="#{appResourceUtils.getRequiredMessage('EngName')}"
+							validatorMessage="#{appResourceUtils.getInEngWordMsg()}">
+							<f:validateRegex pattern="^[a-zA-Z]+$" />
+						</p:inputText>
+						<p:outputLabel for="ChiName"
+							value="#{msgs['profile.user.name.chi.label']}" />
+						<p:inputText id="ChiName"
+							value="#{myProfileView.userAccountVO.userProfile.chiName}" />
+						<p:outputLabel for="Division"
+							value="#{msgs['profile.division.label']}" />
+						<p:inputText id="Division"
+							value="#{myProfileView.userAccountVO.userProfile.division.divisionName}"
+							disabled="true" />
+						<p:outputLabel for="Post" value="#{msgs['profile.post.label']}" />
+						<p:inputText id="Post"
+							value="#{myProfileView.userAccountVO.userProfile.post.postTitle}"
+							disabled="true" />
+						<p:outputLabel for="TelNo"
+							value="#{msgs['profile.telephone.label']}" />
+						<p:inputText id="TelNo"
+							value="#{myProfileView.userAccountVO.userProfile.contactNo}" />
+						<p:column></p:column>
+						<p:column></p:column>
+					</p:panelGrid>
+					<div class="ax-btn-set">
+						<p:commandButton value="Save"
+							action="#{myProfileView.saveUserDetail}" update="@form" />
+					</div>
+				</h:form>
+			</p:tab>
+			<p:tab title="#{msgs['profile.tab2.title']}">
+				<h:form id="formB">
+					<p:dataTable var="role" value="#{myProfileView.roleSummaryList}"
+						reflow="true" paginator="true" rows="5" paginatorPosition="bottom"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<p:column headerText="#{msgs['profile.role.name.column.header']}"
+							sortBy="#{role.roleName}">
+							<p:commandLink
+								action="#{dialogBean.openPrivilegeDialog(role.roleId)}">
+								<h:outputText value="#{role.roleName}" />
+							</p:commandLink>
+						</p:column>
+						<p:column headerText="#{msgs['profile.role.desc.column.header']}"
+							sortBy="#{role.roleDesc}">
+							<h:outputText value="#{role.roleDesc}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+			<p:tab title="#{msgs['profile.tab3.title']}">
+				<h:form id="formC">
+					<p:messages id="msgs" closable="true" />
+					<o:validateEqual id="equal"
+						components="NewPasswrod ConfirmPasswrod"
+						message="#{appResourceUtils.getNotEqMsg('NewPwd','ConfirmPwd')}" />
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-2,ui-grid-col-4" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="CurrentPasswrod"
+							value="#{msgs['profile.password.label']}" />
+						<p:password id="CurrentPasswrod"
+							value="#{myProfileView.currentPassword}" required="true"
+							validator="#{userProfileValidator.validateCurrentPassword}"
+							requiredMessage="#{appResourceUtils.getRequiredMessage('CurPwd')}" />
+
+						<p:outputLabel for="NewPasswrod"
+							value="#{msgs['profile.new.password.label']}" />
+						<p:password id="NewPasswrod" value="#{myProfileView.newPassword}"
+							required="true" label="#{msgs['profile.new.password.label']}"
+							validator="#{userProfileValidator.validateNewPassword}"
+							requiredMessage="#{appResourceUtils.getRequiredMessage('NewPwd')}">
+						</p:password>
+
+						<p:outputLabel for="ConfirmPasswrod"
+							value="#{msgs['profile.confirm.password.label']}" />
+						<p:password id="ConfirmPasswrod"
+							value="#{myProfileView.confirmPassword}" required="true"
+							label="#{msgs['profile.confirm.password.label']}"
+							requiredMessage="#{appResourceUtils.getRequiredMessage('ConfirmPwd')}" />
+
+					</p:panelGrid>
+					<div class="ax-btn-set">
+						<p:commandButton value="Save"
+							action="#{myProfileView.savePassword}" update="@form" />
+					</div>
+				</h:form>
+			</p:tab>
+			<p:tab title="#{msgs['profile.tab4.title']}">
+				<h:form id="formD">
+					<p:messages id="msgs" closable="true" />
+					<p:dataTable id="delegation" var="delegation"
+						value="#{myProfileView.delegations}" paginator="false" rows="5"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<p:column headerText="#{msgs['profile.effv.from.column.header']}"
+							sortBy="#{delegation.effectiveStartDate}">
+							<h:outputText value="#{delegation.effectiveStartDate}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="#{msgs['profile.effv.to.column.header']}"
+							sortBy="#{delegation.effectiveEndDate}">
+							<h:outputText value="#{delegation.effectiveEndDate}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="#{msgs['profile.division.column.header']}"
+							sortBy="#{delegation.divisionName}">
+							<h:outputText
+								value="#{delegation.delegateTo.division.divisionName}" />
+						</p:column>
+						<p:column headerText="#{msgs['profile.post.column.header']}"
+							sortBy="#{delegation.postTitle}">
+							<h:outputText value="#{delegation.delegateTo.postTitle}" />
+						</p:column>
+						<p:column headerText="#{msgs['profile.user.name.column.header']}"
+							sortBy="#{delegation.engName}">
+							<h:outputText value="#{delegation.engName}" />
+						</p:column>
+						<p:column headerText="#{msgs['status.column.header']}"
+							sortBy="#{delegation.status}" styleClass="ax-status-w-b">
+							<h:outputText value="Inactive"
+								rendered="#{delegation.status eq 'INA'}"
+								class="status-label red" />
+							<h:outputText value="Active"
+								rendered="#{delegation.status eq 'ACT'}"
+								class="status-label green" />
+						</p:column>
+						<p:column headerText="#{msgs['profile.action.column.header']}"
+							styleClass="ax-action-w dont-print">
+							<p:menuButton value="#{msgs['action.menuButton.label']}"
+								rendered="#{delegation.status eq 'ACT'}">
+								<p:menuitem value="
+								#{msgs['edit.menuitem.label']}"
+									action="#{myProfileView.initDelegationDialog}"
+									oncomplete="PF('delegationDialog').show();"
+									update="delegationCreateForm:pg" process="@this">
+									<f:setPropertyActionListener value="#{delegation}"
+										target="#{myProfileView.delegation}" />
+								</p:menuitem>
+								<p:menuitem value="#{msgs['delete.menuitem.label']}"
+									action="#{myProfileView.deleteDelegation}" process="@this"
+									update="delegation,profileTabView:formD:msgs">
+									<f:setPropertyActionListener value="#{delegation}"
+										target="#{myProfileView.delegation}" />
+								</p:menuitem>
+							</p:menuButton>
+						</p:column>
+					</p:dataTable>
+					<div class="ax-btn-set aR">
+						<p:commandButton value="#{msgs['add.btn']}"
+							actionListener="#{myProfileView.initDelegationDialog}"
+							update=":delegationCreateForm"
+							oncomplete="PF('delegationDialog').show();" icon="ti-plus" />
+					</div>
+				</h:form>
+			</p:tab>
+		</p:tabView>
+
+		<h:form id="delegationCreateForm">
+			<p:dialog id="delegationDialog"
+				header="#{msgs['profile.delegation.dialog.header']}"
+				widgetVar="delegationDialog" modal="true" width="500" minHeight="50"
+				resizable="false" dynamic="true" style="position: fixed">
+				<p:messages id="msgs" closable="true" />
+				<p:ajax event="close" update="@form" resetValues="true"
+					listener="#{myProfileView.handleDialogClose}">
+					<p:resetInput target="@form" />
+				</p:ajax>
+				<div class="ui-fluid">
+					<p:panelGrid id="pg" columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="from"
+							value="#{msgs['profile.delegation.dialog.period.label']}" />
+						<p:calendar id="from" placeholder="#{msgs['from.label']}"
+							showOn="button" pattern="#{appResourceUtils.dateFormat}"
+							value="#{myProfileView.delegation.effectiveStartDate}"
+							required="true"
+							requiredMessage="#{appResourceUtils.getRequiredMessage('EffectiveStartDate')}">
+						</p:calendar>
+						<p:outputLabel />
+						<p:calendar id="to" placeholder="#{msgs['to.label']}"
+							showOn="button" pattern="#{appResourceUtils.dateFormat}"
+							value="#{myProfileView.delegation.effectiveEndDate}"
+							required="true"
+							requiredMessage="#{appResourceUtils.getRequiredMessage('EffectiveEndDate')}">
+						</p:calendar>
+						<p:outputLabel for="division"
+							value="#{msgs['profile.delegation.dialog.division.label']}" />
+						<p:selectOneMenu id="division"
+							value="#{myProfileView.selectedDivisionId}" required="true"
+							requiredMessage="#{appResourceUtils.getRequiredMessage('Division')}">
+							<p:ajax update="post" event="change" process="@this"
+								listener="#{myProfileView.initPost}" />
+							<f:selectItem itemLabel="- Select -" />
+							<f:selectItems value="#{myProfileView.divisions}" var="division"
+								itemLabel="#{division.divisionName}"
+								itemValue="#{division.divisionId}" />
+						</p:selectOneMenu>
+						<p:outputLabel for="post"
+							value="#{msgs['profile.delegation.dialog.post.label']}" />
+						<p:selectOneMenu id="post" value="#{myProfileView.delegateToId}"
+							required="true"
+							requiredMessage="#{appResourceUtils.getRequiredMessage('Post')}">
+							<p:ajax update="username" event="change" process="@this"
+								listener="#{myProfileView.initUserName}" />
+							<f:selectItem itemLabel="- Select -" />
+							<f:selectItems value="#{myProfileView.posts}" var="post"
+								itemLabel="#{post.postTitle}" itemValue="#{post.postId}" />
+						</p:selectOneMenu>
+						<p:outputLabel for="username"
+							value="#{msgs['profile.delegation.dialog.username.label']}" />
+						<p:inputText id="username" value="#{myProfileView.userName}"
+							disabled="true" />
+						<p:outputLabel for="remark"
+							value="#{msgs['profile.delegation.dialog.remark.label']}" />
+						<p:inputTextarea id="remark"
+							value="#{myProfileView.delegation.remark}" required="true" />
+					</p:panelGrid>
+				</div>
+				<div class="ax-btn-set">
+					<p:commandButton value="#{msgs['save.btn']}"
+						action="#{myProfileView.saveDelegation}"
+						update="msgs,pg,profileTabView:formD:delegation">
+					</p:commandButton>
+					<p:commandButton value="#{msgs['cancel.btn']}"
+						styleClass="ui-priority-secondary" process="@none"
+						onclick="PF('delegationDialog').hide();" />
+				</div>
+			</p:dialog>
+		</h:form>
+
+		<ui:include
+			src="../system/division-administration/post/privilege-dialog.xhtml"></ui:include>
+		<ui:insert name="main-content-2" />
+	</ui:define>
+</ui:composition>
+
+
+
+
+

@@ -1,0 +1,146 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="./generate-cheque.xhtml">
+
+    <ui:define name="title">
+        <h:link styleClass="ax-back-icon-url" outcome="search">
+            <i class="ax-icon ti-arrow-left"/>
+            #{msgs['payment.handling.generate.cheque.file.cheque.file.detail.title']}
+        </h:link>
+    </ui:define>
+
+    <ui:define name="main-content">
+        <div>
+            <div>
+                <h:form id="editForm">
+                    <p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+                             toggleable="true" toggleSpeed="300" widgetVar="panel">
+                        <p:focus context="toggleable"/>
+                        <p:messages id="msgs" closable="true"/>
+                        <div>
+                            <p:panelGrid columns="4"
+                                         columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                                         layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+                                <p:outputLabel for="paymentId"
+                                               value="#{msgs['payment.handling.generate.cheque.file.payment.id.label']}"/>
+                                <p:inputText id="paymentId" disabled="true"
+                                             value=""/>
+                                <p:outputLabel for="paymentType"
+                                               value="#{msgs['payment.handling.generate.cheque.file.payment.type.label']}"/>
+                                <p:inputText id="paymentType" disabled="true"
+                                             value=""/>
+                                <p:outputLabel for="processDate"
+                                               value="#{msgs['payment.handling.generate.cheque.file.process.date.label']}"/>
+                                <p:inputText id="processDate" disabled="true"
+                                             value=""/>
+                                <p:outputLabel for="totalAmount"
+                                               value="#{msgs['payment.handling.generate.cheque.file.total.amount.label']}"/>
+                                <p:inputText id="totalAmount" disabled="true"
+                                             value=""/>
+                                <p:outputLabel for="status"
+                                               value="#{msgs['payment.handling.generate.cheque.file.status.label']}"/>
+                                <p:inputText id="status" disabled="true"
+                                             value=""/>
+                                <p:outputLabel for="currency"
+                                               value="#{msgs['payment.handling.generate.cheque.file.currency.label']}"/>
+                                <p:inputText id="currency" disabled="true"
+                                             value=""/>
+                                <p:outputLabel for="groupAApprover"
+                                               value="#{msgs['payment.handling.generate.cheque.file.group.a.approver.label']}"/>
+                                <p:selectOneMenu id="groupAApprover" required="true"
+                                                 value="">
+                                    <f:selectItem itemLabel="- Select -" noSelectionOption="true"/>
+                                    <f:selectItems value="#{generateChequeFileGenerateView.approverAVOs}"
+                                                   var="approverB" itemLabel="#{approverB.postName}"
+                                                   itemValue="#{approverB.postId}"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel for="groupBApprover"
+                                               value="#{msgs['payment.handling.generate.cheque.file.group.b.approver.label']}"/>
+                                <p:selectOneMenu id="groupBApprover" required="true"
+                                                 value="">
+                                    <f:selectItem itemLabel="- Select -" noSelectionOption="true"/>
+                                    <f:selectItems value="#{generateChequeFileGenerateView.approverBVOS}"
+                                                   var="approverB" itemLabel="#{approverB.postName}"
+                                                   itemValue="#{approverB.postId}"/>
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+                        </div>
+                    </p:panel>
+                </h:form>
+            </div>
+            <div>
+                <h:form id="itemsForm">
+                    <p:tabView id="tabView" activeIndex="0">
+                        <p:tab title="#{msgs['payment.handling.generate.cheque.file.item.title']}">
+                            <p:dataTable var="cheque"
+                                         value=""
+                                         rowKey="" lazy="true" reflow="true"
+                                         paginator="true" paginatorPosition="bottom" rows="5"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15" draggableColumns="true"
+                                         rendered="">
+                                <f:facet name="header">#{msgs['result.title']}</f:facet>
+
+                                <p:column
+                                        headerText="#{msgs['payment.handling.generate.cheque.file.cheque.number.column.head']}">
+                                    <h:outputText value="#{cheque.chequeNumber}"/>
+                                </p:column>
+
+                                <p:column
+                                        headerText="#{msgs['payment.handling.generate.cheque.file.cheque.date.column.head']}">
+                                    <h:outputText value="#{cheque.chequeDate}"/>
+                                </p:column>
+                                <p:column
+                                        headerText="#{msgs['payment.handling.generate.cheque.file.voucher.number.column.head']}">
+                                    <h:outputText value="#{cheque.voucherNumber}"/>
+                                </p:column>
+                                <p:column
+                                        headerText="#{msgs['payment.handling.generate.cheque.file.payee.column.head']}">
+                                    <h:outputText value="#{cheque.payee}"/>
+                                </p:column>
+                                <p:column
+                                        headerText="#{msgs['payment.handling.generate.cheque.file.amount.column.head']}">
+                                    <h:outputText value="#{cheque.amount}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
+                    <div class="ax-btn-set">
+                        <p:commandButton id="backBtn" value="#{msgs['back.btn']}"
+                                         icon="ti-search" update=""
+                                         action=""/>
+                        <p:commandButton id="saveBtn" value="#{msgs['save.btn']}"
+                                         icon="ti-search" update=""
+                                         action=""/>
+                        <p:menuButton value="#{msgs['action.menuButton.label']}">
+                            <p:menuitem
+                                    value="#{msgs['payment.handling.generate.cheque.file.action.confirm.button.label']}"
+                                    action="">
+                            </p:menuitem>
+                            <p:menuitem
+                                    value="#{msgs['payment.handling.generate.cheque.file.action.submit.button.label']}"
+                                    action="">
+                            </p:menuitem>
+                            <p:menuitem
+                                    value="#{msgs['payment.handling.generate.cheque.file.action.approve.button.label']}"
+                                    action="">
+                            </p:menuitem>
+                            <p:menuitem
+                                    value="#{msgs['payment.handling.generate.cheque.file.action.reject.button.label']}"
+                                    action="">
+                            </p:menuitem>
+                            <p:menuitem
+                                    value="#{msgs['payment.handling.generate.cheque.file.action.generate.button.label']}"
+                                    action="">
+                            </p:menuitem>
+                        </p:menuButton>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

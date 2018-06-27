@@ -1,0 +1,218 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="outgoingChequeResultTable">
+        <p:messages id="msgs" closable="true"/>
+        <p:dataTable
+                var="outgoingCheque" rendered="#{outgoingChequeSearchView.lazyDataModel != null}" id="chequeTable"
+                     value="#{outgoingChequeSearchView.lazyDataModel}" rowKey="#{outgoingCheque.chequeId}" lazy="true"
+                     rows="5" paginator="true"
+                     selection="#{outgoingChequeSearchView.selections}" reflow="true" paginatorPosition="bottom"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rowsPerPageTemplate="5,10,15" draggableColumns="true">
+            <f:facet name="header">#{msgs['result.title']}</f:facet>
+            <p:column selectionMode="multiple" rendered="#{outgoingCheque.chequeTypeId != 3}"/>
+            <p:column rendered="#{outgoingCheque.chequeTypeId == 3}"/>
+            <p:column
+                    headerText="#{msgs['cheque.handling.outgoing.cheque.cheque.number.column']}">
+                <p:commandLink action="edit" ajax="false" rendered="#{outgoingCheque.chequeNumber != null}">
+                    <h:outputText value="#{outgoingCheque.chequeNumber}"/>
+                    <f:param name="outgoingChequeId" value="#{outgoingCheque.chequeId}"/>
+                </p:commandLink>
+            </p:column>
+
+            <p:column
+                    headerText="#{msgs['cheque.handling.outgoing.cheque.voucher.number.column']}">
+                <h:outputText value="#{outgoingCheque.voucherNumber}"/>
+            </p:column>
+
+            <p:column
+                    headerText="#{msgs['cheque.handling.outgoing.cheque.cheque.date.column']}">
+                <h:outputText value="#{outgoingCheque.chequeDate}">
+                    <f:convertDateTime pattern="#{appResourceUtils.dateFormat}"/>
+                </h:outputText>
+            </p:column>
+
+            <p:column
+                    headerText="#{msgs['cheque.handling.outgoing.cheque.payee.column']}">
+                <h:outputText value="#{outgoingCheque.payee}"/>
+            </p:column>
+            <p:column
+                    headerText="#{msgs['cheque.handling.outgoing.cheque.currency.column']}">
+                <h:outputText value="#{outgoingCheque.currencyName}"/>
+            </p:column>
+            <p:column
+                    headerText="#{msgs['cheque.handling.outgoing.cheque.amount.column']}">
+                <h:outputText value="#{outgoingCheque.amount}"/>
+            </p:column>
+            <p:column
+                    headerText="#{msgs['cheque.handling.outgoing.cheque.status.column']}" styleClass="ax-status-w-b">
+                <h:outputText value="#{msgs['cheque.handling.outgoing.cheque.status.generated.label']}"
+                              rendered="#{outgoingCheque.status eq 'GEN'}" class="status-label green"/>
+                <h:outputText value="#{msgs['cheque.handling.outgoing.cheque.status.approved.label']}"
+                              rendered="#{outgoingCheque.status eq 'APP'}" class="status-label green"/>
+                <h:outputText value="#{msgs['cheque.handling.outgoing.cheque.status.reversed.label']}"
+                              rendered="#{outgoingCheque.status eq 'REV'}" class="status-label green"/>
+                <h:outputText value="#{msgs['cheque.handling.outgoing.cheque.status.rejected.label']}"
+                              rendered="#{outgoingCheque.status eq 'REJ'}" class="status-label red"/>
+                <h:outputText value="#{msgs['cheque.handling.outgoing.cheque.status.submitted.label']}"
+                              rendered="#{outgoingCheque.status eq 'SUB'}" class="status-label green"/>
+                <h:outputText value="#{msgs['cheque.handling.outgoing.cheque.status.cancelled.label']}"
+                              rendered="#{outgoingCheque.status eq 'CCL'}" class="status-label red"/>
+                <h:outputText value="#{msgs['cheque.handling.outgoing.cheque.status.claimed.label']}"
+                              rendered="#{outgoingCheque.status eq 'CLM'}" class="status-label green"/>
+                <h:outputText value="#{msgs['cheque.handling.outgoing.cheque.status.draft.label']}"
+                              rendered="#{outgoingCheque.status eq 'DRT'}" class="status-label green"/>
+                <h:outputText value="#{msgs['cheque.handling.outgoing.cheque.status.combined.label']}"
+                              rendered="#{outgoingCheque.status eq 'CMB'}" class="status-label yellow"/>
+            </p:column>
+            <p:column headerText="#{msgs['action.column.header']}"
+                      styleClass="ax-action-w dont-print">
+                <p:menuButton value="#{msgs['action.menuButton.label']}">
+                    <p:menuitem value="#{msgs['cheque.handling.outgoing.cheque.menuitem.view.label']}" ajax="false"
+                                outcome="edit">
+                        <f:param name="outgoingChequeId" value="#{outgoingCheque.chequeId}"/>
+                    </p:menuitem>
+                    <p:menuitem value="#{msgs['cheque.handling.outgoing.cheque.menuitem.cancel.label']}"
+                                rendered="#{outgoingCheque.status eq 'GEN'}"
+                                onclick="PF('cca').show();">
+                        <f:setPropertyActionListener value="#{outgoingCheque.chequeId}"
+                                                     target="#{outgoingChequeSearchView.chequeId}"/>
+                    </p:menuitem>
+                    <p:menuitem value="#{msgs['cheque.handling.outgoing.cheque.menuitem.print.label']}"
+                                rendered="#{outgoingCheque.chequeNumber != null and(outgoingCheque.status eq 'APP' or outgoingCheque.status eq 'CCL')}"
+                                onclick="PF('cp').show();">
+                        <f:setPropertyActionListener value="#{outgoingCheque.chequeId}"
+                                                     target="#{outgoingChequeSearchView.chequeId}"/>
+                    </p:menuitem>
+                    <p:menuitem value="#{msgs['cheque.handling.outgoing.cheque.menuitem.print.label']}"
+                                rendered="#{outgoingCheque.chequeNumber == null and(outgoingCheque.status eq 'APP' or outgoingCheque.status eq 'CCL')}"
+                                ajax="false"
+                                outcome="edit">
+                        <f:param value="#{outgoingCheque.chequeId}" name="outgoingChequeId"/>
+                    </p:menuitem>
+                </p:menuButton>
+            </p:column>
+        </p:dataTable>
+        <div class="ax-btn-set">
+            <p:commandButton value="#{msgs['cheque.handling.outgoing.cheque.menubutton.combine.label']}"
+                             update="selectedChequeForm"
+                             rendered="#{outgoingChequeSearchView.lazyDataModel != null}" process="chequeTable"
+                             oncomplete="PF('chequeDialog').show();"/>
+        </div>
+    </h:form>
+    <h:form id="selectedChequeForm">
+        <p:dialog id="chequeDialog"
+                  header="#{msgs['cheque.handling.outgoing.cheque.combine.cheque.label']}"
+                  widgetVar="chequeDialog" modal="true" width="920" minHeight="50"
+                  resizable="false" dynamic="true" style="position: fixed">
+            <p:dataTable var="outgoingCheque" rendered="#{outgoingChequeSearchView.selections != null}"
+                         id="selectedChequeTable"
+                         rowIndexVar="#rowIndex"
+                         value="#{outgoingChequeSearchView.selections}"
+                         rowKey="#{outgoingCheque.chequeId}" reflow="true">
+                <f:facet name="header">#{msgs['cheque.handling.outgoing.cheque.selected.title']}</f:facet>
+
+                <p:column
+                        headerText="#{msgs['cheque.handling.outgoing.cheque.cheque.number.column']}">
+                    <h:outputText value="#{outgoingCheque.chequeNumber}"/>
+                </p:column>
+
+                <p:column
+                        headerText="#{msgs['cheque.handling.outgoing.cheque.voucher.number.column']}">
+                    <h:outputText value="#{outgoingCheque.voucherNumber}"/>
+                </p:column>
+
+                <p:column
+                        headerText="#{msgs['cheque.handling.outgoing.cheque.payee.column']}">
+                    <h:outputText value="#{outgoingCheque.payee}"/>
+                </p:column>
+                <p:column
+                        headerText="#{msgs['cheque.handling.outgoing.cheque.currency.column']}">
+                    <h:outputText value="#{outgoingCheque.currencyName}"/>
+                </p:column>
+                <p:column
+                        headerText="#{msgs['cheque.handling.outgoing.cheque.amount.column']}">
+                    <h:outputText value="#{outgoingCheque.amount}"/>
+                </p:column>
+                <p:column
+                        headerText="#{msgs['cheque.handling.outgoing.cheque.status.column']}"
+                        styleClass="ax-status-w-b">
+                    <h:outputText value="#{msgs['cheque.handling.outgoing.cheque.status.generated.label']}"
+                                  rendered="#{outgoingCheque.status eq 'GEN'}" class="status-label red"/>
+                    <h:outputText value="#{msgs['cheque.handling.outgoing.cheque.status.reversed.label']}"
+                                  rendered="#{outgoingCheque.status eq 'REV'}" class="status-label green"/>
+                    <h:outputText value="#{msgs['cheque.handling.outgoing.cheque.status.pending.label']}"
+                                  rendered="#{outgoingCheque.status eq 'PD'}" class="status-label green"/>
+                    <h:outputText value="#{msgs['cheque.handling.outgoing.cheque.status.claimed.label']}"
+                                  rendered="#{outgoingCheque.status eq 'CLM'}" class="status-label green"/>
+                </p:column>
+                <p:column headerText="#{msgs['action.column.header']}"
+                          styleClass="ax-action-w dont-print">
+                    <p:menuButton value="#{msgs['action.menuButton.label']}">
+                        <p:menuitem value="#{msgs['cheque.handling.outgoing.cheque.remove.label']}"
+                                    update="selectedChequeTable"
+                                    action="#{outgoingChequeSearchView.remove(rowIndex)}">
+                        </p:menuitem>
+                    </p:menuButton>
+                </p:column>
+            </p:dataTable>
+            <div class="ax-btn-set">
+                <p:commandButton value="#{msgs['confirm.btn']}" update="outgoingChequeResultTable"
+                                 onclick="PF('cc').show();" oncomplete="PF('chequeDialog').hide();"/>
+                <p:commandButton value="#{msgs['cancel.btn']}"
+                                 styleClass="ui-priority-secondary"
+                                 onclick="PF('chequeDialog').hide();" immediate="true"/>
+            </div>
+        </p:dialog>
+        <p:confirmDialog widgetVar="cc" header="Confirm" showEffect="fade">
+            <f:facet name="message">
+                <h:outputText
+                        value="Confirm to Combine the selected record ?"/>
+            </f:facet>
+            <div align="center">
+                <p:commandButton value="Yes"
+                                 action="#{outgoingChequeSearchView.combine}"
+                                 update="outgoingChequeResultTable"
+                                 oncomplete="PF('cc').hide()"/>
+                <p:commandButton value="No" onclick="PF('cc').hide();"
+                                 type="button"/>
+            </div>
+        </p:confirmDialog>
+        <p:confirmDialog widgetVar="cca" header="Confirm" showEffect="fade">
+            <f:facet name="message">
+                <h:outputText
+                        value="Confirm to Cancel the selected record ?"/>
+            </f:facet>
+            <div align="center">
+                <p:commandButton value="Yes"
+                                 action="#{outgoingChequeSearchView.cancel}"
+                                 update="outgoingChequeResultTable"
+                                 oncomplete="PF('cca').hide()"/>
+                <p:commandButton value="No" onclick="PF('cca').hide();"
+                                 type="button"/>
+            </div>
+        </p:confirmDialog>
+        <p:confirmDialog widgetVar="cp" header="Confirm" showEffect="fade">
+            <f:facet name="message">
+                <h:outputText
+                        value="Confirm to Print the selected record ?"/>
+            </f:facet>
+            <div align="center">
+                <p:commandButton value="Yes"
+                                 action="#{outgoingChequeSearchView.print}"
+                                 update="outgoingChequeResultTable"
+                                 oncomplete="PF('cp').hide()"/>
+                <p:commandButton value="No" onclick="PF('cp').hide();"
+                                 type="button"/>
+            </div>
+        </p:confirmDialog>
+    </h:form>
+</ui:composition>
+
+
+
+

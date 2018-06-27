@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui" template="./instrution-memo-list.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+           #{msgs['instrution.memo.list.title']}
+        </h:link>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="300" widgetVar="panel">
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="ListName"
+								value="#{msgs['instrution.memo.list.list.name.label']}" />
+							<p:inputText id="ListName" />
+
+							<p:outputLabel for="ImportDate"
+								value="#{msgs['instrution.memo.list.import.date.label']}" />
+							<p:calendar id="ImportDate" showOn="button"
+								pattern="#{appResourceUtils.dateFormat}">
+							</p:calendar>
+
+							<p:outputLabel for="Status" value="#{msgs['status.label']}" />
+							<p:inputText id="Status" disabled="true" />
+
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<p:tabView id="tabView" activeIndex="0">
+					<p:tab title="#{msgs['instrution.memo.list.case.table.title']}">
+						<p:dataTable var="role" reflow="true" rowKey="#{role.roleId}"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+							<p:column
+								headerText="#{msgs['instrution.memo.list.case.table.case.number.column.header']}">
+							</p:column>
+							<p:column
+								headerText="#{msgs['instrution.memo.list.case.table.encl.no.column.header']}">
+							</p:column>
+							<p:column
+								headerText="#{msgs['instrution.memo.list.case.table.from.io.column.header']}">
+							</p:column>
+							<p:column
+								headerText="#{msgs['instrution.memo.list.case.table.memo.date.column.header']}">
+							</p:column>
+							<p:column
+								headerText="#{msgs['instrution.memo.list.case.table.memo.amount.column.header']}">
+							</p:column>
+							<p:column
+								headerText="#{msgs['instrution.memo.list.case.table.to.gr.date.column.header']}">
+							</p:column>
+							<p:column
+								headerText="#{msgs['instrution.memo.list.case.table.email.confirmation.column.header']}">
+							</p:column>
+							<p:column
+								headerText="#{msgs['instrution.memo.list.case.table.remarks.column.header']}">
+							</p:column>
+							<p:column
+								headerText="#{msgs['instrution.memo.list.case.table.remarks2.column.header']}">
+							</p:column>
+							<p:column
+								headerText="#{msgs['instrution.memo.list.case.table.remarks3.column.header']}">
+							</p:column>
+
+							<p:column headerText="#{msgs['action.column.header']}"
+								styleClass="ax-action-w dont-print">
+								<p:menuButton value="#{msgs['action.menuButton.label']}">
+									<p:menuitem value="#{msgs['delete.menuitem.label']}"
+										oncomplete="PF('cd').show()">
+									</p:menuitem>
+								</p:menuButton>
+							</p:column>
+						</p:dataTable>
+						<p:confirmDialog widgetVar="cd" header="Confirm" showEffect="fade">
+							<f:facet name="message">
+								<h:outputText value="Confirm to Delete the selected record ?" />
+							</f:facet>
+							<div align="center">
+								<p:commandButton value="Yes" update="tabView"
+									oncomplete="PF('cd').hide()" />
+								<p:commandButton value="No" onclick="PF('cd').hide()"
+									type="button" />
+							</div>
+						</p:confirmDialog>
+					</p:tab>
+				</p:tabView>
+
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search" />
+					<p:commandButton value="#{msgs['save.btn']}" update="@form" />
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

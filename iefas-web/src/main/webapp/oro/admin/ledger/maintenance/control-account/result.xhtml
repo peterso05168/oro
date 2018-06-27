@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="controlAccountResultTable">
+        <p:dataTable var="controlAccount"
+                     value="#{controlAccountSearchView.lazyDataModel}"
+                     rowKey="#{controlAccount.ctlAcId}" lazy="true" reflow="true"
+                     paginator="true" paginatorPosition="bottom" rows="5"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rowsPerPageTemplate="5,10,15" draggableColumns="true"
+                     rendered="#{controlAccountSearchView.lazyDataModel != null}">
+            <f:facet name="header">#{msgs['result.title']}</f:facet>
+
+            <p:column
+                    headerText="#{msgs['maintenance.control.account.code.column.head']}">
+                <p:commandLink action="edit" ajax="false">
+                    <h:outputText value="#{controlAccount.ctlAcCode}"/>
+                    <f:param name="ctlAcId" value="#{controlAccount.ctlAcId}"/>
+                </p:commandLink>
+            </p:column>
+
+            <p:column
+                    headerText="#{msgs['maintenance.control.account.name.column.head']}">
+                <h:outputText value="#{controlAccount.ctlAcName}"/>
+            </p:column>
+
+            <p:column
+                    headerText="#{msgs['maintenance.control.account.account.type.column.head']}">
+                <h:outputText value="#{controlAccount.ctlAcTypeName}"/>
+            </p:column>
+            <p:column
+                    headerText="#{msgs['maintenance.control.account.balance.nature.column.head']}">
+                <h:outputText value="#{msgs['maintenance.control.account.balance.nature.liability.label']}"
+                              rendered="#{controlAccount.balanceNature eq 'LIA'}"/>
+                <h:outputText value="#{msgs['maintenance.control.account.balance.nature.asserts.label']}"
+                              rendered="#{controlAccount.balanceNature eq 'AST'}"/>
+            </p:column>
+            <p:column headerText="#{msgs['status.column.header']}"
+                      styleClass="ax-status-w-b">
+                <h:outputText value="#{msgs['inactive.status.label']}"
+                              rendered="#{controlAccount.status eq 'INA'}" class="status-label red"/>
+                <h:outputText value="#{msgs['active.status.label']}"
+                              rendered="#{controlAccount.status eq 'ACT'}" class="status-label green"/>
+            </p:column>
+
+            <p:column headerText="#{msgs['action.column.header']}"
+                      styleClass="ax-action-w dont-print">
+                <p:menuButton value="#{msgs['action.menuButton.label']}">
+                    <p:menuitem value="#{msgs['edit.menuitem.label']}" ajax="false"
+                                outcome="edit">
+                        <f:param name="ctlAcId" value="#{controlAccount.ctlAcId}"/>
+                    </p:menuitem>
+                    <p:menuitem value="#{msgs['inactive.status.label']}"
+                                rendered="#{controlAccount.status eq 'ACT'}"
+                                onclick="PF('cd').show()">
+                        <f:setPropertyActionListener value="#{controlAccount.ctlAcId}"
+                                                     target="#{controlAccountSearchView.ctlAcId}"/>
+                    </p:menuitem>
+                    <p:menuitem value="#{msgs['active.status.label']}"
+                                rendered="#{controlAccount.status eq 'INA'}"
+                                onclick="PF('cd').show()">
+                        <f:setPropertyActionListener value="#{controlAccount.ctlAcId}"
+                                                     target="#{controlAccountSearchView.ctlAcId}"/>
+                    </p:menuitem>
+                </p:menuButton>
+                <p:confirmDialog widgetVar="cd" header="Confirm" showEffect="fade">
+                    <f:facet name="message">
+                        <h:outputText
+                                value="Confirm to Active / Inactive the selected record ?"/>
+                    </f:facet>
+                    <div align="center">
+                        <p:commandButton value="Yes"
+                                         action="#{controlAccountSearchView.changeStatus}"
+                                         update="controlAccountResultTable,searchForm"
+                                         oncomplete="PF('cd').hide()"/>
+                        <p:commandButton value="No" onclick="PF('cd').hide();"
+                                         type="button"/>
+                    </div>
+                </p:confirmDialog>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+</ui:composition>
+
+
+
+

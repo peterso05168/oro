@@ -1,0 +1,154 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	template="./daily-investment.xhtml">
+
+	<ui:define name="title">
+		<h:outputLink styleClass="ax-back-icon-url" hreflang="search">
+			<i class="ax-icon ti-arrow-left"></i>
+			#{msgs['daily.investment.title']}
+		</h:outputLink>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form>
+				<p:panel id="toggleable"
+					header="#{msgs['daily.investment.edit.investment.information.label']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="InvDate"
+								value="#{msgs['daily.investment.edit.investment.date.label']}" />
+							<p:calendar id="InvDate" showOn="button"
+								value="#{placingDepositsDetailView.detailVO.investmentDate}"
+								pattern="#{appResourceUtils.dateFormat}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</p:calendar>
+							<p:outputLabel for="creditorList"
+								value="#{msgs['daily.investment.edit.currency.label']}" />
+							<p:selectOneMenu id="creditorList">
+								<f:selectItem itemLabel=" - Select -" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<div>
+					<p:dataTable id="printChequeTable" reflow="true" paginator="false"
+						var="dividendCheque"
+						value="#{dividendScheduleEditView.dividendChequeList}">
+						<p:column
+							headerText="#{msgs['daily.investment.edit.case.number.column']}">
+							<h:outputText value="Case Number" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['daily.investment.edit.bank.column']}">
+							<h:outputText
+								value="#{dividendCheque.dividendScheduleItem.creditor.creditorNameEng}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['daily.investment.edit.principal.column']}">
+							<h:outputText value="#{dividendCheque.cheque.chequeAmount}">
+								<f:convertNumber type="number"
+									pattern="#{appResourceUtils.moneyFormat}" />
+							</h:outputText>
+						</p:column>
+						<p:column
+							headerText="#{msgs['daily.investment.edit.interest.column']}">
+							<h:outputText value="#{dividendCheque.cheque.chequeAmount}">
+								<f:convertNumber type="number"
+									pattern="#{appResourceUtils.moneyFormat}" />
+							</h:outputText>
+						</p:column>
+						<p:column
+							headerText="#{msgs['daily.investment.edit.period.column']}">
+							<h:outputText value="#{dividendCheque.cheque.remark}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['daily.investment.edit.maturity.date.column']}">
+							<h:outputText value="#{dividendCheque.cheque.chequeAmount}">
+								<f:convertDateTime type="date"
+									pattern="#{appResourceUtils.dateFormat}" />
+							</h:outputText>
+						</p:column>
+						<p:column
+							headerText="#{msgs['daily.investment.edit.bank.column']}">
+							<p:inputText value="#{dividendCheque.cheque.chequeNo}">
+							</p:inputText>
+						</p:column>
+						<p:column
+							headerText="#{msgs['daily.investment.edit.interest.rate.column']}">
+							<h:outputText value="#{dividendCheque.cheque.chequeAmount}">
+								<f:convertNumber type="percent" currencySymbol="%" />
+							</h:outputText>
+						</p:column>
+						<p:column
+							headerText="#{msgs['daily.investment.edit.amount.column']}">
+							<h:outputText value="#{dividendCheque.cheque.chequeAmount}">
+								<f:convertNumber type="number"
+									pattern="#{appResourceUtils.moneyFormat}" />
+							</h:outputText>
+						</p:column>
+						<p:column
+							headerText="#{msgs['daily.investment.edit.amount.column']}">
+							<h:outputText value="#{dividendCheque.cheque.chequeAmount}">
+								<f:convertNumber type="number"
+									pattern="#{appResourceUtils.moneyFormat}" />
+							</h:outputText>
+						</p:column>
+						<p:column
+							headerText="#{msgs['daily.investment.edit.amount.required.column']}">
+							<p:inputText value="#{dividendCheque.cheque.chequeNo}">
+							</p:inputText>
+						</p:column>
+						<p:column
+							headerText="#{msgs['daily.investment.edit.benefits.column']}">
+							<p:inputText value="#{dividendCheque.cheque.chequeNo}">
+							</p:inputText>
+						</p:column>
+						<p:column
+							headerText="#{msgs['daily.investment.edit.uplift.column']}">
+							<p:inputText value="#{dividendCheque.cheque.chequeNo}">
+							</p:inputText>
+						</p:column>
+						<p:column
+							headerText="#{msgs['daily.investment.edit.place.column']}">
+							<p:inputText value="#{dividendCheque.cheque.chequeNo}">
+							</p:inputText>
+						</p:column>
+						<p:column
+							headerText="#{msgs['dividend.interest.schedule.edit.action.column']}"
+							styleClass="ax-action-w dont-print">
+							<p:menuButton value="#{msgs['action.menuButton.label']}">
+								<p:menuitem
+									value="#{msgs['dividend.interest.schedule.cheque.Reprint.btn']}"
+									process="@this">
+								</p:menuitem>
+							</p:menuButton>
+						</p:column>
+					</p:dataTable>
+				</div>
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						action="#{placingDepositsDetailView.save}" />
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						action="#{placingDepositsDetailView.save}" />
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						action="#{placingDepositsDetailView.save}" />
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+
+</ui:composition>

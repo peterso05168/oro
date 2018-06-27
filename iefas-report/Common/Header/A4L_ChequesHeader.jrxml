@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="A4L_ChequesHeader" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" uuid="f98410e5-338b-40ba-a4b9-e9dd5bcbd837">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORODCDataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Style1" isDefault="true" fontName="Courier" fontSize="9" isBold="true"/>
+	<parameter name="ORACLE_REF_CURSOR" class="java.sql.ResultSet" isForPrompting="false"/>
+	<parameter name="pageNumber" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="REQUEST_REPORT_ID" class="java.lang.Long" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1L]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RPT_CONT_PATH" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="GROUP_CODE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString language="plsql">
+		<![CDATA[{call COMMON.HEADER_PROC($P{ORACLE_REF_CURSOR},$P{REQUEST_REPORT_ID})}]]>
+	</queryString>
+	<field name="REPORT_ID" class="java.lang.String"/>
+	<field name="REPORT_NAME" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="219" y="0" width="321" height="10" uuid="dab8f564-4fa4-4f95-b7e7-b34779a758fe">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{REPORT_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="747" y="10" width="55" height="10" uuid="0b1ef828-a838-4a9f-8526-4cae520342b3"/>
+				<textElement textAlignment="Right" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$P{pageNumber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="682" y="10" width="65" height="10" uuid="a0795bf9-43d9-4e24-a81d-8f7c6298cceb">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["Page      : "]]></textFieldExpression>
+			</textField>
+			<line direction="BottomUp">
+				<reportElement x="0" y="24" width="802" height="1" uuid="824e3c18-8b1e-42ba-b303-b33d7464e93a">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="1.5" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="219" y="10" width="321" height="10" uuid="217d9935-9af2-4077-bc4a-c61135ef0f56">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["For Group Code : " + $P{GROUP_CODE}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="0" y="0" width="24" height="24" uuid="e4221fdc-7ae0-4e61-977d-e962614c648b"/>
+				<imageExpression><![CDATA[($P{RPT_CONT_PATH}==null?"":$P{RPT_CONT_PATH}+"Common/Header/")+"Official_Receivers_Office.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="682" y="0" width="65" height="10" uuid="4748ab97-903d-43d3-a6bd-49155bf3cf96">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["REPORT ID :"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="747" y="0" width="55" height="10" uuid="9b96497a-73c0-4253-89aa-810ac5b2434b">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{REPORT_ID}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+</jasperReport>

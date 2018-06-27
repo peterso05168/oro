@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RDIV0008_GroupTotal" pageWidth="802" pageHeight="100" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="6417055c-2655-4c6e-9bd9-49a48605e40a">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORODCDataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Style1" isDefault="true" fontName="Courier" fontSize="9" isBold="true"/>
+	<parameter name="ORACLE_REF_CURSOR" class="java.sql.ResultSet" isForPrompting="false"/>
+	<parameter name="CASENO" class="java.lang.String">
+		<defaultValueExpression><![CDATA["BB0108900"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="plsql">
+		<![CDATA[{call RDIV0008.RDIV0008_SUBTOTAL_PROC($P{ORACLE_REF_CURSOR},$P{CASENO})}]]>
+	</queryString>
+	<field name="CURRENCY" class="java.lang.String"/>
+	<field name="total_claim" class="java.math.BigDecimal"/>
+	<variable name="currencyTotal" class="java.math.BigDecimal" resetType="Group" resetGroup="currencyGroup" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_claim}==null?BigDecimal.ZERO:$F{total_claim}]]></variableExpression>
+		<initialValueExpression><![CDATA[BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="recordCount" class="java.lang.Integer" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{CURRENCY}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<group name="currencyGroup">
+		<groupExpression><![CDATA[$F{CURRENCY}]]></groupExpression>
+		<groupFooter>
+			<band height="10">
+				<textField>
+					<reportElement x="0" y="0" width="242" height="10" uuid="e6ec7095-f547-4ae1-8826-79c14aa148a9">
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<printWhenExpression><![CDATA[$V{recordCount}==1]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["                             Total"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="242" y="0" width="30" height="10" uuid="b97f8175-605b-44ab-88e4-ee4b54d2126a">
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{CURRENCY}==null?"HKD":$F{CURRENCY}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;(#,##0.00#)">
+					<reportElement x="280" y="0" width="110" height="10" uuid="96a8cc59-6106-4da4-a8c6-4b7dedcc3b50">
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{currencyTotal}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+</jasperReport>

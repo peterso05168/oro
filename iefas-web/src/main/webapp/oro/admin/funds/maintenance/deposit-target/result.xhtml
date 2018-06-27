@@ -1,0 +1,80 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<h:form id="formC">
+		<p:dataTable var="cashReq"
+			value="#{depositTargetSearchView.lazyDataModel}"
+			rowKey="#{cashReq.cashRequirementResultId}" lazy="true" reflow="true"
+			paginator="true" paginatorPosition="bottom" rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true"
+			rendered="#{depositTargetSearchView.lazyDataModel != null}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+
+			<p:column
+				headerText="#{msgs['depositTarget.investmentType.column.header']}"
+				sortBy="#{cashReq.investmentType.investmentTypeDesc}">
+				<p:link outcome="edit"
+					value="#{cashReq.investmentType.investmentTypeDesc}">
+					<f:param name="cashReqId"
+						value="#{cashReq.cashRequirementResultId}" />
+				</p:link>
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['depositTarget.periodFrom.column.header']}"
+				sortBy="#{cashReq.rqmtPeriodFrom}">
+				<h:outputText value="#{cashReq.rqmtPeriodFrom}">
+					<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['depositTarget.periodTo.column.header']}"
+				sortBy="#{cashReq.rqmtPeriodTo}">
+				<h:outputText value="#{cashReq.rqmtPeriodTo}">
+					<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column style="text-align: right;"
+				headerText="#{msgs['depositTarget.yearlyRequirement.column.header']}"
+				sortBy="#{cashReq.yearRequirement}">
+				<h:outputText value="#{cashReq.yearRequirement}">
+					<f:convertNumber pattern="#{appResourceUtils.moneyFormat}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column style="text-align: right;"
+				headerText="#{msgs['depositTarget.dailyRequirement.column.header']}"
+				sortBy="#{cashReq.dailyRequirement}">
+				<h:outputText value="#{cashReq.dailyRequirement}">
+					<f:convertNumber pattern="#{appResourceUtils.moneyFormat}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="#{msgs['action.column.header']}"
+				styleClass="ax-action-w dont-print">
+				<p:menuButton value="#{msgs['action.menuButton.label']}">
+					<p:menuitem value="#{msgs['edit.menuitem.label']}" action="edit"
+						ajax="false">
+						<f:param name="cashReqId"
+							value="#{cashReq.cashRequirementResultId}" />
+					</p:menuitem>
+					<p:menuitem value="#{msgs['delete.menuitem.label']}"
+						action="#{depositTargetSearchView.deleteCashRequirement(cashReq)}"
+						update="formC">
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+
+	</h:form>
+</ui:composition>
+
+
+
+

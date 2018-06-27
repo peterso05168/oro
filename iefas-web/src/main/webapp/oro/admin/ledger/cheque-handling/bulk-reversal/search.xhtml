@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="../cheque-handling.xhtml">
+
+	<ui:define name="breadcrumb-3">
+		<li><a title="">#{msgs['cheque.handling.bulk.reversal.title']}</a><i class="ti-angle-right"></i></li>
+	</ui:define>
+	<ui:define name="title">
+        #{msgs['cheque.handling.bulk.reversal.title']}
+    </ui:define>
+
+	<ui:define name="main-content">
+		<h:form id="searchForm">
+			<p:messages id="msgs" closable="true" />
+			<p:panel id="toggleable" header="#{msgs['cheque.handling.bulk.reversal.search.panel.header']}" toggleable="true"
+			 toggleSpeed="200" widgetVar="panel">
+				<div>
+					<p:panelGrid columns="4"
+					columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="bulkReversalId" value="#{msgs['cheque.handling.bulk.reversal.search.criteria1']}"/>
+						<p:inputNumber decimalPlaces="0" id="bulkReversalId" 
+							value="#{bulkReversalMaintenanceView.searchBulkReversalVO.bulkReversalId}"/>
+						
+						<p:outputLabel for="processDate" value="#{msgs['cheque.handling.bulk.reversal.search.criteria2']}"/>
+						<p:calendar id="processDate" showOn="button" pattern="#{appResourceUtils.dateFormat}"
+							value="#{bulkReversalMaintenanceView.searchBulkReversalVO.processDate}"/>
+						
+						<p:outputLabel for="cutOffDate" value="#{msgs['cheque.handling.bulk.reversal.search.criteria3']}"/>
+						<p:calendar id="cutOffDate" showOn="button" pattern="#{appResourceUtils.dateFormat}"
+							value="#{bulkReversalMaintenanceView.searchBulkReversalVO.cutOffDate}" />
+						
+						<p:outputLabel for="voucherNo" value="#{msgs['cheque.handling.bulk.reversal.search.criteria4']}"/>
+						<p:inputText id="voucherNo" value="#{bulkReversalMaintenanceView.searchBulkReversalVO.voucherNo}"/>
+					</p:panelGrid>
+				</div>
+				<div class="ax-btn-set">
+					<p:commandButton value="#{msgs['search.btn']}" action="#{bulkReversalMaintenanceView.searchBulkReversal}"
+						icon="ti-search" update="searchForm,bulkReversalResultForm" />
+					<p:commandButton value="#{msgs['reset.btn']}" styleClass="ui-priority-secondary" immediate="true"
+						action="#{bulkReversalMaintenanceView.reset}" update="searchForm, bulkReversalResultForm">
+						<p:ajax update="searchForm" resetValues="true"></p:ajax>
+					</p:commandButton>
+					<p:commandButton value="#{msgs['create.btn']}" resetValues="true"
+						oncomplete="PF('addDialog').show()" update=":addForm" process="@this">
+					</p:commandButton>
+				</div>
+			</p:panel>
+		</h:form>
+		<ui:include src="./result.xhtml"></ui:include>
+		
+		<p:dialog header="#{msgs['cheque.handling.bulk.reversal.add.dialog.header']}" widgetVar="addDialog"
+				width="600" minHeight="50" resizable="false" modal="true" id="addDialog">
+			<h:form id="addForm">
+				<div class="ui-fluid">
+				<p:messages id="addDialogMsgs" closable="true" />
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-2,ui-grid-col-8"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="addCutOffDate" value="#{msgs['cheque.handling.bulk.reversal.add.dialog.criteria1']}" />
+						<p:calendar id="addCutOffDate" required="true" showOn="button"
+							value="#{bulkReversalMaintenanceView.generateBulkReversalVO.cutOffDate}" pattern="#{appResourceUtils.dateFormat}"
+							requiredMessage="Please input Cut Off Date"/>
+					</p:panelGrid>
+				</div>
+				<div class="ax-btn-set">
+					<p:commandButton value="#{msgs['create.btn']}" action="generate?faces-redirect=true" 
+						actionListener="#{bulkReversalMaintenanceView.create}" update="@form" 
+						oncomplete="PF('addDialog').hide()"/>
+					<p:commandButton value="#{msgs['cancel.btn']}" styleClass="ui-priority-secondary" oncomplete="PF('addDialog').hide()" />
+				</div>
+			</h:form>
+		</p:dialog>
+		
+	</ui:define>
+</ui:composition>

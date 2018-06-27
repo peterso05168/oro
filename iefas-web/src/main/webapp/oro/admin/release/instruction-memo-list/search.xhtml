@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	template="./instrution-memo-list.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable"
+				header="#{msgs['instrution.memo.list.search.title']}"
+				toggleable="true" toggleSpeed="200" widgetVar="panel">
+				<h:form id="searchForm">
+					<div>
+						<p:focus context="toggleable" />
+						<p:messages id="msgs" closable="true" />
+						<input type="checkbox" id="basicAdvance" name="basicAdvance"
+							class="basicAdvance hidden-checkbox" checked="checked" />
+						<div class="search-basic">
+							<p:panelGrid columns="1" layout="grid"
+								columnClasses="ui-grid-col-12"
+								styleClass="ui-panelgrid-blank ui-fluid">
+								<p:inputText />
+								<p:column>
+									<label for="basicAdvance" class="basicAdvanceLabel advance"><i
+										class="ti-search"></i> Advanced Search</label>
+									<div class="note">List Name, Import Date, Status</div>
+								</p:column>
+							</p:panelGrid>
+						</div>
+						<div class="search-advance">
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel id="ListName"
+									value="#{msgs['instrution.memo.list.list.name.label']}" />
+								<p:inputText for="ListName" />
+
+								<p:outputLabel for="ImportDate"
+									value="#{msgs['instrution.memo.list.import.date.label']}" />
+								<p:calendar id="ImportDate" showOn="button"
+									pattern="#{appResourceUtils.dateFormat}">
+								</p:calendar>
+
+								<p:outputLabel for="Status" value="#{msgs['status.label']}" />
+								<p:selectOneMenu id="Status">
+									<f:selectItem itemLabel="- All -" noSelectionOption="true" />
+								</p:selectOneMenu>
+
+							</p:panelGrid>
+							<p:panelGrid columns="6" columnClasses="ui-grid-col-12"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:column styleClass="ui-grid-col-12">
+									<label for="basicAdvance" class="basicAdvanceLabel advance"><i
+										class="ti-search"></i>Basic Search</label>
+								</p:column>
+							</p:panelGrid>
+						</div>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton id="searchBtn" value="#{msgs['search.btn']}"
+							icon="ti-search" update="searchForm, memoListResultTable" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary" update="searchForm, memoListResultTable" />
+						<p:button value="#{msgs['import.btn']}" />
+					</div>
+				</h:form>
+			</p:panel>
+		</div>
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

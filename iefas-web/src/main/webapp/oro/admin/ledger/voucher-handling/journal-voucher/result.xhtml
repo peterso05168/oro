@@ -1,0 +1,71 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:com="http://java.sun.com/jsf/composite/common">
+
+	<h:form id="resultForm">
+		<p:dataTable
+			value="#{journalVoucherSearchView.journalVoucherResultDataModel}"
+			var="result" reflow="true" lazy="true" paginator="true"
+			paginatorPosition="bottom"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" rows="5" draggableColumns="true"
+			rendered="#{journalVoucherSearchView.journalVoucherResultDataModel != null}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+
+			<p:column
+				headerText="#{msgs['journal.voucher.result.journal.type.column.header']}"
+				sortBy="#{result.voucherId}">
+				<p:commandLink href="javascript:void(0)" action="edit" ajax="false">
+					<h:outputText value="#{result.journalType}" />
+					<f:param name="voucherId" value="#{result.voucherId}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['journal.voucher.result.group.code.column.header']}"
+				sortBy="#{result.groupCode}">
+				<h:outputText value="#{result.groupCode}" />
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['journal.voucher.result.voucher.number.column.header']}"
+				sortBy="#{voucherNo}">
+				<h:outputText value="#{result.voucherNumber}" />
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['journal.voucher.result.voucher.date.column.header']}"
+				sortBy="#{result.voucherDate}">
+				<h:outputText value="#{result.voucherDate}">
+					<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="#{msgs['status.column.header']}"
+				sortBy="#{result.status}">
+				<com:voucherStatusLabel status="#{result.status}" isEditPage="false" />
+			</p:column>
+
+			<p:column headerText="#{msgs['action.column.header']}">
+				<p:menuButton value="Action">
+					<p:menuitem value="#{msgs['edit.menuitem.label']}" action="edit"
+						ajax="false">
+						<f:param name="voucherId" value="#{result.voucherId}" />
+					</p:menuitem>
+					<p:menuitem value="#{msgs['delete.menuitem.label']}"
+						action="#{journalVoucherSearchView.delete}" update="resultForm">
+						<f:setPropertyActionListener value="#{result.voucherId}"
+							target="#{journalVoucherSearchView.selectedVoucherId}" />
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+</ui:composition>
+
+
+
+

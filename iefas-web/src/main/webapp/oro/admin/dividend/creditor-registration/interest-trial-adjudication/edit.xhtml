@@ -1,0 +1,584 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	template="./interest-trial-adjudication.xhtml">
+	<ui:define name="title">
+		<h:outputLink styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+			#{msgs['interest.trial.adjudication.title']}
+		</h:outputLink>
+	</ui:define>
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="caseNumberValue"
+								value="#{msgs['interest.trial.adjudication.search.case.number.label']}" />
+							<com:caseNumber id="caseNumberValue" disabled="true"
+								caseTypeCodeValue="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.caseInfo.caseType.caseTypeCode}"
+								caseNoValue="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.caseInfo.caseNo}"
+								caseYearValue="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.caseInfo.caseYear}" />
+							<p:outputLabel for="status"
+								value="#{msgs['interest.trial.adjudication.edit.status.label']}" />
+							<p:inputText id="status" disabled="true"
+								value="#{interestTrialEditView.status}">
+							</p:inputText>
+							<p:outputLabel for="caseName"
+								value="#{msgs['interest.trial.adjudication.edit.case.name.label']}" />
+							<p:inputText id="caseName" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.caseInfo.caseName}">
+							</p:inputText>
+							<p:outputLabel />
+							<p:column></p:column>
+							<p:outputLabel for="proofNumber"
+								value="#{msgs['interest.trial.adjudication.edit.proof.number.label']}" />
+							<p:inputText id="proofNumber" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.proofNo}">
+							</p:inputText>
+							<p:outputLabel for="lastProofNumber"
+								value="#{msgs['interest.trial.adjudication.edit.last.proof.number.label']}" />
+							<p:inputText id="lastProofNumber" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.lastProofNo}">
+							</p:inputText>
+							<p:outputLabel for="commonCreditor"
+								value="#{msgs['interest.trial.adjudication.edit.common.creditor.label']}" />
+							<p:inputText id="commonCreditor" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.creditorNameEng}">
+							</p:inputText>
+							<p:outputLabel for="creditorType"
+								value="#{msgs['interest.trial.adjudication.edit.creditor.type.label']}" />
+							<p:inputText id="creditorType" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.creditorType.creditorTypeName}">
+							</p:inputText>
+							<p:outputLabel for="commonCreditorSection"
+								value="#{msgs['interest.trial.adjudication.edit.common.creditor.section.label']}" />
+							<p:inputText id="commonCreditorSection" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.sectionName}">
+							</p:inputText>
+							<p:outputLabel />
+							<p:column></p:column>
+							<p:outputLabel for="creditorNameEN"
+								value="#{msgs['interest.trial.adjudication.edit.creditornameEN.label']}" />
+							<p:inputText id="creditorNameEN" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.creditorNameEng}">
+							</p:inputText>
+							<p:outputLabel for="creditorNameCN"
+								value="#{msgs['interest.trial.adjudication.edit.creditornameCN.label']}" />
+							<p:inputText id="creditorNameCN" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.creditorNameChi}">
+							</p:inputText>
+							<p:outputLabel for="payeeNameEN"
+								value="#{msgs['interest.trial.adjudication.edit.payeenameEN.label']}" />
+							<p:inputText id="payeeNameEN" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.payeeName}">
+							</p:inputText>
+							<p:outputLabel for="payeeNameCN"
+								value="#{msgs['interest.trial.adjudication.edit.payeenameCN.label']}" />
+							<p:inputText id="payeeNameCN" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.payeeNameChinese}">
+							</p:inputText>
+							<p:outputLabel for="phoneNumber"
+								value="#{msgs['interest.trial.adjudication.edit.phone.number.label']}" />
+							<p:inputText id="phoneNumber" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.creditorContactNo}">
+							</p:inputText>
+							<p:outputLabel />
+							<p:column></p:column>
+							<p:outputLabel for="creditorAddressEN"
+								value="#{msgs['interest.trial.adjudication.edit.creditoraddressEN.label']}" />
+							<p:inputText id="creditorAddressEN" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.address.address1}">
+							</p:inputText>
+							<p:outputLabel for="creditorAddressCN"
+								value="#{msgs['interest.trial.adjudication.edit.creditoraddressCN.label']}" />
+							<p:inputText id="creditorAddressCN" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.address.chiAddress3}">
+							</p:inputText>
+							<p:outputLabel />
+							<p:inputText id="streetRoadEN" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.address.address2}">
+							</p:inputText>
+							<p:outputLabel />
+							<p:inputText id="streetRoadCN" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.address.chiAddress2}">
+							</p:inputText>
+							<p:outputLabel />
+							<p:inputText id="districEN" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.address.address3}">
+							</p:inputText>
+							<p:outputLabel />
+							<p:inputText id="districCN" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.creditor.address.chiAddress1}">
+							</p:inputText>
+							<p:outputLabel
+								value="#{msgs['adjudication.account.number.label']}" />
+							<p:commandButton value="#{msgs['adjudication.view.btn']}"
+								immediate="true" onclick="PF('acctNumDialog').show();" />
+
+							<p:outputLabel
+								value="#{msgs['adjudication.amount.claimed.label']}" />
+							<p:commandButton value="#{msgs['adjudication.view.btn']}"
+								immediate="true" onclick="PF('claimAmountDialog').show();" />
+							<p:outputLabel for="localOrOverseas"
+								value="#{msgs['interest.trial.adjudication.edit.localoroverseas.label']}" />
+							<p:selectOneMenu id="localOrOverseas" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.addressType}">
+								<f:selectItems value="#{interestTrialEditView.addressTypes}"
+									var="lo" itemValue="#{lo.codeValue}" itemLabel="#{lo.codeDesc}" />
+							</p:selectOneMenu>
+							<p:outputLabel for="natureOfClaim"
+								value="#{msgs['interest.trial.adjudication.edit.natureofclaim.label']}" />
+							<p:selectOneMenu id="natureOfClaim" disabled="true"
+								value="#{interestTrialEditView.interestTrialAdjudicationVO.natureOfClaim}">
+								<f:selectItems value="#{interestTrialEditView.natureOfClaims}"
+									var="nature" itemValue="#{nature.codeValue}"
+									itemLabel="#{nature.codeDesc}" />
+							</p:selectOneMenu>
+							<f:facet name="footer">
+								<p:panelGrid columns="4"
+									columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid"
+									styleClass="ui-panelgrid-blank ui-fluid">
+									<p:outputLabel for="remark"
+										value="#{msgs['interest.trial.adjudication.edit.case.number.label']}" />
+									<p:inputTextarea id="remark" disabled="true"
+										value="#{interestTrialEditView.interestTrialAdjudicationVO.remark}"
+										cols="8" rows="4">
+									</p:inputTextarea>
+								</p:panelGrid>
+							</f:facet>
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<!-- tab start -->
+				<p:tabView id="tabView" activeIndex="0">
+					<p:tab
+						title="#{msgs['interest.trial.adjudication.tab.interest.label']}">
+						<p:dataTable id="interestTable" reflow="true" paginator="false"
+							var="adjIntTrialAccItem"
+							value="#{interestTrialEditView.adjIntTrialAccItemList}">
+							<p:column width="215"
+								headerText="#{msgs['interest.trial.adjudication.tab.interest.account.number.column']}">
+								<h:outputText value="#{adjIntTrialAccItem.accountNumber}" />
+								<br />
+							</p:column>
+							<p:column width="215"
+								headerText="#{msgs['interest.trial.adjudication.tab.interest.admitted.amount.column']}">
+								<h:outputText value="#{adjIntTrialAccItem.admAmount}" />
+								<br />
+							</p:column>
+							<p:column width="215"
+								headerText="#{msgs['interest.trial.adjudication.tab.interest.contractualrate.column']}">
+								<h:outputText value="#{adjIntTrialAccItem.contractualRate}">
+									<f:convertNumber type="percent" currencySymbol="%" />
+								</h:outputText>
+								<br />
+							</p:column>
+							<p:column width="215"
+								headerText="#{msgs['interest.trial.adjudication.tab.interest.rate.column']}">
+								<h:outputText value="#{adjIntTrialAccItem.finalRate}">
+									<f:convertNumber type="percent" currencySymbol="%" />
+								</h:outputText>
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['interest.trial.adjudication.tab.interest.action.column']}">
+								<p:menuButton disabled="#{interestTrialEditView.formDisabled}"
+									value="#{msgs['action.menuButton.label']}">
+									<p:menuitem
+										value="#{msgs['interest.trial.adjudication.tab.interest.action.btn']}"
+										update="@form,interestForm"
+										actionListener="#{interestTrialEditView.toEditInterestTab}">
+										<f:param name="accountNumber"
+											value="#{adjIntTrialAccItem.accountNumber}" />
+									</p:menuitem>
+								</p:menuButton>
+								<br />
+							</p:column>
+						</p:dataTable>
+						<div class="ax-btn-set aR" style="margin-bottom: 40px">
+							<p:commandButton disabled="#{interestTrialEditView.formDisabled}"
+								value="#{msgs['dividend.interest.schedule.edit.generate.btn']}"
+								update="editForm" validateClient="true"
+								action="#{interestTrialEditView.showGenerateTable}" />
+						</div>
+						<div id="generateResult">
+							<p:dataTable var="adjResultIntItem" id="generatedTable"
+								value="#{interestTrialEditView.adjucationResultIntItemList}"
+								rowKey="#{adjResultIntItem.adjIntResultItemId}" lazy="true"
+								reflow="true" paginator="true" paginatorPosition="bottom"
+								rows="9"
+								paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15" rowIndexVar="index"
+								rendered="#{interestTrialEditView.adjucationResultIntItemList!=null}">
+								<f:facet name="header">#{msgs['interest.trial.adjudication.generated.table.title']}</f:facet>
+								<p:columnGroup type="header">
+									<p:row>
+										<p:column colspan="1"
+											headerText="#{msgs['interest.trial.adjudication.generated.account.number.column']}" />
+										<p:column colspan="1"
+											headerText="#{msgs['interest.trial.adjudication.generated.amount.column']}" />
+										<p:column colspan="1"
+											headerText="#{msgs['interest.trial.adjudication.generated.fromdate.column']}" />
+										<p:column colspan="1"
+											headerText="#{msgs['interest.trial.adjudication.generated.todate.column']}" />
+										<p:column colspan="1"
+											headerText="#{msgs['interest.trial.adjudication.generated.rate.column']}" />
+										<p:column colspan="1"
+											headerText="#{msgs['interest.trial.adjudication.generated.interest.column']}" />
+										<p:column colspan="1"
+											headerText="#{msgs['interest.trial.adjudication.generated.action.column']}" />
+									</p:row>
+								</p:columnGroup>
+								<p:column>
+									<h:outputText value="#{adjResultIntItem.accountNumber}" />
+								</p:column>
+
+								<p:column>
+									<h:outputText value="#{adjResultIntItem.principleAmount}" />
+								</p:column>
+
+								<p:column>
+									<h:outputText value="#{adjResultIntItem.fromDate}">
+										<f:convertDateTime type="date"
+											pattern="#{appResourceUtils.dateFormat}" />
+									</h:outputText>
+								</p:column>
+								<p:column>
+									<h:outputText value="#{adjResultIntItem.toDate}">
+										<f:convertDateTime type="date"
+											pattern="#{appResourceUtils.dateFormat}" />
+									</h:outputText>
+								</p:column>
+								<p:column>
+									<h:outputText value="#{adjResultIntItem.judgmentRate}">
+										<f:convertNumber type="percent" currencySymbol="%" />
+									</h:outputText>
+								</p:column>
+								<p:column>
+									<h:outputText value="#{adjResultIntItem.interest}" />
+								</p:column>
+								<p:column width="100"
+									headerText="#{msgs['dividend.interest.schedule.tab.dividend.action.column']}">
+									<p:menuButton disabled="#{interestTrialEditView.formDisabled}"
+										value="#{msgs['action.menuButton.label']}">
+										<p:menuitem
+											value="#{msgs['interest.trial.adjudication.generated.action.edit.btn']}"
+											action="#{interestTrialEditView.editGenerateResult}">
+											<f:setPropertyActionListener value="#{adjResultIntItem}"
+												target="#{interestTrialEditView.editAdjucationResultIntItem}" />
+										</p:menuitem>
+										<p:menuitem
+											value="#{msgs['interest.trial.adjudication.generated.action.delete.btn']}"
+											action="#{interestTrialEditView.deleteGenerateResult}"
+											update="@form">
+											<f:setPropertyActionListener value="#{adjResultIntItem}"
+												target="#{interestTrialEditView.editAdjucationResultIntItem}" />
+										</p:menuitem>
+									</p:menuButton>
+									<br />
+								</p:column>
+							</p:dataTable>
+						</div>
+					</p:tab>
+
+					<p:tab
+						title="#{msgs['interest.trial.adjudication.tab.history.label']}">
+						<p:dataTable id="historyTable" reflow="true" paginator="false"
+							var="intTriAdjApHistory"
+							value="#{interestTrialEditView.interestTrialAdjudicationVO.approveHistories}">
+							<p:column
+								headerText="#{msgs['interest.trial.adjudication.tab.history.workflowtype.column']}">
+								<h:outputText value="Approval" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['interest.trial.adjudication.tab.history.action.column']}">
+								<h:outputText value="#{intTriAdjApHistory.action}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['interest.trial.adjudication.tab.history.actionby.column']}">
+								<h:outputText value="#{intTriAdjApHistory.actionByPerson}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['interest.trial.adjudication.tab.history.datetime.column']}">
+								<h:outputText value="#{intTriAdjApHistory.actionDate}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+							</p:column>
+							<p:column
+								headerText="#{msgs['interest.trial.adjudication.tab.history.remark.reason.column']}">
+								<h:outputText value="#{intTriAdjApHistory.remark}" />
+							</p:column>
+						</p:dataTable>
+					</p:tab>
+				</p:tabView>
+				<!-- tab end -->
+				<!-- button below -->
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						action="#{interestTrialEditView.saveInterestTrial}"
+						rendered="#{interestTrialEditView.saveable}" />
+					<p:button value="#{msgs['report.btn']}" disabled="true" />
+					<p:menuButton value="#{msgs['action.menuButton.label']}"
+						rendered="#{interestTrialEditView.submitable or interestTrialEditView.approvable or interestTrialEditView.rejectable or interestTrialEditView.deletable}">
+						<p:menuitem update="@form"
+							rendered="#{interestTrialEditView.submitable}"
+							value="#{msgs['submit.btn']}"
+							action="#{interestTrialEditView.submitInterestTrial}" />
+						<p:menuitem update="@form"
+							rendered="#{interestTrialEditView.approvable}"
+							value="#{msgs['approve.btn']}"
+							action="#{interestTrialEditView.approveInterestTrial}" />
+						<p:menuitem update="@form"
+							rendered="#{interestTrialEditView.rejectable}"
+							value="#{msgs['reject.btn']}"
+							onclick="PF('rejectDialog').show();">
+						</p:menuitem>
+						<p:menuitem update="@form"
+							rendered="#{interestTrialEditView.deletable}"
+							value="#{msgs['delete.menuitem.label']}"
+							action="#{interestTrialEditView.deleteInterestTrial}">
+							<p:confirm header="#{msgs['delete.dialog.header']}"
+								message="#{msgs['delete.dialog.msg']}" icon="ui-icon-alert" />
+						</p:menuitem>
+					</p:menuButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="#{msgs['delete.yes.btn']}" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="#{msgs['delete.no.btn']}" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</div>
+				<!-- button below -->
+			</h:form>
+			<!-- dialog to show account numbers -->
+			<h:form id="acctForm">
+				<p:dialog id="acctNumDialog"
+					header="#{msgs['adjudication.account.number.label']}"
+					widgetVar="acctNumDialog" modal="true" width="800" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:dataTable var="adjAccount" id="pd"
+							value="#{interestTrialEditView.interestTrialAdjudicationVO.adjucationAccountList}"
+							reflow="true" paginator="false">
+							<p:column
+								headerText="#{msgs['adjudication.account.number.label']}"
+								sortBy="#{adjAccount.adjucationAccount}">
+								<p:inputText value="#{adjAccount.adjucationAccount}"
+									disabled="true" maxlength="30">
+								</p:inputText>
+							</p:column>
+						</p:dataTable>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('acctNumDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to show account numbers -->
+			<!-- dialog to show claim amounts -->
+			<h:form>
+				<p:dialog id="claimAmountDialog"
+					header="#{msgs['adjudication.amount.claimed.label']}"
+					widgetVar="claimAmountDialog" modal="true" width="800"
+					minHeight="50" resizable="false" dynamic="true"
+					style="position: fixed">
+					<div class="ui-fluid">
+						<p:dataTable var="item" id="pd"
+							value="#{interestTrialEditView.interestTrialAdjudicationVO.adjucationApplyItems}"
+							reflow="true" paginator="false">
+							<p:column headerText="#{msgs['adjudication.currency.header']}"
+								sortBy="#{item.currencyBasicInfo.curcyName}">
+								<p:inputText value="#{item.currencyBasicInfo.curcyName}"
+									disabled="true" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['adjudication.claim.amount.header']}">
+								<p:inputText
+									value="#{item.appHkAmount != null ? item.appHkAmount : 0}"
+									disabled="true" />
+							</p:column>
+						</p:dataTable>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('claimAmountDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to show claim amounts -->
+
+			<!-- dialog to Interest to tab -->
+			<h:form id="interestForm">
+				<p:dialog id="interestDialog"
+					header="#{msgs['interest.trial.adjudication.tab.interest.edit.title']}"
+					widgetVar="interestDialog" modal="true" width="900" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="editAccountNumber"
+								value="#{msgs['interest.trial.adjudication.tab.interest.edit.account.number.label']}" />
+							<p:inputText id="editAccountNumber" disabled="true"
+								value="#{interestTrialEditView.editAdjIntTrialAccItemVO.accountNumber}">
+							</p:inputText>
+							<p:outputLabel for="editAdmittedAmount"
+								value="#{msgs['interest.trial.adjudication.tab.interest.edit.admitted.amount.label']}" />
+							<p:inputText id="editAdmittedAmount" required="true"
+								value="#{interestTrialEditView.editAdjIntTrialAccItemVO.admAmount}">
+								<f:convertNumber type="number"
+									pattern="#{appResourceUtils.moneyFormat}" />
+							</p:inputText>
+							<p:outputLabel for="editContractualRate"
+								value="#{msgs['interest.trial.adjudication.tab.interest.edit.contractual.rate.label']}" />
+							<p:inputNumber id="editContractualRate" required="true"
+								value="#{interestTrialEditView.editContractualRate}" symbol="%"
+								symbolPosition="s" emptyValue="0" maxValue="100">
+							</p:inputNumber>
+
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['save.btn']}"
+							update="pg,msgs,editForm" validateClient="true"
+							action="#{interestTrialEditView.saveEditInterestTab}" />
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('interestDialog').hide();" update="editForm,@form" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to Interest to tab -->
+			<!-- dialog to edit generate result -->
+			<h:form id="editGenerateResult">
+				<p:dialog id="generateResultDialog"
+					header="#{msgs['interest.trial.adjudication.generated.edit.title']}"
+					widgetVar="generateResultDialog" modal="true" width="900"
+					minHeight="50" resizable="false" dynamic="true"
+					style="position: fixed">
+					<p:messages id="msgs" closable="true" />
+					<p:ajax event="close" update="@form" resetValues="true">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="generateAccountNumber"
+								value="#{msgs['interest.trial.adjudication.generated.edit.account.number.label']}" />
+							<p:inputText id="generateAccountNumber" disabled="true"
+								value="#{interestTrialEditView.editAdjucationResultIntItem.accountNumber}">
+							</p:inputText>
+							<p:outputLabel for="generateAdmittedAmount"
+								value="#{msgs['interest.trial.adjudication.generated.edit.amount.label']}" />
+							<p:inputText id="generateAdmittedAmount"
+								value="#{interestTrialEditView.editAdjucationResultIntItem.principleAmount}">
+								<f:convertNumber type="number"
+									pattern="#{appResourceUtils.moneyFormat}" />
+							</p:inputText>
+							<p:outputLabel for="dateFrom"
+								value="#{msgs['interest.trial.adjudication.generated.edit.datefrom.label']}" />
+							<p:calendar id="dateFrom" showOn="button" readonlyInput="true"
+								value="#{interestTrialEditView.editAdjucationResultIntItem.fromDate}"
+								pattern="#{appResourceUtils.dateFormat}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</p:calendar>
+							<p:outputLabel for="dateTo"
+								value="#{msgs['interest.trial.adjudication.generated.edit.dateto.label']}" />
+							<p:calendar id="dateTo" showOn="button" readonlyInput="true"
+								value="#{interestTrialEditView.editAdjucationResultIntItem.toDate}"
+								pattern="#{appResourceUtils.dateFormat}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</p:calendar>
+							<p:outputLabel for="generateRate"
+								value="#{msgs['interest.trial.adjudication.generated.edit.rate.label']}" />
+							<p:inputNumber id="generateRate"
+								value="#{interestTrialEditView.editGenerateRate}" symbol="%"
+								symbolPosition="s" emptyValue="0" maxValue="100">
+							</p:inputNumber>
+							<p:outputLabel for="generateInterest"
+								value="#{msgs['interest.trial.adjudication.generated.edit.interest.label']}" />
+							<p:inputText id="generateInterest"
+								value="#{interestTrialEditView.editAdjucationResultIntItem.interest}">
+								<f:convertNumber type="number"
+									pattern="#{appResourceUtils.moneyFormat}" />
+							</p:inputText>
+
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('interestDialog').hide();" update="editForm,@form" />
+						<p:commandButton value="#{msgs['save.btn']}"
+							update="pg,msgs,editForm" validateClient="true"
+							action="#{interestTrialEditView.saveEditGenerateTab}" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to edit generate result -->
+
+			<!-- dialog to reject adjudication -->
+			<h:form id="rejectForm">
+				<p:dialog id="rejectDialog" header="#{msgs['reject.dialog.header']}"
+					widgetVar="rejectDialog" modal="true" width="500" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid columns="2" id="pd"
+							columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel value="#{msgs['common.reason.label']}" />
+							<p:selectOneMenu required="true"
+								value="#{interestTrialEditView.remarkReson}">
+								<f:selectItem itemLabel="- Select -" />
+								<f:selectItems var="reason"
+									value="#{interestTrialEditView.sysRejectReasons}"
+									itemLabel="#{reason.rejectReasonDesc}"
+									itemValue="#{reason.rejectReasonDesc}" />
+								<p:ajax event="change" update="rejectForm:pd" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="#{msgs['reject.reason.label']}" />
+							<p:inputTextarea value="#{interestTrialEditView.remarkReson}"
+								disabled="true">
+							</p:inputTextarea>
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['confirm.btn']}"
+							action="#{interestTrialEditView.rejectInterestTrial}"
+							update="pd,msgs,editForm" validateClient="true" />
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('rejectDialog').hide();" update="editForm" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to reject adjudication -->
+		</div>
+	</ui:define>
+</ui:composition>
+
+
+
+

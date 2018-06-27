@@ -1,0 +1,299 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions" template="./user.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+            #{msgs['user.mgt.title']}
+        </h:link>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<h:form id="createUserForm">
+			<p:messages id="msgs" closable="true" />
+			<p:panel id="basicInfo"
+				header="#{msgs['currency.rate.basic.info.title']}" toggleable="true"
+				toggleSpeed="200" widgetVar="panel">
+				<p:panelGrid columns="4"
+					columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:outputLabel for="loginId"
+						value="#{msgs['user.mgt.login.id.label']}" />
+					<p:inputText id="loginId"
+						value="#{userMgtEditView.userAccountVO.loginName}" disabled="true" />
+
+					<p:outputLabel for="email"
+						value="#{msgs['user.mgt.email.addr.label']}" />
+					<p:inputText id="email"
+						value="#{userMgtEditView.userProfileVO.emailAddress}"
+						disabled="#{userMgtEditView.userAccountVO.userAcId != null}"
+						required="#{userMgtEditView.userAccountVO.userAcId == null}"
+						requiredMessage="#{appResourceUtils.getRequiredMessage('Email')}"
+						validatorMessage="#{appResourceUtils.getInvalidFormatMsg('Email')}"
+						validator="#{userMgtValidator.validateEmail}">
+						<f:validateRegex
+							pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+					</p:inputText>
+				</p:panelGrid>
+
+				<p:panelGrid columns="4"
+					columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:outputLabel for="engName"
+						value="#{msgs['user.mgt.eng.name.label']}" />
+					<p:inputText id="engName"
+						value="#{userMgtEditView.userProfileVO.engName}" required="true"
+						requiredMessage="#{appResourceUtils.getRequiredMessage('EngName')}"
+						validatorMessage="#{appResourceUtils.getInEngWordMsg()}">
+						<f:validateRegex pattern="^[a-zA-Z\s]+$" />
+					</p:inputText>
+
+					<p:outputLabel for="chiName"
+						value="#{msgs['user.mgt.chi.name.label']}" />
+					<p:inputText id="chiName"
+						value="#{userMgtEditView.userProfileVO.chiName}" />
+				</p:panelGrid>
+
+				<p:panelGrid columns="4"
+					columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:outputLabel for="division"
+						value="#{msgs['user.mgt.division.label']}" />
+					<p:selectOneMenu id="division"
+						value="#{userMgtEditView.selectedDivisionId}" required="true"
+						requiredMessage="#{appResourceUtils.getRequiredMessage('Division')}">
+						<p:ajax update="post" event="change" process="@this"
+							listener="#{userMgtEditView.filterPost}" />
+						<f:selectItem itemLabel="- Select -" itemValue="" />
+						<f:selectItems value="#{userMgtEditView.divisionVOs}"
+							var="division" itemLabel="#{division.divisionName}"
+							itemValue="#{division.divisionId}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="post" value="#{msgs['user.mgt.post.label']}" />
+					<p:selectOneMenu id="post"
+						value="#{userMgtEditView.selectedPostId}" required="true"
+						requiredMessage="#{appResourceUtils.getRequiredMessage('Post')}">
+						<f:selectItem itemLabel="- Select -" itemValue="" />
+						<f:selectItems value="#{userMgtEditView.filteredPosts}" var="post"
+							itemLabel="#{post.postTitle}" itemValue="#{post.postId}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+
+				<p:panelGrid columns="4"
+					columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:outputLabel for="tel" value="#{msgs['user.mgt.tel.label']}" />
+					<p:inputNumber id="tel"
+						value="#{userMgtEditView.userProfileVO.contactNo}"
+						thousandSeparator="" decimalPlaces="0" />
+
+					<p:outputLabel for="staffId"
+						value="#{msgs['user.mgt.staff.id.label']}" />
+					<p:inputText id="staffId"
+						value="#{userMgtEditView.userProfileVO.caseOfficerCode}" />
+				</p:panelGrid>
+
+				<p:panelGrid columns="4"
+					columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:outputLabel for="status" value="#{msgs['status.label']}" />
+					<p:inputText id="status"
+						value="#{userMgtEditView.userAccountVO.status eq 'INA' ? msgs['inactive.status.label'] : msgs['active.status.label']}"
+						disabled="true" />
+				</p:panelGrid>
+			</p:panel>
+		</h:form>
+
+		<p:tabView id="tabView" activeIndex="0">
+			<p:tab title="#{msgs['user.mgt.tab1.title']}">
+				<h:form id="pwdForm">
+					<o:validateEqual id="equal" components="newPwd confirmPwd"
+						message="#{appResourceUtils.getNotEqMsg('NewPwd','ConfirmPwd')}" />
+					<p:panelGrid id="pwdPG" columns="2"
+						columnClasses="ui-grid-col-2,ui-grid-col-4" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="newPwd"
+							value="#{msgs['user.mgt.new.pwd.title']}" />
+						<p:password id="newPwd" value="#{userMgtEditView.newPassword}"
+							validator="#{userMgtValidator.validateNewPassword}"
+							required="#{userMgtEditView.userAccountVO.userAcId == null}"
+							requiredMessage="#{appResourceUtils.getRequiredMessage('NewPwd')}" />
+
+						<p:outputLabel for="confirmPwd"
+							value="#{msgs['user.mgt.confirm.pwd.title']}" />
+						<p:password id="confirmPwd"
+							value="#{userMgtEditView.confirmPassowrd}"
+							required="#{userMgtEditView.userAccountVO.userAcId == null}"
+							requiredMessage="#{appResourceUtils.getRequiredMessage('ConfirmPwd')}" />
+					</p:panelGrid>
+				</h:form>
+			</p:tab>
+			<p:tab title="#{msgs['user.mgt.tab2.title']}"
+				rendered="#{userMgtEditView.userAccountVO.userAcId != null}">
+				<h:form id="delegationForm">
+					<p:messages id="msgs" closable="true" />
+					<p:dataTable id="delegation" var="delegation"
+						value="#{userMgtEditView.delegations}" paginator="false" rows="5"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<p:column headerText="#{msgs['profile.effv.from.column.header']}"
+							sortBy="#{delegation.effectiveStartDate}">
+							<h:outputText value="#{delegation.effectiveStartDate}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="#{msgs['profile.effv.to.column.header']}"
+							sortBy="#{delegation.effectiveEndDate}">
+							<h:outputText value="#{delegation.effectiveEndDate}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="#{msgs['profile.division.column.header']}"
+							sortBy="#{delegation.divisionName}">
+							<h:outputText
+								value="#{delegation.delegateTo.division.divisionName}" />
+						</p:column>
+						<p:column headerText="#{msgs['profile.post.column.header']}"
+							sortBy="#{delegation.postTitle}">
+							<h:outputText value="#{delegation.delegateTo.postTitle}" />
+						</p:column>
+						<p:column headerText="#{msgs['profile.user.name.column.header']}"
+							sortBy="#{delegation.engName}">
+							<h:outputText value="#{delegation.engName}" />
+						</p:column>
+						<p:column headerText="#{msgs['status.column.header']}"
+							sortBy="#{delegation.status}" styleClass="ax-status-w-b">
+							<h:outputText value="Inactive"
+								rendered="#{delegation.status eq 'INA'}"
+								class="status-label red" />
+							<h:outputText value="Active"
+								rendered="#{delegation.status eq 'ACT'}"
+								class="status-label green" />
+						</p:column>
+						<p:column headerText="#{msgs['profile.action.column.header']}"
+							styleClass="ax-action-w dont-print">
+							<p:menuButton value="#{msgs['action.menuButton.label']}"
+								rendered="#{delegation.status eq 'ACT'}">
+								<p:menuitem value="#{msgs['edit.menuitem.label']}"
+									action="#{userMgtEditView.initDelegationDialog}"
+									oncomplete="PF('delegationDialog').show();"
+									update="delegationCreateForm:pg" process="@this">
+									<f:setPropertyActionListener value="#{delegation}"
+										target="#{userMgtEditView.delegation}" />
+								</p:menuitem>
+								<p:menuitem value="#{msgs['delete.menuitem.label']}"
+									action="#{userMgtEditView.deleteDelegation}" process="@this"
+									update="delegation,tabView:delegationForm:msgs">
+									<f:setPropertyActionListener value="#{delegation}"
+										target="#{userMgtEditView.delegation}" />
+								</p:menuitem>
+							</p:menuButton>
+						</p:column>
+					</p:dataTable>
+					<div class="ax-btn-set aR">
+						<p:commandButton value="#{msgs['add.btn']}"
+							actionListener="#{userMgtEditView.initDelegationDialog}"
+							update=":delegationCreateForm"
+							oncomplete="PF('delegationDialog').show();" icon="ti-plus" />
+					</div>
+				</h:form>
+			</p:tab>
+		</p:tabView>
+
+		<h:form>
+			<div class="ax-btn-set">
+				<p:button value="#{msgs['back.btn']}"
+					styleClass="ui-priority-secondary" icon="ti-arrow-left"
+					outcome="search"></p:button>
+				<p:commandButton value="#{msgs['save.btn']}"
+					action="#{userMgtEditView.save}" partialSubmit="true"
+					process="@this,createUserForm,tabView:pwdForm"
+					update="createUserForm,tabView:pwdForm" />
+				<p:commandButton value="#{msgs['user.mgt.unlock.btn']}"
+					rendered="#{userMgtEditView.userAccountVO.userAcId != null}"
+					disabled="#{!userMgtEditView.userAccountVO.lockedInd}"
+					action="#{userMgtEditView.unlock}" update="@this" process="@this" />
+			</div>
+		</h:form>
+
+		<h:form id="delegationCreateForm">
+			<p:dialog id="delegationDialog"
+				header="#{msgs['profile.delegation.dialog.header']}"
+				widgetVar="delegationDialog" modal="true" width="500" minHeight="50"
+				resizable="false" dynamic="true" style="position: fixed">
+				<p:messages id="msgs" closable="true" />
+				<p:ajax event="close" update="@form" resetValues="true"
+					listener="#{userMgtEditView.handleDialogClose}">
+					<p:resetInput target="@form" />
+				</p:ajax>
+				<div class="ui-fluid">
+					<p:panelGrid id="pg" columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="from"
+							value="#{msgs['profile.delegation.dialog.period.label']}" />
+						<p:calendar id="from" placeholder="#{msgs['from.label']}"
+							showOn="button" pattern="#{appResourceUtils.dateFormat}"
+							value="#{userMgtEditView.delegation.effectiveStartDate}"
+							required="true"
+							requiredMessage="#{appResourceUtils.getRequiredMessage('EffectiveStartDate')}">
+						</p:calendar>
+						<p:outputLabel />
+						<p:calendar id="to" placeholder="#{msgs['to.label']}"
+							showOn="button" pattern="#{appResourceUtils.dateFormat}"
+							value="#{userMgtEditView.delegation.effectiveEndDate}"
+							required="true"
+							requiredMessage="#{appResourceUtils.getRequiredMessage('EffectiveEndDate')}">
+						</p:calendar>
+						<p:outputLabel for="division"
+							value="#{msgs['profile.delegation.dialog.division.label']}" />
+						<p:selectOneMenu id="division"
+							value="#{userMgtEditView.divisionId}" required="true"
+							requiredMessage="#{appResourceUtils.getRequiredMessage('Division')}">
+							<p:ajax update="post" event="change" process="@this"
+								listener="#{userMgtEditView.initPostForDelegation}" />
+							<f:selectItem itemLabel="- Select -" />
+							<f:selectItems value="#{userMgtEditView.divisionVOs}"
+								var="division" itemLabel="#{division.divisionName}"
+								itemValue="#{division.divisionId}" />
+						</p:selectOneMenu>
+						<p:outputLabel for="post"
+							value="#{msgs['profile.delegation.dialog.post.label']}" />
+						<p:selectOneMenu id="post" value="#{userMgtEditView.delegateToId}"
+							required="true"
+							requiredMessage="#{appResourceUtils.getRequiredMessage('Post')}">
+							<p:ajax update="username" event="change" process="@this"
+								listener="#{userMgtEditView.initUserName}" />
+							<f:selectItem itemLabel="- Select -" />
+							<f:selectItems value="#{userMgtEditView.divPosts}" var="post"
+								itemLabel="#{post.postTitle}" itemValue="#{post.postId}" />
+						</p:selectOneMenu>
+						<p:outputLabel for="username"
+							value="#{msgs['profile.delegation.dialog.username.label']}" />
+						<p:inputText id="username" value="#{userMgtEditView.userName}"
+							disabled="true" />
+						<p:outputLabel for="remark"
+							value="#{msgs['profile.delegation.dialog.remark.label']}" />
+						<p:inputTextarea id="remark"
+							value="#{userMgtEditView.delegation.remark}" required="true" />
+					</p:panelGrid>
+				</div>
+				<div class="ax-btn-set">
+					<p:commandButton value="#{msgs['save.btn']}"
+						action="#{userMgtEditView.saveDelegation}"
+						update="msgs,pg,tabView:delegationForm:delegation">
+					</p:commandButton>
+					<p:commandButton value="#{msgs['cancel.btn']}"
+						styleClass="ui-priority-secondary" process="@none"
+						onclick="PF('delegationDialog').hide();" />
+				</div>
+			</p:dialog>
+		</h:form>
+		<ui:insert name="main-content-2" />
+	</ui:define>
+</ui:composition>

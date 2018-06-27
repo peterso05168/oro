@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="../tp-header-login.xhtml">
+
+	<ui:define name="main-content">
+		<h:form id="loginForm" prependId="false" styleClass="account-form">
+			<div class="title type-a">
+				<h1>#{msgs['login.label']}</h1>
+			</div>
+			<div class="field-row">
+				<p:inputText id="username" placeholder="User Name"
+					value="#{loginView.username}" required="true" />
+				<i class="ti-user"></i>
+			</div>
+			<div class="field-row">
+				<p:password id="password" placeholder="Password" />
+				<i class="ti-key"></i>
+			</div>
+			<div class="">
+				<p:commandButton
+					styleClass="btn btn-default full-width-yellow-button"
+					value="#{msgs['login.button']}" ajax="false" />
+			</div>
+		</h:form>
+		<p:link styleClass="yellow-link fR" style="margin-top: 15px"
+			value="#{msgs['forgot.password.label']}" outcome="forgot-passowrd" />
+		<p:growl id="growl" autoUpdate="true" sticky="true" globalOnly="true" />
+		
+		<p:dialog header="System Notification"
+					widgetVar="notificationDialog" modal="true" width="600">
+			<h:form>
+			<div>
+				<p:textEditor value="#{loginView.sysNotificationContent}" rendered="false"></p:textEditor>
+				<div class="ql-editor" contenteditable="true">
+					<h:outputText value="#{loginView.sysNotificationContent}" escape="false"/>
+				</div>
+			</div>
+			<br />
+			<br />
+			</h:form>
+			<f:facet name="footer">
+			<div class="ax-btn-set">
+				<p:commandButton value="Close" onclick="PF('notificationDialog').hide();" />
+			</div>
+			</f:facet>
+		</p:dialog>
+		<script>
+			$(document).ready(function() {
+// 				alert("[TEST] "+_ws.get('noted'));
+				if (_ws.get('noted') == undefined) {
+					PF('notificationDialog').show();
+					_ws.set('noted', 'true');
+				}
+			});
+		</script>
+	</ui:define>
+</ui:composition>
+
+
+
+
+
+

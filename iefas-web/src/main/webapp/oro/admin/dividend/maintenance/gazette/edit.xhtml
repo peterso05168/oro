@@ -1,0 +1,80 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui" template="./gazette.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+	        #{msgs['gazette']}
+		</h:link>
+	</ui:define>
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:focus context="toggleable" />
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="editGazetteCode"
+								value="#{msgs['gazette.edit.code.label']}" />
+							<p:inputText id="editGazetteCode"
+								value="#{gazetteEditView.gazetteVO.gazetteCode}" disabled="true" />
+							<p:outputLabel for="editEnDesc"
+								value="#{msgs['gazette.edit.descriptionEN.label']}" />
+							<p:inputText id="editEnDesc"
+								value="#{gazetteEditView.gazetteVO.gazetteName}" required="true"
+								maxlength="100"
+								disabled="#{!gazetteEditView.editable}" />
+							<p:outputLabel for="editCNDesc"
+								value="#{msgs['gazette.edit.descriptionCN.label']}" />
+							<p:inputText id="editCNDesc"
+								value="#{gazetteEditView.gazetteVO.gazetteNameChi}"
+								required="true" maxlength="300"
+								disabled="#{!gazetteEditView.editable}" />
+							<p:outputLabel for="status"
+								value="#{msgs['gazette.status.label']}" />
+							<p:inputText id="status"
+								value="#{gazetteEditView.statusMap.get(gazetteEditView.gazetteVO.status)}"
+								disabled="true" />
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						action="#{gazetteEditView.save}"
+						disabled="#{!gazetteEditView.editable}" />
+					<p:commandButton value="#{msgs['edit.menuitem.label']}"
+						action="#{gazetteEditView.changeToEdit}"
+						disabled="#{!gazetteEditView.clikable}" update="@form" />
+					<p:commandButton value="#{msgs['delete.menuitem.label']}"
+						action="#{gazetteEditView.deleteGazette}" update="@form"
+						disabled="#{gazetteEditView.gazetteVO.status !='ACT' or gazetteEditView.gazetteVO.gazetteId==null}">
+						<p:confirm header="#{msgs['delete.dialog.header']}"
+							message="#{msgs['delete.dialog.msg']}" icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="#{msgs['delete.yes.btn']}" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="#{msgs['delete.no.btn']}" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+
+
+
+

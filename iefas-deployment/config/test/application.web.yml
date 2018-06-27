@@ -1,0 +1,24 @@
+name: ORO-IEFAS Web
+iefas:
+  ws:
+    address: http://192.168.130.78:8081/iefas-ws
+  web:
+    address: https://192.168.130.78:8444/iefas-web
+server:
+  port: 8080
+  session:
+    timeout: 1800
+servlet:
+  container:
+    maxThreads: 513
+endpoints:
+  sessions:
+    web:
+      enabled: true
+spring:
+  session:
+    store-type: hazelcast
+cluster:
+  members: 192.168.130.78
+jsf:
+  project-stage: Production

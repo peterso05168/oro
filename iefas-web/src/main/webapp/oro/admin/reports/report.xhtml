@@ -1,0 +1,80 @@
+<!DOCTYPE html [
+    <!ENTITY bull "&#8226;">
+]>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="../tp-container.xhtml">
+
+	<ui:define name="breadcrumb-1">
+		<li><a title="">#{msgs['report.title']}</a><i
+			class="ti-angle-right"></i></li>
+	</ui:define>
+
+	<ui:define name="title">
+        #{msgs['report.title']} 	
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<p:panelGrid columns="2" layout="grid"
+				styleClass="ui-panelgrid-blank">
+				<p:panel id="p1" header="Case Management" toggleable="true"
+					toggleSpeed="200">
+					<div class="ax-row">
+						<i class="ti-files ax-icon"></i>Study Progress Report
+					</div>
+				</p:panel>
+				<p:panel id="p2" header="GR" toggleable="true" toggleSpeed="200">
+					<div class="ax-row">
+						<i class="ti-files ax-icon"></i>KMS Course Performance Summary
+					</div>
+				</p:panel>
+				<p:panel id="p3" header="Funds Unit" toggleable="true"
+					toggleSpeed="200">
+					<div class="ax-row">
+						<i class="ti-files ax-icon"></i>Published Course Report
+					</div>
+					<div class="ax-row">
+						<i class="ti-files ax-icon"></i>Course Statistics Report
+					</div>
+				</p:panel>
+
+				<p:panel id="p4" header="Dividend" toggleable="true"
+					toggleSpeed="200">
+					<div class="ax-row">
+						<i class="ti-files ax-icon"></i> Completed Enrollment User Report
+					</div>
+					<div class="ax-row">
+						<i class="ti-files ax-icon"></i> Pending to Enroll User List
+					</div>
+				</p:panel>
+				<p:panel id="p5" header="FM" toggleable="true" toggleSpeed="200">
+					<div class="ax-row">
+						<i class="ti-files ax-icon"></i> KMS Course Performance Summary
+					</div>
+				</p:panel>
+				<p:panel id="p6" header="Release Unit" toggleable="true"
+					toggleSpeed="200">
+					<div class="ax-row">
+						<i class="ti-files ax-icon"></i> <a href="rpt-r003/r003.xhtml">Detailed
+							Ledger by Account Code by Transaction Date</a>
+					</div>
+				</p:panel>
+
+				<p:panel id="p7" header="Shroff" toggleable="true" toggleSpeed="200">
+					<div class="ax-row">
+						<i class="ti-files ax-icon"></i>Completed Enrollment User Report
+					</div>
+					<div class="ax-row">
+						<i class="ti-files ax-icon"></i>Pending to Enroll User List
+					</div>
+				</p:panel>
+			</p:panelGrid>
+		</div>
+
+	</ui:define>
+</ui:composition>
+
+

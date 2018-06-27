@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui" template="./withheld-reasons.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+	        #{msgs['withheld.reasons.title']}
+		</h:link>
+	</ui:define>
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:focus context="toggleable" />
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="editWithheldReasonCode"
+								value="#{msgs['withheld.reasons.edit.code.label']}" />
+							<p:inputText id="editWithheldReasonCode"
+								value="#{withheldReasonsEditView.withheldReasonVO.withheldReasonCode}"
+								disabled="true" />
+							<p:outputLabel for="editEnDesc"
+								value="#{msgs['withheld.reasons.edit.descriptionEN.label']}" />
+							<p:inputText id="editEnDesc"
+								value="#{withheldReasonsEditView.withheldReasonVO.withheldReasonDescription}"
+								required="true" maxlength="100"
+								disabled="#{!withheldReasonsEditView.editable}" />
+							<p:outputLabel for="editCNDesc"
+								value="#{msgs['withheld.reasons.edit.descriptionCN.label']}" />
+							<p:inputText id="editCNDesc"
+								value="#{withheldReasonsEditView.withheldReasonVO.withheldReasonDescriptionChinese}"
+								required="true" maxlength="300"
+								disabled="#{!withheldReasonsEditView.editable}" />
+							<p:outputLabel for="status"
+								value="#{msgs['withheld.reasons.Status.label']}" />
+							<p:inputText id="status"
+								value="#{withheldReasonsEditView.statusMap.get(withheldReasonsEditView.withheldReasonVO.status)}"
+								disabled="true" />
+						</p:panelGrid>
+					</div>
+				</p:panel>
+
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						action="#{withheldReasonsEditView.save}"
+						disabled="#{!withheldReasonsEditView.editable}" />
+					<p:commandButton value="#{msgs['edit.menuitem.label']}"
+						action="#{withheldReasonsEditView.changeToEdit}"
+						disabled="#{!withheldReasonsEditView.clikable}" update="@form" />
+					<p:commandButton value="#{msgs['delete.menuitem.label']}"
+						action="#{withheldReasonsEditView.changeStatus}" update="@form"
+						disabled="#{withheldReasonsEditView.withheldReasonVO.status !='ACT' or withheldReasonsEditView.withheldReasonVO.withheldReasonId==null}">
+						<p:confirm header="#{msgs['delete.dialog.header']}"
+							message="#{msgs['delete.dialog.msg']}" icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="#{msgs['delete.yes.btn']}" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="#{msgs['delete.no.btn']}" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+
+
+
+

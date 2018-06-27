@@ -1,0 +1,41 @@
+<!DOCTYPE html [
+    <!ENTITY bull "&#8226;">
+]>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="../tp-base.xhtml">
+	<ui:define name="page-content">
+		<style>
+body {
+	background-color: #F5F5F5 !important;
+}
+</style>
+		<div class="login-page-bg">
+			<div class="login-page-header login-page-cp-header">
+				<div class="header-container">
+					<div class="logo">
+						<p:link outcome="login">
+							<p:graphicImage library="primefaces-oro" name="images/logo.png" />
+						</p:link>
+					</div>
+					<div class="app-name">
+						<div class="sep"></div>
+						<div class="text">
+							<div class="row-01">Official Receiver's Office</div>
+							<div class="row-02 Arial">Insolvency Estate Funds and
+								Accounting System</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="content-container">
+				<div class="account-sec">
+					<ui:insert name="main-content" />
+				</div>
+			</div>
+<!-- 			<div>#{facesContext.application.projectStage}</div> -->
+		</div>
+	</ui:define>
+</ui:composition>

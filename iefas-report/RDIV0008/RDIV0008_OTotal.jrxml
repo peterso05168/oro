@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RDIV0008_GroupTotal" pageWidth="802" pageHeight="145" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="6417055c-2655-4c6e-9bd9-49a48605e40a">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORODCDataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Style1" isDefault="true" fontName="Courier" fontSize="9" isBold="true"/>
+	<parameter name="ORACLE_REF_CURSOR" class="java.sql.ResultSet" isForPrompting="false"/>
+	<parameter name="RPT_CONT_PATH" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="REQUEST_CRITERIA_ID" class="java.lang.Long"/>
+	<parameter name="CASENO" class="java.lang.String">
+		<defaultValueExpression><![CDATA["BB0108900"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="REQUEST_REPORT_ID" class="java.lang.Long" isForPrompting="false">
+		<defaultValueExpression><![CDATA[3L]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CASE_NO_DISPLAY" class="java.lang.String"/>
+	<queryString language="plsql">
+		<![CDATA[{call RDIV0008.RDIV0008_SUBTOTAL_PROC($P{ORACLE_REF_CURSOR},$P{CASENO})}]]>
+	</queryString>
+	<field name="CURRENCY" class="java.lang.String"/>
+	<field name="total_claim" class="java.math.BigDecimal"/>
+	<field name="NATURE_OF_CLAIM" class="java.lang.String"/>
+	<variable name="recordCount" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{NATURE_OF_CLAIM}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<group name="totalGroup">
+		<groupExpression><![CDATA[1]]></groupExpression>
+		<groupFooter>
+			<band height="10">
+				<subreport>
+					<reportElement x="0" y="0" width="802" height="10" isRemoveLineWhenBlank="true" uuid="b3567fda-8fc7-4cfd-bd62-b9e036255b45"/>
+					<subreportParameter name="REQUEST_CRITERIA_ID">
+						<subreportParameterExpression><![CDATA[$P{REQUEST_CRITERIA_ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="REQUEST_REPORT_ID">
+						<subreportParameterExpression><![CDATA[$P{REQUEST_REPORT_ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="CASENO">
+						<subreportParameterExpression><![CDATA[$P{CASENO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[($P{RPT_CONT_PATH}==null?"":$P{RPT_CONT_PATH})+"RDIV0008/RDIV0008_Total.jrxml"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{NATURE_OF_CLAIM}]]></groupExpression>
+		<groupFooter>
+			<band height="5"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<textField pattern="#,##0.00#;(#,##0.00#)">
+				<reportElement x="305" y="0" width="110" height="10" uuid="462d8101-8685-4c29-ba05-4aaccdee2e09">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total_claim}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="267" y="0" width="30" height="10" uuid="39f827ad-5cf0-4687-bd53-0cc643d77f1b">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CURRENCY}==null?"HKD":$F{CURRENCY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="267" height="10" uuid="2def637c-a6a5-4a98-ab3b-4b96defcc5e2">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[($V{recordCount}==1?"Amount claimed for Overall cases ":"                                 ")+($V{Group1_COUNT}==1?("P".equalsIgnoreCase( $F{NATURE_OF_CLAIM} )?"Preferential  ":"Ordinary"):"")]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="85">
+			<textField>
+				<reportElement x="0" y="10" width="460" height="10" uuid="9d07daf4-6039-4d20-aaeb-76842629ae6c">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["*** Ordinary claims include government claims ***"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="400" height="10" uuid="509bf602-d277-433b-b055-413d78923831">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Range of cases selected is only "+$P{CASE_NO_DISPLAY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="460" height="10" uuid="1982ba93-0c7d-45c6-a386-cb59d7599806">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["*** Exclude withdrawn proofs from total claims & total number of proofs ***"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="50" width="400" height="10" uuid="8544d4c1-3669-41ce-ade8-68aa36a4e538">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Report Generated for Both Preferential and Ordinary claims"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="315" y="75" width="140" height="10" uuid="4fcec703-27f5-461c-b3af-85daa44f8897">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["--- END OF REPORT ---"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<noData>
+		<band height="135">
+			<textField pattern="#,##0.00#;(#,##0.00#)">
+				<reportElement x="305" y="0" width="110" height="10" uuid="c659d121-a0b6-4fc4-8260-656a53ca22f7">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[BigDecimal.ZERO]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="267" y="0" width="30" height="10" uuid="e1bb3b8f-7cde-4728-b770-ecede7010a5e">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["HKD"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#)">
+				<reportElement x="305" y="30" width="110" height="10" uuid="03a5dfc3-d35e-42b4-825c-662abcbc511a">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[BigDecimal.ZERO]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="267" y="30" width="30" height="10" uuid="51fa4682-0c1d-423a-95a6-73dff526a245">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["HKD"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="30" width="267" height="10" uuid="1ed0cc59-3d0d-4d1f-8b04-ac69582c53ee">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT}==0 || $V{REPORT_COUNT}==1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["                                 Total"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="15" width="267" height="10" uuid="c3d6f881-a940-4679-8577-d2fa7e077b37">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["                                 Ordinary"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="267" y="15" width="30" height="10" uuid="63377e54-560c-48c3-a9d1-f71511c8dce6">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["HKD"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#)">
+				<reportElement x="305" y="15" width="110" height="10" uuid="e360bee6-8525-441a-94bb-72c04e4bb20f">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[BigDecimal.ZERO]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="267" height="10" uuid="63f1e2ae-0967-419e-8046-2870d72745b3">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Amount claimed for Overall cases Preferential "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="80" width="460" height="10" uuid="e66e367e-713b-422d-9877-5cfa82031451">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["*** Exclude withdrawn proofs from total claims & total number of proofs ***"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="315" y="115" width="140" height="10" uuid="f34874e3-95ad-4678-94c2-945efc3eecc0">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["--- END OF REPORT ---"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="90" width="400" height="10" uuid="db523cc2-53f4-429c-85c8-d97ceac2ce54">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Report Generated for Both Preferential and Ordinary claims"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="50" width="460" height="10" uuid="3d0a34b3-7bfc-4b2a-81d1-6e04ade589e2">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["*** Ordinary claims include government claims ***"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="60" width="400" height="10" uuid="67c83ad9-8cdf-484a-b4ec-49da3e34210f">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Range of cases selected is only "+$P{CASE_NO_DISPLAY}]]></textFieldExpression>
+			</textField>
+		</band>
+	</noData>
+</jasperReport>

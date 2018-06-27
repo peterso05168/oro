@@ -1,0 +1,108 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	template="./dividend-interest-schedule.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable"
+				header="#{msgs['dividend.interest.schedule.search.title']}"
+				toggleable="true" toggleSpeed="200" widgetVar="panel">
+				<p:messages id="msgs" closable="true" />
+				<h:form id="searchForm">
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="caseNumberValue"
+							value="#{msgs['dividend.interest.schedule.search.case.number.label']}" />
+						<com:caseNumber id="caseNumberValue" allMandatory="true"
+							caseTypeCodeValue="#{dividendScheduleSearchView.searchDividendScheduleVO.caseNumber.caseType}"
+							caseNoValue="#{dividendScheduleSearchView.searchDividendScheduleVO.caseNumber.caseSequence}"
+							caseYearValue="#{dividendScheduleSearchView.searchDividendScheduleVO.caseNumber.caseYear}" />
+						<p:outputLabel for="paymentType"
+							value="#{msgs['dividend.interest.schedule.search.type.label']}" />
+						<p:selectOneMenu id="paymentType"
+							value="#{dividendScheduleSearchView.searchDividendScheduleVO.scheduleType}">
+							<f:selectItem itemLabel="- All -" />
+							<f:selectItems
+								value="#{dividendScheduleSearchView.dividendScheduleTypes}" />
+						</p:selectOneMenu>
+						<p:outputLabel for="approvalStatus"
+							value="#{msgs['dividend.interest.schedule.search.approval.status.label']}" />
+						<p:selectOneMenu id="approvalStatus"
+							value="#{dividendScheduleSearchView.searchDividendScheduleVO.status}">
+							<f:selectItem itemLabel="- All -" />
+							<f:selectItems
+								value="#{dividendScheduleSearchView.dividendScheduleStatuses}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['search.btn']}" icon="ti-search"
+							action="#{dividendScheduleSearchView.search}"
+							update="resultTable,msgs" validateClient="true" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							action="#{dividendScheduleSearchView.reset}"
+							styleClass="ui-priority-secondary" update="@form,resultTable" />
+						<p:commandButton value="#{msgs['create.btn']}"
+							onclick="PF('createDialog').show();" update="createForm:pg"
+							process="@this" />
+					</div>
+				</h:form>
+			</p:panel>
+			<!-- dialog to create -->
+			<h:form id="createForm">
+				<p:dialog id="createDialog"
+					header="#{msgs['dividend.interest.schedule.create.title']}"
+					widgetVar="createDialog" modal="true" width="600" minHeight="60"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:messages id="msgs" closable="true" />
+					<p:ajax event="close" update="@form" resetValues="true">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="1" columnClasses="ui-grid-col-10"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel style="text-align: left;" for="caseNumberValue"
+								value="#{msgs['dividend.interest.schedule.create.case.number']}" />
+							<com:caseNumber id="caseNumberValue" allMandatory="true"
+								caseTypeCodeValue="#{dividendScheduleSearchView.createDividendScheduleVO.caseNumber.caseType}"
+								caseNoValue="#{dividendScheduleSearchView.createDividendScheduleVO.caseNumber.caseSequence}"
+								caseYearValue="#{dividendScheduleSearchView.createDividendScheduleVO.caseNumber.caseYear}" />
+							<p:outputLabel style="text-align: left;" for="scheduleType"
+								value="#{msgs['dividend.interest.schedule.create.schedule.type.title']}" />
+							<p:selectOneMenu id="scheduleType"
+								value="#{dividendScheduleSearchView.createDividendScheduleVO.scheduleType.scheduleTypeName}">
+								<f:selectItem itemLabel="- Select -" />
+								<f:selectItems var="dividendScheduleType"
+									value="#{dividendScheduleSearchView.selectScheduleTypes}"
+									itemLabel="#{dividendScheduleType.codeDesc}"
+									itemValue="#{dividendScheduleType.codeValue}" />
+							</p:selectOneMenu>
+							<p:outputLabel style="text-align: left;"
+								for="paymentEffectiveDate"
+								value="#{msgs['dividend.interest.schedule.create.payment.effective.date.title']}" />
+							<p:calendar id="paymentEffectiveDate" showOn="button"
+								pattern="#{appResourceUtils.dateFormat}"
+								value="#{dividendScheduleSearchView.createDividendScheduleVO.paymentEffectiveDate}">
+							</p:calendar>
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['create.btn']}"
+							action="#{dividendScheduleSearchView.toEdit}" update="pg,msgs"
+							validateClient="true">
+						</p:commandButton>
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('createDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to create -->
+		</div>
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

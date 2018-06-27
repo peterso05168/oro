@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:com="http://java.sun.com/jsf/composite/common">
+
+	<h:form id="voucherResultTable">
+		<p:dataTable var="receiptVoucher"
+			value="#{receiptVoucherSearchView.receiptVoucherDataModel}"
+			rowKey="#{receiptVoucher.voucherId}" lazy="true" reflow="true"
+			paginator="true" paginatorPosition="bottom" rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true"
+			rendered="#{receiptVoucherSearchView.receiptVoucherDataModel != null}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+
+			<p:column
+				headerText="#{msgs['receipt.voucher.voucher.number.label']}"
+				sortBy="#{voucherNo}">
+				<p:commandLink href="javascript:void(0)" action="edit" ajax="false">
+					<h:outputText value="#{receiptVoucher.voucherNo}" />
+					<f:param name="voucherId" value="#{receiptVoucher.voucherId}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column headerText="#{msgs['receipt.voucher.voucher.date.label']}"
+				sortBy="#{receiptVoucher.voucherDate}">
+				<h:outputText value="#{receiptVoucher.voucherDate}">
+					<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="#{msgs['receipt.voucher.group.code.label']}"
+				sortBy="#{receiptVoucher.groupCode}">
+				<h:outputText value="#{receiptVoucher.groupCode}">
+				</h:outputText>
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['receipt.voucher.tab.account.amount.column.header']}"
+				sortBy="#{receiptVoucher.voucherTotalAmount}">
+				<h:outputText value="#{receiptVoucher.voucherTotalAmount}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['status.column.header']}"
+				sortBy="#{receiptVoucher.status}" styleClass="ax-status-w-b">
+				<com:voucherStatusLabel status="#{receiptVoucher.status}"
+					isEditPage="false"></com:voucherStatusLabel>
+			</p:column>
+
+			<p:column headerText="#{msgs['action.column.header']}"
+				styleClass="ax-action-w dont-print">
+				<p:menuButton value="Action">
+					<p:menuitem value="Edit" action="edit" ajax="false">
+						<f:param name="voucherId" value="#{receiptVoucher.voucherId}" />
+					</p:menuitem>
+					<p:menuitem value="Delete" oncomplete="PF('cd').show()">
+						<f:setPropertyActionListener value="#{receiptVoucher.voucherId}"
+							target="#{receiptVoucherSearchView.voucherId}" />
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+		<p:confirmDialog widgetVar="cd" header="Confirm" showEffect="fade">
+			<f:facet name="message">
+				<h:outputText value="Confirm to Delete the selected record ?" />
+			</f:facet>
+			<div align="center">
+				<p:commandButton value="Yes"
+					action="#{receiptVoucherSearchView.deleteVoucher}"
+					update="searchForm,voucherResultTable" oncomplete="PF('cd').hide()" />
+				<p:commandButton value="No" onclick="PF('cd').hide()" type="button" />
+			</div>
+		</p:confirmDialog>
+	</h:form>
+</ui:composition>
+
+
+
+

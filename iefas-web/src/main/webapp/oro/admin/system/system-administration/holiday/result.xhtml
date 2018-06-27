@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="breadcrumb-3">
+		<li><a title="">#{msgs['holiday.result.title']}</a><i class="ti-angle-right"></i></li>
+	</ui:define>
+
+	<h:form id="holidayResultTableForm">
+		<p:dataTable var="holiday" id="holidayResultTable"
+			value="#{holidayMaintenanceView.holidayResultDataModel}"
+			rowKey="#{holiday.holidayId}" lazy="true" reflow="true" paginator="true" sortBy="#{holiday.holidayDate}"
+			paginatorPosition="bottom" rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15"
+			rendered="#{holidayMaintenanceView.holidayResultDataModel != null}">
+			<f:facet name="header">#{msgs['holiday.result.title']}</f:facet>
+			<p:column headerText="#{msgs['holiday.result.date']}" sortBy="#{holiday.holidayDate}" styleClass="ui-grid-col-2">
+				<p:link outcome="edit">
+					<h:outputText value="#{holiday.holidayDate}" > 
+						<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+					</h:outputText>
+					<f:param name="holidayId" value="#{holiday.holidayId}" />
+				</p:link>
+			</p:column>
+			<p:column headerText="#{msgs['holiday.result.desc']}" sortBy="#{holiday.holidayDesc}"  styleClass="ui-grid-col-9">
+				<h:outputText value="#{holiday.holidayDesc}" />
+			</p:column>
+			<p:column headerText="#{msgs['action.menuButton.label']}" styleClass="ax-action-w dont-print">
+				<p:menuButton value="#{msgs['action.column.header']}" rendered="#{not holiday.expireIndc}">
+					<p:menuitem value="#{msgs['edit.menuitem.label']}" disabled="#{holiday.expireIndc}"
+						outcome="edit">
+						<f:param name="holidayId" value="#{holiday.holidayId}" />
+					</p:menuitem>
+					<p:menuitem value="#{msgs['delete.menuitem.label']}" disabled="#{holiday.expireIndc}"
+						onclick="PF('cd').show()">
+						<f:setPropertyActionListener target="#{holidayMaintenanceView.holidayId}" value="#{holiday.holidayId}"></f:setPropertyActionListener>
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+		<p:confirmDialog widgetVar="cd" header="Confirmation" >
+			<f:facet name="message">
+				<h:outputText value="Confirm to delete the selected record?" />
+			</f:facet>
+			<p:commandButton value="Yes"
+				action="#{holidayMaintenanceView.deleteHoliday}"
+				update="@form,:searchForm" oncomplete="PF('cd').hide()" >
+			</p:commandButton>
+			<p:commandButton value="No" onclick="PF('cd').hide();"
+				type="button" />
+		</p:confirmDialog>
+	</h:form>
+</ui:composition>
+
+
+
+

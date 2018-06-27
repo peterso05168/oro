@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+<!-- 	<ui:define name="breadcrumb-3"> -->
+<!-- 		<li><a title="">#{msgs['holiday.result.title']}</a><i class="ti-angle-right"></i></li> -->
+<!-- 	</ui:define> -->
+
+	<h:form id="bulkReversalResultForm">
+		<p:dataTable var="bulkReversal" id="bulkReversalResult"
+			value="#{bulkReversalMaintenanceView.searchResult.bulkReversalList}"
+			rowKey="#{bulkReversal.bulkReversalId}" lazy="false" reflow="true" paginator="true"
+			paginatorPosition="bottom" rows="5"  sortBy="#{bulkReversal.bulkReversalId}"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15"
+			rendered="#{bulkReversalMaintenanceView.showSearchResultFlag}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+			<p:column headerText="#{msgs['cheque.handling.bulk.reversal.result.column1']}">
+				<p:link outcome="detail" >
+					<h:outputText value="#{bulkReversal.bulkReversalId}" /> 
+					<f:param name="bulkReversalId" value="#{bulkReversal.bulkReversalId}" />
+				</p:link>
+			</p:column>
+			<p:column headerText="#{msgs['cheque.handling.bulk.reversal.result.column2']}">
+				<h:outputText value="#{bulkReversal.processDate}" >
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="#{msgs['cheque.handling.bulk.reversal.result.column3']}">
+				<h:outputText value="#{bulkReversal.cutOffDate}" >
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+			<p:column headerText="#{msgs['cheque.handling.bulk.reversal.result.column4']}">
+				<h:outputText value="#{bulkReversal.totalAmount}" />
+			</p:column>
+			<p:column headerText="#{msgs['cheque.handling.bulk.reversal.result.column5']}">
+				<h:outputText value="#{bulkReversal.totalAmount}" />
+			</p:column>
+		</p:dataTable>
+		<p:confirmDialog widgetVar="cd" header="Confirmation" >
+			<f:facet name="message">
+				<h:outputText value="Confirm to delete the selected record?" />
+			</f:facet>
+			<p:commandButton value="Yes"
+				action="#{holidayMaintenanceView.deleteHoliday}"
+				update="@form,:searchForm" oncomplete="PF('cd').hide()" >
+			</p:commandButton>
+			<p:commandButton value="No" onclick="PF('cd').hide();"
+				type="button" />
+		</p:confirmDialog>
+	</h:form>
+</ui:composition>
+
+
+
+

@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<h:form id="formC">
+		<p:dataTable var="groCode"
+			value="#{groundCodeSearchView.groundCodeDataModel}"
+			rowKey="#{groCode.groundCodeId}" lazy="true" reflow="true"
+			paginator="true" paginatorPosition="bottom" rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true"
+			rendered="#{groundCodeSearchView.groundCodeDataModel != null}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+			<p:column headerText="#{msgs['ground.code.title']}"
+				sortBy="#{groCode.groundCodeCode}">
+				<p:commandLink href="javascript:void(0)" action="edit" ajax="false">
+					<h:outputText value="#{groCode.groundCodeCode}" />
+					<f:param name="groundCodeId" value="#{groCode.groundCodeId}" />
+				</p:commandLink>
+			</p:column>
+			<p:column
+				headerText="#{msgs['ground.code.ground.type.column.header']}"
+				sortBy="#{groCode.natureOfClaim}">
+				<h:outputText value="#{groCode.natureOfClaim}" />
+				<br />
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['ground.code.ground.description.column.header']}"
+				sortBy="#{groCode.groundCodeDesc}">
+				<h:outputText value="#{groCode.groundCodeDesc}" />
+				<br />
+			</p:column>
+
+			<p:column headerText="#{msgs['ground.code.action.column.header']}"
+				styleClass="ax-action-w dont-print">
+				<p:menuButton value="#{msgs['action.menuButton.label']}">
+					<p:menuitem value="#{msgs['ground.code.menu.view']}" action="edit"
+						ajax="false">
+						<f:param name="groundCodeId" value="#{groCode.groundCodeId}" />
+					</p:menuitem>
+					<p:menuitem value="#{msgs['ground.code.menu.print']}">
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+</ui:composition>
+
+
+
+

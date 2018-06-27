@@ -1,0 +1,104 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	template="./interest-trial-adjudication.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable"
+				header="#{msgs['interest.trial.adjudication.search.title']}"
+				toggleable="true" toggleSpeed="200" widgetVar="panel">
+				<p:messages id="msgs" closable="true" />
+				<h:form id="searchForm">
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="caseNumberValue"
+							value="#{msgs['interest.trial.adjudication.search.case.number.label']}" />
+						<com:caseNumber id="caseNumberValue" allMandatory="true"
+							caseTypeCodeValue="#{interestTrialSearchView.criteria.caseNumber.caseType}"
+							caseNoValue="#{interestTrialSearchView.criteria.caseNumber.caseSequence}"
+							caseYearValue="#{interestTrialSearchView.criteria.caseNumber.caseYear}" />
+					</p:panelGrid>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['search.btn']}" icon="ti-search"
+							update="resultTable,msgs"
+							action="#{interestTrialSearchView.searchInterestTrialList}" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary"
+							action="#{interestTrialSearchView.reset}"
+							update="@form,resultTable" />
+						<p:commandButton value="#{msgs['create.btn']}"
+							onclick="PF('createDialog').show();" update="createForm:pg"
+							process="@this" />
+					</div>
+				</h:form>
+			</p:panel>
+			<!-- dialog to create -->
+			<h:form id="createForm">
+				<p:dialog id="createDialog"
+					header="#{msgs['interest.trial.adjudication.create.title']}"
+					widgetVar="createDialog" modal="true" width="700" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="3"
+							columnClasses="ui-grid-col-2,ui-grid-col-8,ui-grid-col-2"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="caseNumber"
+								value="#{msgs['interest.trial.adjudication.search.case.number.label']}" />
+							<com:caseNumber id="caseNumber"
+								caseTypeCodeValue="#{interestTrialSearchView.caseNumber.caseType}"
+								caseNoValue="#{interestTrialSearchView.caseNumber.caseSequence}"
+								caseYearValue="#{interestTrialSearchView.caseNumber.caseYear}"
+								allMandatory="true" />
+
+							<p:commandButton value="#{msgs['search.btn']}"
+								action="#{interestTrialSearchView.searchCreditorInfo}"
+								update="pg,msgs" validateClient="true">
+							</p:commandButton>
+							<p:outputLabel for="creditorchoose"
+								value="#{msgs['interest.trial.adjudication.search.case.creditor.label']}" />
+							<p:selectOneMenu id="creditorchoose"
+								value="#{interestTrialSearchView.selectCreditorId}">
+								<f:selectItems value="#{interestTrialSearchView.creditorList}"
+									var="creditorList" itemLabel="#{creditorList.creditorNameEng}"
+									itemValue="#{creditorList.creditorId}" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['create.btn']}"
+							action="#{interestTrialSearchView.toEdit}" update="pg,msgs"
+							validateClient="true">
+						</p:commandButton>
+
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('createDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to create -->
+
+			<!-- dialog to show delete message -->
+			<p:dialog widgetVar="msgDialog" modal="true" closable="false">
+				<h:form id="formMsg">
+					<div class="ui-fluid">
+						<h:outputText value="#{adjudicationSearchView.deleteMsg}"
+							style="font-size:16px;font-weight:bold;" />
+					</div>
+					<div style="margin: 30px 0px 0px 280px;">
+						<p:commandButton value="OK" styleClass="ui-confirmdialog-yes"
+							onclick="PF('msgDialog').hide();" />
+					</div>
+				</h:form>
+			</p:dialog>
+			<!-- dialog to show delete message -->
+		</div>
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

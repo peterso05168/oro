@@ -1,0 +1,203 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:com="http://java.sun.com/jsf/composite/common"
+                template="./cheque-registration.xhtml">
+
+    <ui:define name="main-content">
+        <div>
+            <p:tabView>
+                <p:tab title="#{msgs['cheque.handling.cheque.registration.create.cheque.title']}">
+                    <h:form id="editForm">
+                        <div>
+                            <p:messages id="msgs" closable="true"/>
+                            <div class="search-advance">
+                                <p:panelGrid columns="4"
+                                             columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                                             layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                                    <p:outputLabel for="chequeNumber"
+                                                   value="#{msgs['cheque.handling.cheque.registration.cheque.number.label']}"/>
+                                    <p:inputText id="chequeNumber" required="true"
+                                                 value="#{chequeRegistrationView.chequeVO.chequeNo}"
+                                                 validator="#{chequeValidator.validateChequeNumber}">
+                                    </p:inputText>
+                                    <p:outputLabel for="amount"
+                                                   value="#{msgs['cheque.handling.cheque.registration.amount.label']}"/>
+                                    <p:inputText id="amount"
+                                                 value="#{chequeRegistrationView.chequeVO.chequeAmount}"/>
+                                    <p:outputLabel for="bankCode"
+                                                   value="#{msgs['cheque.handling.cheque.registration.bank.code.label']}"/>
+                                    <p:inputText id="bankCode"
+                                                 value="#{chequeRegistrationView.chequeVO.bankCode}"/>
+                                    <p:outputLabel for="payerName"
+                                                   value="#{msgs['cheque.handling.cheque.registration.payer.name.label']}"/>
+                                    <p:inputText id="payerName"
+                                                 value="#{chequeRegistrationView.chequeVO.payee}"/>
+                                    <p:outputLabel
+                                            value="#{msgs['cheque.handling.cheque.registration.case.number.label']}"/>
+                                    <com:caseNumber allMandatory="true"
+                                                    caseTypeCodeValue="#{chequeRegistrationView.caseNumberVO.caseType}"
+                                                    caseNoValue="#{chequeRegistrationView.caseNumberVO.caseSequence}"
+                                                    caseYearValue="#{chequeRegistrationView.caseNumberVO.caseYear}"
+                                                    autoSearchListener="#{chequeRegistrationView.searchCaseInfo}"
+                                                    autoSearchEnabled="true" autoSearchUpdate="@form:caseOfficer"/>
+                                    <p:outputLabel for="caseOfficer"
+                                                   value="#{msgs['cheque.handling.cheque.registration.case.officer.label']}"/>
+                                    <p:inputText id="caseOfficer" disabled="true"
+                                                 value="#{chequeRegistrationView.chequeVO.caseInfo.post.postTitle}"/>
+                                    <p:outputLabel for="receiveDate"
+                                                   value="#{msgs['cheque.handling.cheque.registration.receive.date.label']}"/>
+                                    <p:calendar id="receiveDate" required="true"
+                                                pattern="#{appResourceUtils.dateFormat}"
+                                                maxdate="#{chequeRegistrationView.today}"
+                                                value="#{chequeRegistrationView.chequeVO.receiptDate}" showOn="button"/>
+                                    <p:outputLabel for="chequeDate"
+                                                   value="#{msgs['cheque.handling.cheque.registration.cheque.date.label']}"/>
+                                    <p:calendar id="chequeDate" required="true" pattern="#{appResourceUtils.dateFormat}"
+                                                maxdate="#{chequeRegistrationView.today}"
+                                                value="#{chequeRegistrationView.chequeVO.chequeDate}" showOn="button"/>
+                                    <p:outputLabel for="currency"
+                                                   value="#{msgs['cheque.handling.cheque.registration.currency.label']}"/>
+                                    <p:selectOneMenu id="currency"
+                                                     value="#{chequeRegistrationView.chequeVO.curcy.curcyId}">
+                                        <f:selectItem itemLabel="- Select -"/>
+                                        <f:selectItems value="#{chequeRegistrationView. currencyBasicInfoVOList}"
+                                                       var="currency"
+                                                       itemLabel="#{currency.curcyName}"
+                                                       itemValue="#{currency.curcyId}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel for="remark"
+                                                   value="#{msgs['cheque.handling.cheque.registration.remark.label']}"/>
+                                    <p:inputText id="remark"
+                                                 value="#{chequeRegistrationView.chequeVO.remark}"/>
+                                </p:panelGrid>
+                            </div>
+                        </div>
+                        <div class="ax-btn-set">
+                            <p:commandButton id="createBtn" value="#{msgs['create.btn']}" update="editForm"
+                                             action="#{chequeRegistrationView.create}"/>
+                        </div>
+                    </h:form>
+                </p:tab>
+                <p:tab title="#{msgs['cheque.handling.cheque.registration.import.cheque.title']}">
+                    <div>
+                        <h:form id="importForm" rendered="#{chequeRegistrationView.chequeVOList == null}">
+                            <div>
+                                <p:messages id="imsgs" closable="true"/>
+                                <input type="checkbox" id="basicAdvance" name="basicAdvance"
+                                       class="basicAdvance hidden-checkbox" checked="checked"/>
+                                <div class="search-basic">
+                                    <p:panelGrid columns="1" layout="grid"
+                                                 columnClasses="ui-grid-col-12"
+                                                 styleClass="ui-panelgrid-blank ui-fluid">
+                                        <p:inputText/>
+                                        <p:column>
+                                            <label for="basicAdvance" class="basicAdvanceLabel advance"><i
+                                                    class="ti-search"/> Advanced Search</label>
+                                            <div class="note">Case Number, Case Name, Case Types</div>
+                                        </p:column>
+                                    </p:panelGrid>
+                                </div>
+                            </div>
+                            <div class="search-advance">
+                                <p:panelGrid columns="4"
+                                             columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                                             layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                                    <p:outputLabel for="uploadFile"
+                                                   value="#{msgs['cheque.handling.cheque.registration.upload.file.label']}"/>
+                                    <p:fileUpload id="uploadFile" value="#{chequeRegistrationView.uploadedFile}"
+                                                  label="#{msgs['cheque.handling.cheque.registration.choose.label']}"
+                                                  mode="simple"
+                                                  skinSimple="true"/>
+                                </p:panelGrid>
+                            </div>
+                            <div class="ax-btn-set">
+                                <p:commandButton id="uploadBtn"
+                                                 value="#{msgs['cheque.handling.cheque.registration.upload.button']}"
+                                                 update=""
+                                                 actionListener="#{chequeRegistrationView.upload}"/>
+                                <p:commandButton id="downloadBtn"
+                                                 value="#{msgs['cheque.handling.cheque.registration.download.template.button']}"
+                                                 ajax="false">
+                                    <p:fileDownload value="#{chequeRegistrationView.downloadFile}"/>
+                                </p:commandButton>
+                            </div>
+                        </h:form>
+                    </div>
+                    <div>
+                        <h:form id="uploadForm" rendered="#{chequeRegistrationView.chequeVOList != null}">
+                            <div>
+                                <p:messages id="umsgs" closable="true"/>
+                                <input type="checkbox" id="ubasicAdvance" name="basicAdvance"
+                                       class="basicAdvance hidden-checkbox" checked="checked"/>
+                                <div class="search-basic">
+                                    <p:panelGrid columns="1" layout="grid"
+                                                 columnClasses="ui-grid-col-12"
+                                                 styleClass="ui-panelgrid-blank ui-fluid">
+                                        <p:inputText/>
+                                        <p:column>
+                                            <label for="basicAdvance" class="basicAdvanceLabel advance"><i
+                                                    class="ti-search"/> Advanced Search</label>
+                                            <div class="note">Case Number, Case Name, Case Types</div>
+                                        </p:column>
+                                    </p:panelGrid>
+                                </div>
+                                <div class="search-advance">
+                                    <p:dataTable var="cheque"
+                                                 value="#{chequeRegistrationView.chequeVOList}" reflow="true"
+                                                 paginator="true" paginatorPosition="bottom" rows="5"
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="5,10,15" draggableColumns="true">
+                                        <p:column
+                                                headerText="#{msgs['cheque.handling.cheque.registration.payer.name.column.head']}">
+                                            <h:outputText value="#{cheque.payee}"/>
+                                        </p:column>
+                                        <p:column
+                                                headerText="#{msgs['cheque.handling.cheque.registration.cheque.number.column.head']}">
+                                            <h:outputText value="#{cheque.chequeNo}"/>
+                                        </p:column>
+                                        <p:column
+                                                headerText="#{msgs['cheque.handling.cheque.registration.bank.code.column.head']}">
+                                            <h:outputText value="#{cheque.bankCode}"/>
+                                        </p:column>
+                                        <p:column
+                                                headerText="#{msgs['cheque.handling.cheque.registration.account.number.column.head']}">
+                                            <h:outputText value="#{cheque.curcy}"/>
+                                        </p:column>
+                                        <p:column
+                                                headerText="#{msgs['cheque.handling.cheque.registration.cheque.amount.column.head']}">
+                                            <h:outputText value="#{cheque.chequeAmount}"/>
+                                        </p:column>
+                                        <p:column
+                                                headerText="#{msgs['cheque.handling.cheque.registration.case.number.column.head']}">
+                                            <h:outputText value="#{cheque.caseInfo.caseNo}"/>
+                                        </p:column>
+                                        <p:column
+                                                headerText="#{msgs['cheque.handling.cheque.registration.case.officer.column.head']}">
+                                            <h:outputText value="#{cheque.caseInfo.post.postTitle}"/>
+                                        </p:column>
+                                        <p:column
+                                                headerText="#{msgs['cheque.handling.cheque.registration.receive.date.column.head']}">
+                                            <h:outputText value="#{cheque.receiptDate}">
+                                                <f:convertDateTime pattern="#{appResourceUtils.dateFormat}"/>
+                                            </h:outputText>
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                            </div>
+                            <div class="ax-btn-set">
+                                <p:commandButton id="comfirmBtn" value="#{msgs['confirm.btn']}"
+                                                 update="#{chequeRegistrationView.confirm}"
+                                                 actionListener="#{chequeRegistrationView.upload}"/>
+                                <p:commandButton id="cancelBtn" value="#{msgs['cancel.btn']}"
+                                                 action="#{chequeRegistrationView.reset}"/>
+                            </div>
+                        </h:form>
+                    </div>
+                </p:tab>
+            </p:tabView>
+        </div>
+    </ui:define>
+</ui:composition>

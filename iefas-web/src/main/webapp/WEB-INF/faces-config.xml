@@ -1,0 +1,486 @@
+<faces-config xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+	version="2.2">
+
+	<application>
+		<action-listener>org.primefaces.application.DialogActionListener</action-listener>
+		<navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
+		<view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+		<navigation-handler>org.primefaces.mobile.application.MobileNavigationHandler</navigation-handler>
+
+		<message-bundle>Messages</message-bundle>
+		<locale-config>
+			<default-locale>en</default-locale>
+			<!-- <supported-locale>zh_CN</supported-locale> -->
+			<!-- <supported-locale>zh_HK</supported-locale> -->
+		</locale-config>
+		<resource-bundle>
+			<base-name>Messages</base-name>
+			<var>msgs</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>build</base-name>
+			<var>build</var>
+		</resource-bundle>
+
+		<el-resolver>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver</el-resolver>
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+		<el-resolver>org.omnifaces.el.FacesELResolver</el-resolver>
+	</application>
+
+	<lifecycle>
+		<phase-listener>org.primefaces.component.lifecycle.LifecyclePhaseListener</phase-listener>
+	</lifecycle>
+
+	<converter>
+		<converter-id>theme</converter-id>
+		<converter-class>org.primefaces.showcase.convert.ThemeConverter</converter-class>
+	</converter>
+
+	<factory>
+		<exception-handler-factory>hk.oro.iefas.web.core.jsf.exceptionhandler.WebExceptionHandlerFactory</exception-handler-factory>
+	</factory>
+
+	<component>
+		<component-type>org.primefaces.component.IefasMenu</component-type>
+		<component-class>hk.oro.iefas.web.core.jsf.component.menu.IefasMenu</component-class>
+	</component>
+	<render-kit>
+		<renderer>
+			<component-family>org.primefaces.component</component-family>
+			<renderer-type>org.primefaces.component.IefasMenuRenderer</renderer-type>
+			<renderer-class>hk.oro.iefas.web.core.jsf.component.menu.IefasMenuRenderer</renderer-class>
+		</renderer>
+	</render-kit>
+
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>dashboard</from-outcome>
+			<to-view-id>/oro/admin/dashboard/dashboard.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/oro/admin/index/login.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>forgot-passowrd</from-outcome>
+			<to-view-id>/oro/admin/index/forgot-password.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>profile-edit</from-outcome>
+			<to-view-id>/oro/admin/my-profile/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>user-search</from-outcome>
+			<to-view-id>/oro/admin/system/division-administration/user/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>bankruptcy-search</from-outcome>
+			<to-view-id>/oro/admin/case/bankruptcy/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>creditor-search</from-outcome>
+			<to-view-id>/oro/admin/case/parameter/creditor/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>payment-search</from-outcome>
+			<to-view-id>/oro/admin/ledger/voucher/payment/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>reports</from-outcome>
+			<to-view-id>/oro/admin/reports/report.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>role-search</from-outcome>
+			<to-view-id>/oro/admin/system/division-administration/role/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>system-setting</from-outcome>
+			<to-view-id>/oro/admin/system/system-administration/setting/setting.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>currency-rate-search</from-outcome>
+			<to-view-id>/oro/admin/funds/maintenance/currency-rate/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>funds-parameter</from-outcome>
+			<to-view-id>/oro/admin/funds/maintenance/funds-parameter/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>bank-account-search</from-outcome>
+			<to-view-id>/oro/admin/funds/maintenance/bank-account/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>deposit-target-search</from-outcome>
+			<to-view-id>/oro/admin/funds/maintenance/deposit-target/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>upload-bank-rate</from-outcome>
+			<to-view-id>/oro/admin/funds/investment/upload-bank-rate/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>investment-instruction</from-outcome>
+			<to-view-id>/oro/admin/funds/investment/investment-instruction/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>funds-available</from-outcome>
+			<to-view-id>/oro/admin/funds/investment/funds-available/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>cash-requirement</from-outcome>
+			<to-view-id>/oro/admin/funds/investment/cash-requirement/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>post-search</from-outcome>
+			<to-view-id>/oro/admin/system/division-administration/post/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>post-delegation-search</from-outcome>
+			<to-view-id>/oro/admin/system/division-administration/post-delegation/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>switch-user</from-outcome>
+			<to-view-id>/oro/admin/switch-user.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>holiday-search</from-outcome>
+			<to-view-id>/oro/admin/system/system-administration/holiday/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>ors-fees-search</from-outcome>
+			<to-view-id>/oro/admin/dividend/maintenance/ors-fees/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>common-creditor</from-outcome>
+			<to-view-id>/oro/admin/dividend/maintenance/common-creditor/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>dividend-other-parameter</from-outcome>
+			<to-view-id>/oro/admin/dividend/maintenance/other-parameter/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>privilege-dialog</from-outcome>
+			<to-view-id>/oro/admin/system/division-administration/post/privilege-dialog.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>division-search</from-outcome>
+			<to-view-id>/oro/admin/system/system-administration/division-privilege/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+
+		<navigation-case>
+			<from-outcome>gazette-code</from-outcome>
+			<to-view-id>/oro/admin/dividend/maintenance/gazette/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>case-detail-search</from-outcome>
+			<to-view-id>/oro/admin/case/case-detail-enquiry/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>employee-wilon-severance</from-outcome>
+			<to-view-id>/oro/admin/dividend/creditor-registration/employee-wilon-severance-pay/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>outsider</from-outcome>
+			<to-view-id>/oro/admin/case/maintenance/outsider/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>upload-data-from-ormis</from-outcome>
+			<to-view-id>/oro/admin/case/.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>proof-of-debt-form</from-outcome>
+			<to-view-id>/oro/admin/case/proof-of-debt/form/form.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>proof-of-debt-enquiry</from-outcome>
+			<to-view-id>/oro/admin/case/proof-of-debt/enquiry/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>analysis-code</from-outcome>
+			<to-view-id>/oro/admin/ledger/maintenance/analysis-code/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>control-account</from-outcome>
+			<to-view-id>/oro/admin/ledger/maintenance/control-account/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>realization-fee</from-outcome>
+			<to-view-id>/oro/admin/ledger/.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>payment-file</from-outcome>
+			<to-view-id>/oro/admin/ledger/payment-handling/payment-file/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>create-bank-transfer-file</from-outcome>
+			<to-view-id>/oro/admin/ledger/payment-handling/create-bank-transfer-file/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>generate-cheque-file</from-outcome>
+			<to-view-id>/oro/admin/ledger/payment-handling/generate-cheque-file/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>roster</from-outcome>
+			<to-view-id>/oro/admin/ledger/payment-handling/roster/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>transfer-to-gr</from-outcome>
+			<to-view-id>/oro/admin/ledger/payment-handling/transfer-to-gr-bea/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>bulk-voucher</from-outcome>
+			<to-view-id>/oro/admin/ledger/.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>payment-voucher</from-outcome>
+			<to-view-id>/oro/admin/ledger/voucher-handling/payment-voucher/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>payment-voucher-edit</from-outcome>
+			<to-view-id>/oro/admin/ledger/voucher-handling/payment-voucher/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>receipt-voucher</from-outcome>
+			<to-view-id>/oro/admin/ledger/voucher-handling/receipt-voucher/search.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>receipt-voucher-edit</from-outcome>
+			<to-view-id>/oro/admin/ledger/voucher-handling/receipt-voucher/edit.xhtml</to-view-id>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>journal-voucher</from-outcome>
+			<to-view-id>/oro/admin/ledger/voucher-handling/journal-voucher/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>cheque-registration</from-outcome>
+			<to-view-id>/oro/admin/ledger/cheque-handling/cheque-registration/edit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>bulk-reversal</from-outcome>
+			<to-view-id>/oro/admin/ledger/cheque-handling/bulk-reversal/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>incoming-cheque</from-outcome>
+			<to-view-id>/oro/admin/ledger/cheque-handling/incoming-cheque/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>outgoing-cheque</from-outcome>
+			<to-view-id>/oro/admin/ledger/cheque-handling/outgoing-cheque/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>deposit-form</from-outcome>
+			<to-view-id>/oro/admin/ledger/deposit-handling/form/form.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>deposit-enquiry</from-outcome>
+			<to-view-id>/oro/admin/ledger/deposit-handling/enquiry/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>instruction-memo</from-outcome>
+			<to-view-id>/oro/admin/release/instruction-memo-list/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>historical-case</from-outcome>
+			<to-view-id>/oro/admin/release/historical-case-list/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>analysis-code-for-ors-fee</from-outcome>
+			<to-view-id>/oro/admin/dividend/maintenance/ors-fee-to-be-charged/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>ground-code</from-outcome>
+			<to-view-id>/oro/admin/dividend/maintenance/ground-code/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>withheld-reason</from-outcome>
+			<to-view-id>/oro/admin/dividend/maintenance/withheld-reasons/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>adjudication</from-outcome>
+			<to-view-id>/oro/admin/dividend/creditor-registration/adjudication/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>interest-trial-adjication</from-outcome>
+			<to-view-id>/oro/admin/dividend/creditor-registration/interest-trial-adjudication/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>payment-percentages-adjustment</from-outcome>
+			<to-view-id>/oro/admin/dividend/payment-dividend-processing/payment-percentages-adjustment/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>ors-fee-computation</from-outcome>
+			<to-view-id>/oro/admin/dividend/payment-dividend-processing/ors-fees-computation-appropriation-account/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>dividend-schedule</from-outcome>
+			<to-view-id>/oro/admin/dividend/payment-dividend-processing/dividend-interest-schedule/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>dividend-cheque</from-outcome>
+			<to-view-id>/oro/admin/dividend/payment-dividend-processing/dividend-interest-cheque/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>daily-investment-confirmation</from-outcome>
+			<to-view-id>/oro/admin/funds/investment/daily-investment-confirmation/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>upload-bank-file</from-outcome>
+			<to-view-id>/oro/admin/bankrecon/.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>undefined-bc</from-outcome>
+			<to-view-id>/oro/admin/bankrecon/.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>bank-rec-report</from-outcome>
+			<to-view-id>/oro/admin/bankrecon/.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>division-adminstrator</from-outcome>
+			<to-view-id>/oro/admin/system/system-administration/division-administrator/search.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>upload-support-doc-dialog</from-outcome>
+			<to-view-id>/oro/admin/ledger/voucher-handling/upload-support-doc-dialog.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/oro/admin/case/proof-of-debt/enquiry/search.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>form</from-outcome>
+			<to-view-id>/oro/admin/case/proof-of-debt/form/form.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+</faces-config>

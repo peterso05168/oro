@@ -1,0 +1,251 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+	<h:form id="formC">
+		<p:accordionPanel activeIndex="0,1">
+			<p:tab title="#{msgs['adjudication.ordinary.header']}"
+				disabled="true"
+				rendered="#{adjudicationSearchView.ordAdjucationResultDataModel != null}">
+				<p:dataTable
+					value="#{adjudicationSearchView.ordAdjucationResultDataModel}"
+					var="adjucation" rowKey="#{adjucation.adjucationId}"
+					paginator="true" paginatorPosition="bottom" rows="5" lazy="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+					<f:facet name="header">#{msgs['result.title']}</f:facet>
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column colspan="5"
+								headerText="#{msgs['orsFeesComputation.case.number.label']} : #{adjudicationSearchView.caseName}" />
+						</p:row>
+						<p:row>
+							<p:column
+								headerText="#{msgs['adjudication.creditor.name.header']}" />
+							<p:column
+								headerText="#{msgs['adjudication.proof.number.header']}" />
+							<p:column
+								headerText="#{msgs['adjudication.nature.of.claim.header']}" />
+							<p:column
+								headerText="#{msgs['adjudication.creditor.type.header']}" />
+							<p:column headerText="#{msgs['adjudication.updated.by.header']}" />
+						</p:row>
+						<p:row>
+							<p:column headerText="#{msgs['adjudication.payee.name.header']}" />
+							<p:column
+								headerText="#{msgs['adjudication.address.type.header']}" />
+							<p:column
+								headerText="#{msgs['adjudication.admitted.as.preferential.header']}" />
+							<p:column
+								headerText="#{msgs['adjudication.admitted.as.ordinary.header']}" />
+							<p:column headerText="#{msgs['adjudication.rejected.header']}" />
+						</p:row>
+						<p:row>
+							<p:column headerText="#{msgs['adjudication.address.header']}" />
+							<p:column
+								headerText="#{msgs['adjudication.amount.claimed.header']}" />
+							<p:column
+								headerText="#{msgs['adjudication.admitted.as.def.preferential.header']}" />
+							<p:column
+								headerText="#{msgs['adjudication.admitted.as.def.ordinary.header']}" />
+							<p:column
+								headerText="#{msgs['adjudication.rejected.ground.nos.header']}" />
+						</p:row>
+					</p:columnGroup>
+					<p:column>
+						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid"
+							layout="grid">
+							<p:commandLink href="javascript:void(0)" action="edit"
+								ajax="false">
+								<h:outputText value="#{adjucation.creditor.creditorNameEng}" />
+								<f:param name="adjucationId" value="#{adjucation.adjucationId}" />
+							</p:commandLink>
+							<h:outputText value="#{adjucation.creditor.payeeName}" />
+							<p:row>
+								<h:outputText value="#{adjucation.creditor.address.address1}" />
+								<h:outputText value="#{adjucation.creditor.address.address2}" />
+								<h:outputText value="#{adjucation.creditor.address.address3}" />
+							</p:row>
+						</p:panelGrid>
+					</p:column>
+					<p:column>
+						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid"
+							layout="grid">
+							<h:outputText value="#{adjucation.creditor.proofNo}" />
+							<h:outputText
+								value="#{adjucation.addressType eq 'LOC' ? 'Local' : 'Overseas'}" />
+							<h:outputText
+								value="#{adjucation.claimed != null ? adjucation.claimed : 0}" />
+						</p:panelGrid>
+					</p:column>
+					<p:column>
+						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid"
+							layout="grid">
+							<h:outputText
+								value="#{adjucation.natureOfClaim eq 'ORD' ? 'Ordinary' : 'Preferential'}" />
+							<h:outputText
+								value="#{adjucation.preAdmitted != null ? adjucation.preAdmitted : 0}" />
+							<h:outputText
+								value="#{adjucation.defPreAdmitted != null ? adjucation.defPreAdmitted : 0}" />
+						</p:panelGrid>
+					</p:column>
+					<p:column>
+						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid"
+							layout="grid">
+							<h:outputText value="#{adjucation.creditorType.creditorTypeName}" />
+							<h:outputText
+								value="#{adjucation.ordAdmitted != null ? adjucation.ordAdmitted : 0}" />
+							<h:outputText
+								value="#{adjucation.defOrdAdmitted != null ? adjucation.defOrdAdmitted : 0}" />
+						</p:panelGrid>
+					</p:column>
+					<p:column>
+						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid"
+							layout="grid">
+							<h:outputText value="#{adjucation.lastUpdatedByUser}" />
+							<h:outputText
+								value="#{adjucation.rejected != null ? adjucation.rejected : 0}" />
+							<h:outputText value="#{adjucation.groundNos}" />
+						</p:panelGrid>
+					</p:column>
+				</p:dataTable>
+			</p:tab>
+
+			<p:tab title="#{msgs['adjudication.preferential.header']}"
+				disabled="true"
+				rendered="#{adjudicationSearchView.preAdjucationResultDataModel != null}">
+				<p:dataTable
+					value="#{adjudicationSearchView.preAdjucationResultDataModel}"
+					var="adjucation" rowKey="#{adjucation.adjucationId}" lazy="true"
+					reflow="true" paginator="true" paginatorPosition="bottom" rows="5"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+					<f:facet name="header">#{msgs['result.title']}</f:facet>
+					<p:columnGroup type="header">
+						<p:row>
+							<p:column colspan="5"
+								headerText="#{msgs['orsFeesComputation.case.number.label']} : #{adjudicationSearchView.caseName}" />
+						</p:row>
+						<p:row>
+							<p:column
+								headerText="#{msgs['adjudication.creditor.name.header']}" />
+							<p:column
+								headerText="#{msgs['adjudication.proof.number.header']}" />
+							<p:column headerText="#{msgs['adjudication.salary.header']}" />
+							<p:column headerText="#{msgs['adjudication.salary.header']}" />
+							<p:column headerText="#{msgs['adjudication.salary.header']}" />
+						</p:row>
+						<p:row>
+							<p:column headerText="#{msgs['adjudication.payee.name.header']}" />
+							<p:column
+								headerText="#{msgs['adjudication.address.type.header']}" />
+							<p:column headerText="#{msgs['adjudication.holiday.header']}" />
+							<p:column headerText="#{msgs['adjudication.holiday.header']}" />
+							<p:column headerText="#{msgs['adjudication.holiday.header']}" />
+						</p:row>
+						<p:row>
+							<p:column headerText="#{msgs['adjudication.address.header']}" />
+							<p:column
+								headerText="#{msgs['adjudication.nature.of.claim.header']}" />
+							<p:column headerText="#{msgs['adjudication.wilon.header']}" />
+							<p:column headerText="#{msgs['adjudication.wilon.header']}" />
+							<p:column headerText="#{msgs['adjudication.wilon.header']}" />
+						</p:row>
+						<p:row>
+							<p:column />
+							<p:column
+								headerText="#{msgs['adjudication.creditor.type.header']}" />
+							<p:column headerText="#{msgs['adjudication.severance.header']}" />
+							<p:column headerText="#{msgs['adjudication.severance.header']}" />
+							<p:column headerText="#{msgs['adjudication.severance.header']}" />
+						</p:row>
+						<p:row>
+							<p:column />
+							<p:column headerText="#{msgs['adjudication.updated.by.header']}" />
+							<p:column headerText="#{msgs['adjudication.other.header']}" />
+							<p:column headerText="#{msgs['adjudication.other.header']}" />
+							<p:column headerText="#{msgs['adjudication.other.header']}" />
+						</p:row>
+					</p:columnGroup>
+					<p:column>
+						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid"
+							layout="grid">
+							<p:commandLink href="javascript:void(0)" action="edit"
+								ajax="false">
+								<h:outputText value="#{adjucation.creditor.creditorNameEng}" />
+								<f:param name="adjucationId" value="#{adjucation.adjucationId}" />
+							</p:commandLink>
+							<h:outputText value="#{adjucation.creditor.payeeName}" />
+							<p:row>
+								<h:outputText value="#{adjucation.creditor.address.address1}" />
+								<h:outputText value="#{adjucation.creditor.address.address2}" />
+								<h:outputText value="#{adjucation.creditor.address.address3}" />
+							</p:row>
+						</p:panelGrid>
+					</p:column>
+					<p:column>
+						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid"
+							layout="grid">
+							<h:outputText value="#{adjucation.creditor.proofNo}" />
+							<h:outputText
+								value="#{adjucation.addressType eq 'LOC' ? 'Local' : 'Overseas'}" />
+							<h:outputText
+								value="#{adjucation.natureOfClaim eq 'ORD' ? 'Ordinary' : 'Preferential'}" />
+							<h:outputText value="#{adjucation.creditorType.creditorTypeName}" />
+							<h:outputText value="#{adjucation.lastUpdatedByUser}" />
+						</p:panelGrid>
+					</p:column>
+					<p:column>
+						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid"
+							layout="grid">
+							<h:outputText
+								value="#{adjucation.preAmount.salary != null ? adjucation.preAmount.salary : 0}" />
+							<h:outputText
+								value="#{adjucation.preAmount.holiday != null ? adjucation.preAmount.holiday : 0}" />
+							<h:outputText
+								value="#{adjucation.preAmount.wilon != null ? adjucation.preAmount.wilon : 0}" />
+							<h:outputText
+								value="#{adjucation.preAmount.severance != null ? adjucation.preAmount.severance : 0}" />
+							<h:outputText
+								value="#{adjucation.preAmount.others != null ? adjucation.preAmount.others : 0}" />
+							<h:outputText />
+						</p:panelGrid>
+					</p:column>
+					<p:column>
+						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid"
+							layout="grid">
+							<h:outputText
+								value="#{adjucation.ordAmount.salary != null ? adjucation.ordAmount.salary : 0}" />
+							<h:outputText
+								value="#{adjucation.ordAmount.holiday != null ? adjucation.ordAmount.holiday : 0}" />
+							<h:outputText
+								value="#{adjucation.ordAmount.wilon != null ? adjucation.ordAmount.wilon : 0}" />
+							<h:outputText
+								value="#{adjucation.ordAmount.severance != null ? adjucation.ordAmount.severance : 0}" />
+							<h:outputText
+								value="#{adjucation.ordAmount.others != null ? adjucation.ordAmount.others : 0}" />
+							<h:outputText />
+						</p:panelGrid>
+					</p:column>
+					<p:column>
+						<p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid"
+							layout="grid">
+							<h:outputText
+								value="#{adjucation.rejAmount.salary != null ? adjucation.rejAmount.salary : 0}" />
+							<h:outputText
+								value="#{adjucation.rejAmount.holiday != null ? adjucation.rejAmount.holiday : 0}" />
+							<h:outputText
+								value="#{adjucation.rejAmount.wilon != null ? adjucation.rejAmount.wilon : 0}" />
+							<h:outputText
+								value="#{adjucation.rejAmount.severance != null ? adjucation.rejAmount.severance : 0}" />
+							<h:outputText
+								value="#{adjucation.rejAmount.others != null ? adjucation.rejAmount.others : 0}" />
+							<h:outputText />
+						</p:panelGrid>
+					</p:column>
+				</p:dataTable>
+			</p:tab>
+		</p:accordionPanel>
+	</h:form>
+</ui:composition>

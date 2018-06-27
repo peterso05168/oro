@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="formC">
+		<p:dataTable id="resultTable"
+			value="#{userMgtSearchView.lazyDataModel}" var="user"
+			rowKey="#{user.userAcId}" sortBy="#{user.userAcId}" lazy="true" reflow="true" paginator="true"
+			paginatorPosition="bottom" rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true"
+			rendered="#{userMgtSearchView.lazyDataModel != null}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+
+
+			<p:column headerText="#{msgs['user.mgt.login.id.column.header']}"
+				sortBy="#{user.loginName}">
+				<p:commandLink href="javascript:void(0)" action="edit" ajax="false">
+					<f:param name="userAcId" value="#{user.userAcId}" />
+					<h:outputText value="#{user.loginName}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column headerText="#{msgs['user.mgt.email.addr.column.header']}"
+				sortBy="#{userAccount.userProfile.emailAddress}">
+				<h:outputText value="#{user.emailAddress}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['user.mgt.eng.name.column.header']}"
+				sortBy="#{userAccount.userProfile.engName}">
+				<h:outputText value="#{user.engName}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['user.mgt.division.column.header']}"
+				sortBy="#{userAccount.userProfile.division.divisionName}">
+				<h:outputText value="#{user.divisionName}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['user.mgt.post.column.header']}"
+				sortBy="#{userAccount.userProfile.post.postTitle}">
+				<h:outputText value="#{user.postTitle}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['status.column.header']}"
+				sortBy="#{user.status}" styleClass="ax-status-w-b">
+				<h:outputText value="#{msgs['inactive.status.label']}"
+					rendered="#{user.status eq 'INA'}" class="status-label red" />
+				<h:outputText value="#{msgs['active.status.label']}"
+					rendered="#{user.status eq 'ACT'}" class="status-label green" />
+			</p:column>
+
+			<p:column headerText="#{msgs['action.column.header']}"
+				styleClass="ax-action-w dont-print">
+				<p:menuButton value="#{msgs['action.menuButton.label']}">
+					<p:menuitem value="#{msgs['edit.menuitem.label']}" action="edit"
+						ajax="false">
+						<f:param name="userAcId" value="#{user.userAcId}" />
+					</p:menuitem>
+					<p:menuitem value="#{msgs['inactive.status.label']}"
+						rendered="#{user.status eq 'ACT'}" update="@form"
+						action="#{userMgtSearchView.changeStatus}">
+						<f:setPropertyActionListener value="#{user.userAcId}"
+							target="#{userMgtSearchView.userAcId}" />
+					</p:menuitem>
+					<p:menuitem value="#{msgs['active.status.label']}"
+						rendered="#{user.status eq 'INA'}" update="@form"
+						action="#{userMgtSearchView.changeStatus}">
+						<f:setPropertyActionListener value="#{user.userAcId}"
+							target="#{userMgtSearchView.userAcId}" />
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+
+	</h:form>
+</ui:composition>
+
+
+
+

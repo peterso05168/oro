@@ -1,0 +1,114 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	template="./case-detail-enquiry.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable" header="#{msgs['case.search.title']}"
+				toggleable="true" toggleSpeed="200" widgetVar="panel">
+				<h:form id="searchForm">
+					<div>
+						<p:focus context="toggleable" />
+						<p:messages id="msgs" closable="true" />
+						<input type="checkbox" id="basicAdvance" name="basicAdvance"
+							class="basicAdvance hidden-checkbox" checked="checked" />
+						<div class="search-basic">
+							<p:panelGrid columns="1" layout="grid"
+								columnClasses="ui-grid-col-12"
+								styleClass="ui-panelgrid-blank ui-fluid">
+								<p:inputText />
+								<p:column>
+									<label for="basicAdvance" class="basicAdvanceLabel advance"><i
+										class="ti-search"></i> Advanced Search</label>
+									<div class="note">Case Number, Case Name, Case Type,
+										Handling Officer Post, Outsider Type, Outsider Name, Status</div>
+								</p:column>
+							</p:panelGrid>
+						</div>
+						<div class="search-advance">
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel
+									value="#{msgs['case.detail.enquiry.case.number.label']}" />
+								<com:caseNumber
+									caseTypeCodeValue="#{caseDetailEnquirySearchView.criteria.caseTypeCode}"
+									caseNoValue="#{caseDetailEnquirySearchView.criteria.caseNo}"
+									caseYearValue="#{caseDetailEnquirySearchView.criteria.caseYear}" />
+
+								<p:outputLabel for="CaseName"
+									value="#{msgs['case.detail.enquiry.case.name.label']}" />
+								<p:inputText id="CaseName"
+									value="#{caseDetailEnquirySearchView.criteria.caseName}" />
+
+								<p:outputLabel for="CaseType"
+									value="#{msgs['case.detail.enquiry.case.type.label']}" />
+								<p:selectOneMenu id="CaseType"
+									value="#{caseDetailEnquirySearchView.criteria.caseTypeId}">
+									<f:selectItem itemLabel="- All -" />
+									<f:selectItems
+										value="#{caseDetailEnquirySearchView.caseTypeVOs}"
+										var="caseType" itemLabel="#{caseType.caseTypeDesc}"
+										itemValue="#{caseType.caseTypeId}" />
+								</p:selectOneMenu>
+
+								<p:outputLabel for="HandlingOfficerPost"
+									value="#{msgs['case.detail.enquiry.handling.officer.post.label']}" />
+								<p:inputText id="HandlingOfficerPost"
+									value="#{caseDetailEnquirySearchView.criteria.handlingOfficerPostName}" />
+
+								<p:outputLabel for="OutsiderType"
+									value="#{msgs['case.detail.enquiry.outsider.type.label']}" />
+								<p:selectOneMenu id="OutsiderType"
+									value="#{caseDetailEnquirySearchView.criteria.outsiderTypeId}">
+									<f:selectItem itemLabel="- All -" />
+									<f:selectItems
+										value="#{caseDetailEnquirySearchView.outsiderTypeVOs}"
+										var="outsiderType"
+										itemLabel="#{outsiderType.outsiderTypeName}"
+										itemValue="#{outsiderType.outsiderTypeId}" />
+								</p:selectOneMenu>
+
+								<p:outputLabel for="OutsiderName"
+									value="#{msgs['case.detail.enquiry.outsider.name.label']}" />
+								<p:inputText id="OutsiderName"
+									value="#{caseDetailEnquirySearchView.criteria.outsiderName}" />
+
+								<p:outputLabel for="Status" value="#{msgs['status.label']}" />
+								<p:selectOneMenu id="Status"
+									value="#{caseDetailEnquirySearchView.criteria.status}">
+									<f:selectItem itemLabel="- All -" noSelectionOption="true" />
+									<f:selectItems value="#{caseDetailEnquirySearchView.statusVOs}"
+										var="status" itemLabel="#{status.statusName}"
+										itemValue="#{status.statusVal}" />
+								</p:selectOneMenu>
+
+							</p:panelGrid>
+							<p:panelGrid columns="6" columnClasses="ui-grid-col-12"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:column styleClass="ui-grid-col-12">
+									<label for="basicAdvance" class="basicAdvanceLabel advance"><i
+										class="ti-search"></i>Basic Search</label>
+								</p:column>
+							</p:panelGrid>
+						</div>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton id="searchBtn" value="#{msgs['search.btn']}"
+							icon="ti-search" update="caseResultTable,searchForm"
+							action="#{caseDetailEnquirySearchView.search}" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary"
+							action="#{caseDetailEnquirySearchView.reset}"
+							update="@form,caseResultTable" />
+					</div>
+				</h:form>
+			</p:panel>
+		</div>
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

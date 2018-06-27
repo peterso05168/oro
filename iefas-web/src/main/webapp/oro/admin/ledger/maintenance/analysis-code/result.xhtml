@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<h:form id="analysisCodeResultTable">
+		<p:dataTable var="code" lazy="true" reflow="true" paginator="true"
+			rowKey="#{code.analysisCodeId}" paginatorPosition="bottom" rows="5"
+			value="#{analysisCodeSearchView.lazyDataModel}"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true"
+			rendered="#{analysisCodeSearchView.lazyDataModel != null}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+
+			<p:column
+				headerText="#{msgs['analysis.code.analysis.code.column.header']}"
+				sortBy="#{code.analysisCode}">
+				<p:commandLink action="edit" ajax="false">
+					<h:outputText value="#{code.analysisCode}" />
+					<f:param name="analysisCodeId" value="#{code.analysisCodeId}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['analysis.code.voucher.type.column.header']}"
+				sortBy="#{code.voucherType.voucherTypeName}">
+				<h:outputText value="#{code.voucherType}" />
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['analysis.code.code.type.column.header']}"
+				sortBy="#{code.analysisCodeType.analysisCodeTypeName}">
+				<h:outputText value="#{code.analysisCodeType}" />
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['analysis.code.short.name.column.header']}"
+				sortBy="#{code.shortName}">
+				<h:outputText value="#{code.shortName}" />
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['analysis.code.full.name.column.header']}"
+				sortBy="#{code.fullName}">
+				<h:outputText value="#{code.fullName}" />
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['analysis.code.realization.fee.column.header']}"
+				sortBy="#{code.realizationFee}">
+				<h:outputText value="#{code.realizationFee}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['status.column.header']}"
+				sortBy="#{code.status}" styleClass="ax-status-w-b">
+				<h:outputText value="#{msgs['inactive.status.label']}"
+					rendered="#{code.status eq 'INA'}" class="status-label red" />
+				<h:outputText value="#{msgs['active.status.label']}"
+					rendered="#{code.status eq 'ACT'}" class="status-label green" />
+			</p:column>
+
+			<p:column headerText="#{msgs['action.column.header']}"
+				styleClass="ax-action-w dont-print">
+				<p:menuButton value="#{msgs['action.menuButton.label']}">
+					<p:menuitem value="#{msgs['edit.menuitem.label']}" action="edit"
+						ajax="false">
+						<f:param name="analysisCodeId" value="#{code.analysisCodeId}" />
+					</p:menuitem>
+					<p:menuitem value="#{msgs['inactive.status.label']}"
+						rendered="#{code.status eq 'ACT'}" oncomplete="PF('cd').show()">
+						<f:setPropertyActionListener value="#{code.analysisCodeId}"
+							target="#{analysisCodeSearchView.analysisCodeId}" />
+					</p:menuitem>
+					<p:menuitem value="#{msgs['active.status.label']}"
+						rendered="#{code.status eq 'INA'}" oncomplete="PF('cd').show()">
+						<f:setPropertyActionListener value="#{code.analysisCodeId}"
+							target="#{analysisCodeSearchView.analysisCodeId}" />
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+		<p:confirmDialog widgetVar="cd" header="Confirm" showEffect="fade">
+			<f:facet name="message">
+				<h:outputText
+					value="Confirm to Active/Inactive the selected record ?" />
+			</f:facet>
+			<div align="center">
+				<p:commandButton value="Yes"
+					action="#{analysisCodeSearchView.changeStatus}"
+					update="analysisCodeResultTable,searchForm"
+					oncomplete="PF('cd').hide()" />
+				<p:commandButton value="No" onclick="PF('cd').hide();" type="button" />
+			</div>
+		</p:confirmDialog>
+	</h:form>
+</ui:composition>
+
+
+
+

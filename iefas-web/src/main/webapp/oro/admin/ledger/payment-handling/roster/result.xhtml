@@ -1,0 +1,71 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="rosterResultTable">
+        <p:dataTable var="roster"
+                     value="#{rosterSearchView.lazyDataModel}"
+                     rowKey="#{roster.rosterId}" lazy="true" reflow="true"
+                     paginator="true" paginatorPosition="bottom" rows="5"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rowsPerPageTemplate="5,10,15" draggableColumns="true"
+                     rendered="#{rosterSearchView.lazyDataModel != null}">
+            <f:facet name="header">#{msgs['result.title']}</f:facet>
+
+            <p:column
+                    headerText="#{msgs['payment.handling.roster.on.duty.date.column.head']}">
+                <p:commandLink action="edit" ajax="false">
+                    <h:outputText value="#{roster.onDutyDate}">
+                        <f:convertDateTime pattern="#{appResourceUtils.dateFormat}"/>
+                    </h:outputText>
+                    <f:param name="rosterId" value="#{roster.rosterId}"/>
+                </p:commandLink>
+            </p:column>
+
+            <p:column
+                    headerText="#{msgs['payment.handling.roster.group.a.name.column.head']}">
+                <h:outputText value="#{roster.groupAName}"/>
+            </p:column>
+
+            <p:column
+                    headerText="#{msgs['payment.handling.roster.group.b.name.column.head']}">
+                <h:outputText value="#{roster.groupBName}"/>
+            </p:column>
+
+
+            <p:column headerText="#{msgs['action.column.header']}"
+                      styleClass="ax-action-w dont-print">
+                <p:menuButton value="#{msgs['action.menuButton.label']}">
+                    <p:menuitem value="#{msgs['edit.menuitem.label']}" ajax="false"
+                                outcome="edit">
+                        <f:param name="rosterId" value="#{roster.rosterId}"/>
+                    </p:menuitem>
+                    <p:menuitem value="#{msgs['delete.menuitem.label']}" onclick="PF('cd').show()">
+                        <f:setPropertyActionListener value="#{roster.rosterId}"
+                                                     target="#{rosterSearchView.rosterId}"/>
+                    </p:menuitem>
+                </p:menuButton>
+                <p:confirmDialog widgetVar="cd" header="Confirm" showEffect="fade">
+                    <f:facet name="message">
+                        <h:outputText
+                                value="Confirm to Delete the selected record ?"/>
+                    </f:facet>
+                    <div align="center">
+                        <p:commandButton value="Yes"
+                                         action="#{rosterSearchView.delete}"
+                                         update="rosterResultTable,searchForm"
+                                         onclick="PF('cd').hide();"/>
+                        <p:commandButton value="No" onclick="PF('cd').hide();"
+                                         type="button"/>
+                    </div>
+                </p:confirmDialog>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+</ui:composition>
+
+
+
+

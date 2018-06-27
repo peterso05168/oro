@@ -1,0 +1,150 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	template="./ors-fees-computation-appropriation-account.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable"
+				header="#{msgs['orsFeesComputation.search.title']}"
+				toggleable="true" toggleSpeed="200" widgetVar="panel">
+				<p:focus context="toggleable" />
+				<h:form id="searchForm">
+					<p:messages id="msgs" closable="true" />
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+						<p:outputLabel
+							value="#{msgs['orsFeesComputation.case.number.label']}" />
+
+						<com:caseNumber
+							caseTypeCodeValue="#{feeComputationSearchView.criteriaVO.caseNumber.caseType}"
+							caseNoValue="#{feeComputationSearchView.criteriaVO.caseNumber.caseSequence}"
+							caseYearValue="#{feeComputationSearchView.criteriaVO.caseNumber.caseYear}"
+							disabled="false" allMandatory="true" />
+
+						<p:outputLabel
+							value="#{msgs['orsFeesComputation.paymenttype.label']}" />
+						<p:column>
+							<p:selectOneMenu id="paymentTypeMenu"
+								value="#{feeComputationSearchView.criteriaVO.paymentType}">
+								<f:selectItem itemLabel="- All -" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{feeComputationSearchView.paymentTypes}"
+									var="pamentType" itemLabel="#{pamentType.codeDesc}"
+									itemValue="#{pamentType.codeValue}" />
+							</p:selectOneMenu>
+						</p:column>
+
+						<p:outputLabel
+							value="#{msgs['orsFeesComputation.creditortype.label']}" />
+						<p:column>
+							<p:selectOneMenu id="creditorTypeMenu"
+								value="#{feeComputationSearchView.criteriaVO.creditorType.creditorTypeId}">
+								<f:selectItem itemLabel="- All -" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{feeComputationSearchView.creditorTypes}"
+									var="creditorType" itemLabel="#{creditorType.creditorTypeName}"
+									itemValue="#{creditorType.creditorTypeId}" />
+							</p:selectOneMenu>
+						</p:column>
+
+						<p:outputLabel value="#{msgs['orsFeesComputation.status.label']}" />
+						<p:column>
+							<p:selectOneMenu id="statusMenu"
+								value="#{feeComputationSearchView.criteriaVO.status}">
+								<f:selectItem itemLabel="- All -" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{feeComputationSearchView.statusVOs}"
+									var="status" itemLabel="#{status.statusName}"
+									itemValue="#{status.statusVal}" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:panelGrid>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['search.btn']}" icon="ti-search"
+							update="searchForm,formC"
+							action="#{feeComputationSearchView.search}" validateClient="true" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary"
+							action="#{feeComputationSearchView.reset}"
+							update="searchForm,formC" />
+						<p:commandButton value="#{msgs['create.btn']}" immediate="true"
+							action="#{feeComputationSearchView.popUpCreateComputation}"
+							update="createForm:pg" process="@this" />
+					</div>
+				</h:form>
+			</p:panel>
+
+			<!-- dialog to create -->
+			<h:form id="createForm">
+				<p:dialog id="createDialog"
+					header="#{msgs['adjudication.create.dialog.title']}"
+					widgetVar="createDialog" modal="true" width="500" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:ajax event="close" update="@form" resetValues="true"
+						listener="#{feeComputationSearchView.createHandleClose}">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="2"
+							columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel
+								value="#{msgs['orsFeesComputation.paymenttype.label']}" />
+							<p:selectOneMenu required="true"
+								value="#{feeComputationSearchView.createORFeeComputationVO.paymentType}">
+								<f:selectItem itemLabel="- All -" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{feeComputationSearchView.paymentTypes}"
+									var="pamentType" itemLabel="#{pamentType.codeDesc}"
+									itemValue="#{pamentType.codeValue}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="#{msgs['adjudication.case.number.label']}" />
+							<com:caseNumber
+								caseTypeCodeValue="#{feeComputationSearchView.caseNumber.caseType}"
+								caseNoValue="#{feeComputationSearchView.caseNumber.caseSequence}"
+								caseYearValue="#{feeComputationSearchView.caseNumber.caseYear}"
+								disabled="false" allMandatory="true" />
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['create.btn']}"
+							action="#{feeComputationSearchView.createComputation}"
+							update="pg,msgs" validateClient="true">
+						</p:commandButton>
+
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('createDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to create -->
+
+			<!-- dialog to show delete message -->
+			<p:dialog widgetVar="msgDialog" modal="true" closable="false">
+				<h:form id="formMsg">
+					<div class="ui-fluid">
+						<h:outputText value="#{feeComputationSearchView.deleteMsg}"
+							style="font-size:16px;font-weight:bold;" />
+					</div>
+					<div style="margin: 30px 0px 0px 280px;">
+						<p:commandButton value="OK" styleClass="ui-confirmdialog-yes"
+							onclick="PF('msgDialog').hide();" />
+					</div>
+				</h:form>
+			</p:dialog>
+			<!-- dialog to show delete message -->
+
+		</div>
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,60 @@
+<!DOCTYPE html [
+    <!ENTITY bull "&#8226;">
+]>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:i="http://iefas.oro.hk/ui"
+	template="./common/common-head.xhtml">
+
+	<ui:define name="head-title">
+		Switch User
+	</ui:define>
+	<ui:define name="page-content-body">
+		<h:form>
+			<p:commandLink action="#{switchUserView.switchBack}">
+				<div class="ax-basic-info type-02">
+					<div class="ax-thumbnail-img">
+						<img
+							src="#{request.contextPath}/resources/oro/images/resource/profile-icon-dummy.png" />
+					</div>
+					<div class="ax-text">
+						<h2>#{switchUserView.userFullName}</h2>
+						<div>#{switchUserView.post}</div>
+					</div>
+				</div>
+			</p:commandLink>
+			<ui:repeat var="info" value="#{switchUserView.delegatedVOs}">
+				<p:commandLink action="#{switchUserView.switchUser}">
+					<f:setPropertyActionListener value="#{info}"
+						target="#{switchUserView.selectedDelegatedVO}" />
+					<div class="ax-basic-info type-02">
+						<div class="ax-thumbnail-img">
+							<img
+								src="#{request.contextPath}/resources/oro/images/resource/profile-icon-dummy.png" />
+						</div>
+						<div class="ax-text">
+							<h2>#{info.engFullName}</h2>
+							<div>#{info.post}</div>
+						</div>
+					</div>
+				</p:commandLink>
+			</ui:repeat>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+
+
+

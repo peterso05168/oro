@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fontFamilies>
+	<fontFamily name="MingLiU">
+		<normal><![CDATA[hk/oro/iefas/fonts/MingLiU/mingliu.ttf]]></normal>
+		<bold><![CDATA[hk/oro/iefas/fonts/MingLiU/mingliu.ttf]]></bold>
+		<italic><![CDATA[hk/oro/iefas/fonts/MingLiU/mingliu.ttf]]></italic>
+		<boldItalic><![CDATA[hk/oro/iefas/fonts/MingLiU/mingliu.ttf]]></boldItalic>
+		<pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+		<pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+		<exportFonts>
+			<export key="net.sf.jasperreports.html">'MingLiU', 'MingLiU', Times, serif
+			</export>
+			<export key="net.sf.jasperreports.xhtml">'MingLiU', 'MingLiU', Times, serif
+			</export>
+		</exportFonts>
+	</fontFamily>
+
+	<fontFamily name="MingLiU_HKSCS">
+		<normal><![CDATA[hk/oro/iefas/fonts/MingLiU_HKSCS/MingLiU_HKSCS.ttf]]></normal>
+		<bold><![CDATA[hk/oro/iefas/fonts/MingLiU_HKSCS/MingLiU_HKSCS.ttf]]></bold>
+		<italic><![CDATA[hk/oro/iefas/fonts/MingLiU_HKSCS/MingLiU_HKSCS.ttf]]></italic>
+		<boldItalic><![CDATA[hk/oro/iefas/fonts/MingLiU_HKSCS/MingLiU_HKSCS.ttf]]></boldItalic>
+		<pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+		<pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+		<exportFonts>
+			<export key="net.sf.jasperreports.html">'MingLiU_HKSCS', 'MingLiU_HKSCS', Times, serif
+			</export>
+			<export key="net.sf.jasperreports.xhtml">'MingLiU_HKSCS', 'MingLiU_HKSCS', Times, serif
+			</export>
+		</exportFonts>
+	</fontFamily>
+
+	<fontFamily name="Courier">
+		<normal><![CDATA[hk/oro/iefas/fonts/courier/COURIER.TTF]]></normal>
+		<bold><![CDATA[hk/oro/iefas/fonts/courier/COURIER.TTF]]></bold>
+		<italic><![CDATA[hk/oro/iefas/fonts/courier/COURIER.TTF]]></italic>
+		<boldItalic><![CDATA[hk/oro/iefas/fonts/courier/COURIER.TTF]]></boldItalic>
+		<pdfEncoding><![CDATA[Identity-H]]></pdfEncoding>
+		<pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+		<exportFonts>
+			<export key="net.sf.jasperreports.html">'Courier', Times, serif
+			</export>
+			<export key="net.sf.jasperreports.xhtml">'Courier', Times, serif
+			</export>
+		</exportFonts>
+	</fontFamily>
+
+</fontFamilies>

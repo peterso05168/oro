@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RFMU0003_TITLE" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3747246d-938d-447f-913a-90db7324447f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORODCDataAdapter.xml"/>
+	<style name="Style1" isDefault="true" fontName="Courier" fontSize="10" isBold="true"/>
+	<parameter name="ORACLE_REF_CURSOR" class="java.sql.ResultSet" isForPrompting="false"/>
+	<parameter name="REQUEST_REPORT_ID" class="java.lang.Long" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1L]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RPT_CONT_PATH" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="plsql">
+		<![CDATA[{call RFMU0003.RFMU0003_TITLE_PROC($P{ORACLE_REF_CURSOR},$P{REQUEST_REPORT_ID})}]]>
+	</queryString>
+	<field name="PAYMENT_START_DATE" class="java.lang.String"/>
+	<field name="PAYMENT_END_DATE" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="145" splitType="Stretch">
+			<textField>
+				<reportElement x="70" y="30" width="245" height="10" uuid="9edcb8c5-f943-48c2-90c8-bcbb466fb058"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["Selection/Rejection Criteria : -"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="130" width="245" height="10" uuid="f25c4f22-94f0-4c7a-a5e7-fbb18e8dc62c">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["Report Sequence : - 2"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="105" y="50" width="245" height="70" uuid="dabc9143-6673-480f-b69d-70ff3e00482c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA["Reject IF GROUP_CODE LT B\nReject IF GROUP_CODE GT B\nReject IF REVERSED_YN EQ Y\nReject IF PAYMENT_DATE LT "+($F{PAYMENT_START_DATE}==null?"":$F{PAYMENT_START_DATE})+"\nReject IF PAYMENT_DATE GT "+($F{PAYMENT_END_DATE}==null?"":$F{PAYMENT_END_DATE})+"\nReject IF CLEAR_IND EQ Y\nReject IF CLEAR_IND EQ"]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="-18" y="0" width="842" height="25" uuid="e45866f6-db2e-4a76-bece-c776427a3935"/>
+				<subreportParameter name="pageNumber">
+					<subreportParameterExpression><![CDATA[0]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REQUEST_REPORT_ID">
+					<subreportParameterExpression><![CDATA[$P{REQUEST_REPORT_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="RPT_CONT_PATH">
+					<subreportParameterExpression><![CDATA[$P{RPT_CONT_PATH}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[($P{RPT_CONT_PATH}==null?"":$P{RPT_CONT_PATH})+"Common/Header/A4L_Header.jrxml"]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+</jasperReport>

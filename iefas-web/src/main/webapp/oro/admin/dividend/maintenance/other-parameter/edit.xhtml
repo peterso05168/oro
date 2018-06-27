@@ -1,0 +1,304 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	template="./other-parameter.xhtml">
+
+	<ui:define name="main-content">
+		<h:form id="editForm">
+			<p:messages id="msgs" closable="true" />
+			<p:panel id="toggleable" header="#{msgs['other.parameter.header']}"
+				toggleable="true" toggleSpeed="200" widgetVar="panel">
+				<p:focus context="toggleable" />
+				<p:panel id="wilonDetails"
+					header="#{msgs['other.parameter.wilondetails.header']}">
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="periodOfNoticeMonthly"
+							value="#{msgs['other.parameter.periodofnoticemonthly.label']}"></p:outputLabel>
+						<p:column>
+							<p:inputText id="periodOfNoticeMonthly" style="width:50%" value="#{dividendParameterView.parameterVO.wilonPeriodMon}"
+								required="true" />
+							<span class="note">Months</span>
+						</p:column>
+					</p:panelGrid>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="periodOfNoticeDaily"
+							value="#{msgs['other.parameter.periodofnoticedaily.label']}"></p:outputLabel>
+						<p:column>
+							<p:inputText id="periodOfNoticeDaily" style="width:50%" value="#{dividendParameterView.parameterVO.wilonPeriodDay}"
+								required="true" />
+							<span class="note">Days</span>
+						</p:column>
+					</p:panelGrid>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="maxAmount"
+							value="#{msgs['other.parameter.maxamount.label']}"></p:outputLabel>
+						<p:inputText id="maxAmount" style="width:50%" required="true" value="#{dividendParameterView.parameterVO.maxAmount}" />
+					</p:panelGrid>
+				</p:panel>
+				<p:panel id="severancePayDetails"
+					header="#{msgs['other.parameter.severancepaydetails.header']}">
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="maximumMonthlyRate"
+							value="#{msgs['other.parameter.maximummonthlyrate.label']}"></p:outputLabel>
+						<p:inputText id="maximumMonthlyRate" style="width:50%"  value="#{dividendParameterView.parameterVO.sevrnMaxMonRate}"
+							required="true" />
+					</p:panelGrid>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="maximumDailyRate"
+							value="#{msgs['other.parameter.maximumdailyrate.label']}"></p:outputLabel>
+						<p:inputText id="maximumDailyRate" style="width:50%" value="#{dividendParameterView.parameterVO.sevrnMaxDayRate}"
+							required="true" />
+					</p:panelGrid>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="sevrnMonFractionRateNom"
+							value="#{msgs['other.parameter.monthlyfractionrate.label']}"></p:outputLabel>
+						<p:column>
+							<p:inputText id="sevrnMonFractionRateNom" style="width:50%" value="#{dividendParameterView.parameterVO.sevrnMonFractionRateNom}"
+								required="true" />
+							<span class="note">Monthly</span>
+						</p:column>
+					</p:panelGrid>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="sevrnMonFractionRateDen"
+							value="#{msgs['other.parameter.monthlyfractionrate.label']}"></p:outputLabel>
+						<p:column>
+							<p:inputText id="sevrnMonFractionRateDen" style="width:50%" value="#{dividendParameterView.parameterVO.sevrnMonFractionRateDen}"
+								required="true" />
+							<span class="note">Monthly</span>
+						</p:column>
+					</p:panelGrid>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="dailyFractionRate"
+							value="#{msgs['other.parameter.dailyfractionrate.label']}"></p:outputLabel>
+						<p:column>
+							<p:inputText id="dailyFractionRate" style="width:50%" value="#{dividendParameterView.parameterVO.sevrnDaiFractionRate}"
+								required="true" />
+							<span class="note">Years</span>
+						</p:column>
+					</p:panelGrid>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="periodwithoutPay"
+							value="#{msgs['other.parameter.periodwithoutpay.label']}"></p:outputLabel>
+						<p:column>
+							<p:inputText id="periodwithoutPay" style="width:50%" value="#{dividendParameterView.parameterVO.sevrnPeriodWoPay}"
+								required="true" />
+							<span class="note">Years</span>
+						</p:column>
+					</p:panelGrid>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="maxAmountPreferential"
+							value="#{msgs['other.parameter.maxamountpreferential.label']}"></p:outputLabel>
+						<p:inputText id="maxAmountPreferential" style="width:50%" value="#{dividendParameterView.parameterVO.sevrnMaxAmountPre}"
+							required="true" />
+					</p:panelGrid>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="maximumAmount"
+							value="#{msgs['other.parameter.maximumamount.label']}"></p:outputLabel>
+						<p:inputText id="maximumAmount" style="width:50%" required="true" value="#{dividendParameterView.parameterVO.sevrnMaxAmount}" />
+					</p:panelGrid>
+				</p:panel>
+				<p:panel id="paymentParameters"
+					header="#{msgs['other.parameter.paymentparameters.header']}">
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="satutoryInterest"
+							value="#{msgs['other.parameter.satutoryinterest.label']}"></p:outputLabel>
+						<p:column>
+							<p:inputText id="satutoryInterest" style="width:50%"
+								required="true"  value="#{dividendParameterView.parameterVO.paymentInterestRate}"/>
+							<span class="note">%</span>
+						</p:column>
+					</p:panelGrid>
+				</p:panel>
+
+				<p:panel id="automaticTransferDetails"
+					header="#{msgs['other.parameter.automatictransferdetails.header']}">
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="monthsBeforeBaToBea"
+							value="#{msgs['other.parameter.monthsbeforebatobea.label']}"></p:outputLabel>
+						<p:inputText id="monthsBeforeBaToBea" />
+
+						<p:outputLabel for="monthsBeforeBeaToGr"
+							value="#{msgs['other.parameter.monthsbeforebeatogr.label']}"></p:outputLabel>
+						<p:inputText id="monthsBeforeBeaToGr" />
+
+						<p:outputLabel for="monthsBeforeCldaToGr"
+							value="#{msgs['other.parameter.monthsbeforecldatogr.label']}"></p:outputLabel>
+						<p:inputText id="monthsBeforeCldaToGr" />
+
+						<p:outputLabel for="monthsBeforeVldaToGr"
+							value="#{msgs['other.parameter.monthsbeforevldatogr.label']}"></p:outputLabel>
+						<p:inputText id="monthsBeforeVldaToGr" />
+					</p:panelGrid>
+
+					<p:panelGrid columns="3"
+						columnClasses="ui-grid-col-3,ui-grid-col-3,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:outputLabel
+							value="#{msgs['other.parameter.liquidation.label']}" />
+						<p:outputLabel value="#{msgs['other.parameter.bankruptcy.label']}" />
+					</p:panelGrid>
+
+					<p:panelGrid columns="3"
+						columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel
+							value="#{msgs['other.parameter.before.cheque.label']}" />
+						<p:inputText />
+						<p:inputText />
+					</p:panelGrid>
+
+					<p:panelGrid columns="3"
+						columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel
+							value="#{msgs['other.parameter.late.collection.label']}" />
+						<p:column>
+							<p:inputText style="width:90%" />
+							<span class="note">%</span>
+						</p:column>
+						<p:column>
+							<p:inputText style="width:90%" />
+							<span class="note">%</span>
+						</p:column>
+					</p:panelGrid>
+
+					<p:panelGrid columns="3"
+						columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel
+							value="#{msgs['other.parameter.application.fee.label']}" />
+						<p:inputText />
+						<p:inputText />
+					</p:panelGrid>
+
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="glSourceCode"
+							value="#{msgs['other.parameter.glsourcecode.label']}"></p:outputLabel>
+						<p:inputText id="glSourceCode" />
+					</p:panelGrid>
+				</p:panel>
+
+				<p:panel id="feesAppropriationDetails"
+					header="#{msgs['other.parameter.feesappropriationdetails.header']}">
+					<p:panelGrid columns="3"
+						columnClasses="ui-grid-col-3,ui-grid-col-3,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel />
+						<p:outputLabel
+							value="#{msgs['other.parameter.liquidation.label']}" />
+						<p:outputLabel value="#{msgs['other.parameter.bankruptcy.label']}" />
+					</p:panelGrid>
+
+					<p:panelGrid columns="3"
+						columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel
+							value="#{msgs['other.parameter.distribution.fee.label']}" />
+						<p:column>
+							<p:inputText style="width:90%" />
+							<span class="note">%</span>
+						</p:column>
+						<p:column>
+							<p:inputText style="width:90%" />
+							<span class="note">%</span>
+						</p:column>
+
+						<p:outputLabel
+							value="#{msgs['other.parameter.debenture.distribution.label']}" />
+						<p:column />
+						<p:column>
+							<p:inputText style="width:90%" />
+							<span class="note">%</span>
+						</p:column>
+
+						<p:outputLabel
+							value="#{msgs['other.parameter.compositon.distribution.label']}" />
+						<p:column>
+							<p:inputText style="width:90%" />
+							<span class="note">%</span>
+						</p:column>
+						<p:column />
+
+						<p:outputLabel
+							value="#{msgs['other.parameter.release.court.label']}" />
+						<p:column>
+							<p:inputText style="width:90%" />
+							<span class="note">%</span>
+						</p:column>
+						<p:column>
+							<p:inputText style="width:90%" />
+							<span class="note">%</span>
+						</p:column>
+
+						<p:outputLabel
+							value="#{msgs['other.parameter.minimum.fees.label']}" />
+						<p:inputText />
+						<p:inputText />
+
+						<p:outputLabel for="provisionForBalance"
+							value="#{msgs['other.parameter.provisionforbalance.label']}" />
+						<p:inputText id="provisionForBalance" required="true" value="#{dividendParameterView.parameterVO.provisionOddBalLiqu}" />
+						<p:inputText required="true" value="#{dividendParameterView.parameterVO.provisionOddBalBank}" />
+					</p:panelGrid>
+				</p:panel>
+
+				<p:panel id="dividendNoticeDetails"
+					header="#{msgs['other.parameter.dividendnoticedetails.header']}">
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="minimumChequeAmount"
+							value="#{msgs['other.parameter.minimumchequeamount.label']}"></p:outputLabel>
+						<p:inputText id="minimumChequeAmount" />
+
+						<p:outputLabel for="nameOfNotice"
+							value="#{msgs['other.parameter.minimumchequeamount.label']}"></p:outputLabel>
+						<p:inputText id="nameOfNotice" required="true" value="#{dividendParameterView.parameterVO.nameInDivNotice}" />
+
+						<p:outputLabel for="numOfNotice"
+							value="#{msgs['other.parameter.numofnotice.label']}"></p:outputLabel>
+						<p:inputText id="numOfNotice" required="true" value="#{dividendParameterView.parameterVO.telInDivNotice}" />
+
+						<p:outputLabel for="maxNumOfNotice"
+							value="#{msgs['other.parameter.maxnumofnotice.label']}"></p:outputLabel>
+						<p:inputText id="maxNumOfNotice" />
+					</p:panelGrid>
+				</p:panel>
+			</p:panel>
+			<div class="ax-btn-set">
+				<p:commandButton value="#{msgs['save.btn']}" update="@form" action="#{dividendParameterView.updateParameter}" />
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

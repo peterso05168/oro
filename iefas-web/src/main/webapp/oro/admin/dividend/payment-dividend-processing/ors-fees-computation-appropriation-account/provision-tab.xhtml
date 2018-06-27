@@ -1,0 +1,325 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+	<h:panelGroup layout="block" styleClass="ax-section-title">
+		#{msgs['orsFeesComputation.provision.noippd.title']}
+	</h:panelGroup>
+	<p:panelGrid columns="3"
+		columnClasses="ui-grid-col-5,ui-grid-col-2,ui-grid-col-5"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:outputLabel for="noippdGC"
+			value="#{msgs['orsFeesComputation.provision.gazetting.charges.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="noippdGC"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.noticsPrePayGazCharge}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+		<p:outputLabel for="noippdAC"
+			value="#{msgs['orsFeesComputation.provision.advertising.charges.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="noippdAC"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.noticsPrePayAdvCharge}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+	</p:panelGrid>
+
+	<h:panelGroup layout="block" styleClass="ax-section-title"
+		rendered="#{feeComputationEditView.isBankruptcy}">
+		#{msgs['orsFeesComputation.provision.noifp.title']}
+	</h:panelGroup>
+	<p:panelGrid columns="3"
+		rendered="#{feeComputationEditView.isBankruptcy}"
+		columnClasses="ui-grid-col-5,ui-grid-col-2,ui-grid-col-5"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:outputLabel for="noifpGC"
+			value="#{msgs['orsFeesComputation.provision.gazetting.charges.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="noifpGC"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.noticsFullPayGazCharge}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+		<p:outputLabel for="noifpAC"
+			value="#{msgs['orsFeesComputation.provision.advertising.charges.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="noifpAC"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.noticsFullPayAdvCharge}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+	</p:panelGrid>
+
+	<h:panelGroup layout="block" styleClass="ax-section-title">
+		#{msgs['orsFeesComputation.provision.nod.title']}
+	</h:panelGroup>
+	<p:panelGrid columns="3"
+		columnClasses="ui-grid-col-5,ui-grid-col-2,ui-grid-col-5"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:outputLabel for="nodGC"
+			value="#{msgs['orsFeesComputation.provision.gazetting.charges.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="nodGC"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.noticsDivGazCharge}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+	</p:panelGrid>
+
+	<h:panelGroup layout="block" styleClass="ax-section-title"
+		rendered="#{feeComputationEditView.isBankruptcy}">
+		#{msgs['orsFeesComputation.provision.itdwpe.title']}
+	</h:panelGroup>
+	<p:panelGrid columns="3"
+		rendered="#{feeComputationEditView.isBankruptcy}"
+		columnClasses="ui-grid-col-5,ui-grid-col-2,ui-grid-col-5"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:outputLabel for="itdwpeGCN"
+			value="#{msgs['orsFeesComputation.provision.gazetting.charges.notice.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="itdwpeGCN"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.intDisPubExaGazCharge}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+		<p:outputLabel for="itdwpeORFGN"
+			value="#{msgs['orsFeesComputation.provision.orsfees.gazetting.notice.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="itdwpeORFGN"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.intDisPubExaOrFee}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+	</p:panelGrid>
+
+	<h:panelGroup layout="block" styleClass="ax-section-title"
+		rendered="#{feeComputationEditView.isBankruptcy}">
+		#{msgs['orsFeesComputation.provision.rroaao.title']}
+	</h:panelGroup>
+	<p:panelGrid columns="3"
+		rendered="#{feeComputationEditView.isBankruptcy}"
+		columnClasses="ui-grid-col-5,ui-grid-col-2,ui-grid-col-5"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:outputLabel for="rroaaoGACO"
+			value="#{msgs['orsFeesComputation.provision.gazetting.advertising.charges.order.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="rroaaoGACO"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.recAnnGazAdvCharge}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+		<p:outputLabel for="rroaaoORFGN"
+			value="#{msgs['orsFeesComputation.provision.orsfees.gazetting.notice.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="rroaaoORFGN"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.recAnnGazOrFee}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+	</p:panelGrid>
+
+	<h:panelGroup layout="block" styleClass="ax-section-title"
+		rendered="#{feeComputationEditView.isBankruptcy}">
+		#{msgs['orsFeesComputation.provision.discharge.title']}
+	</h:panelGroup>
+	<p:panelGrid columns="3"
+		rendered="#{feeComputationEditView.isBankruptcy}"
+		columnClasses="ui-grid-col-5,ui-grid-col-2,ui-grid-col-5"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:outputLabel for="dischargeGACAO"
+			value="#{msgs['orsFeesComputation.provision.gazetting.advertising.charges.application.order.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="dischargeGACAO"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.disGazAdvCharge}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+		<p:outputLabel for="dischargeORFGAO"
+			value="#{msgs['orsFeesComputation.provision.orsfees.gazetting.application.order.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="dischargeORFGAO"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.disGazOrFee}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+	</p:panelGrid>
+
+	<h:panelGroup layout="block" styleClass="ax-section-title"
+		rendered="#{! feeComputationEditView.isBankruptcy}">
+		#{msgs['orsFeesComputation.provision.noroctc.title']}
+	</h:panelGroup>
+	<p:panelGrid columns="3"
+		rendered="#{! feeComputationEditView.isBankruptcy}"
+		columnClasses="ui-grid-col-5,ui-grid-col-2,ui-grid-col-5"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:outputLabel for="noroctcGC"
+			value="#{msgs['orsFeesComputation.provision.gazetting.charges.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="noroctcGC"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.noticsRetCapGazCharge}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+	</p:panelGrid>
+
+	<h:panelGroup layout="block" styleClass="ax-section-title">
+		#{msgs['orsFeesComputation.provision.cfr.title']}
+	</h:panelGroup>
+	<p:panelGrid columns="3"
+		columnClasses="ui-grid-col-5,ui-grid-col-2,ui-grid-col-5"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:outputLabel for="cfrCFAR"
+			value="#{msgs['orsFeesComputation.provision.court.fee.application.release.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="cfrCFAR"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.cosRelCourtFee}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+		<p:outputLabel for="cfrGCRO"
+			value="#{msgs['orsFeesComputation.provision.gazetting.charges.release.order.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="cfrGCRO"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.cosRelGazCharge}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+		<p:outputLabel for="cfrORFGRO"
+			value="#{msgs['orsFeesComputation.provision.orfees.gazetting.release.order.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="cfrORFGRO"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.cosRelOrFee}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+	</p:panelGrid>
+
+	<h:panelGroup layout="block" styleClass="ax-section-title">
+		#{msgs['orsFeesComputation.provision.others.title']}
+	</h:panelGroup>
+	<p:panelGrid columns="3"
+		columnClasses="ui-grid-col-5,ui-grid-col-2,ui-grid-col-5"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:outputLabel for="oldBalance"
+			value="#{msgs['orsFeesComputation.provision.old.balance.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="oldBalance"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.oldBalance}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+	</p:panelGrid>
+	<p:panelGrid columns="3"
+		rendered="#{feeComputationEditView.isBankruptcy}"
+		columnClasses="ui-grid-col-5,ui-grid-col-2,ui-grid-col-5"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:outputLabel for="othersDMRL"
+			value="#{msgs['orsFeesComputation.provision.distraint.money.refundable.landlord.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="othersDMRL"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.othersDisMonRefLand}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+	</p:panelGrid>
+	<p:panelGrid columns="3"
+		columnClasses="ui-grid-col-5,ui-grid-col-2,ui-grid-col-5"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:outputLabel for="othersPTCD"
+			value="#{msgs['orsFeesComputation.provision.petitioner.taxed.cost.deposits.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="othersPTCD"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.othersPetTaxCostDep}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+	</p:panelGrid>
+	<p:panelGrid columns="3"
+		rendered="#{feeComputationEditView.isBankruptcy}"
+		columnClasses="ui-grid-col-5,ui-grid-col-2,ui-grid-col-5"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:outputLabel for="othersSCSD"
+			value="#{msgs['orsFeesComputation.provision.storage.cost.seized.documents.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="othersSCSD"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.othersStoSeiDoc}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+	</p:panelGrid>
+	<p:panelGrid columns="3"
+		columnClasses="ui-grid-col-5,ui-grid-col-2,ui-grid-col-5"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:outputLabel for="othersOthers"
+			value="#{msgs['orsFeesComputation.provision.others.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="othersOthers"
+			maxlength="16" disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.provisions.othersOthers}">
+			<p:ajax event="change" update="totalProvisions"
+				listener="#{feeComputationEditView.calculateTotalProvisions}" />
+		</p:inputNumber>
+		<p:column></p:column>
+	</p:panelGrid>
+
+	<p:panelGrid columns="6"
+		columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:outputLabel
+			value="#{msgs['orsFeesComputation.provision.total.provisions.label']}" />
+		<p:inputNumber inputStyle="text-align: right;" id="totalProvisions"
+			disabled="true" value="#{feeComputationEditView.totalProvisions}" />
+	</p:panelGrid>
+
+	<p:panelGrid columns="3"
+		columnClasses="ui-grid-col-1,ui-grid-col-10,ui-grid-col-1"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+		<p:column>
+			<div class="ax-btn-set" align="left">
+				<p:commandButton value="#{msgs['previous.btn']}"
+					style="max-width:50px;"
+					action="#{feeComputationEditView.changeToDetail}"
+					update="editForm:tabView"
+					process="editForm:tabView:provision,@this"></p:commandButton>
+			</div>
+		</p:column>
+		<p:column></p:column>
+		<p:column>
+			<div class="ax-btn-set" align="right">
+				<p:commandButton value="#{msgs['next.btn']}" style="max-width:50px;"
+					action="#{feeComputationEditView.changeToDistribution}"
+					update="editForm:tabView"
+					process="editForm:tabView:provision,@this"></p:commandButton>
+			</div>
+		</p:column>
+	</p:panelGrid>
+</ui:composition>

@@ -1,0 +1,158 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui"
+	template="./ors-fees-to-be-charged.xhtml">
+	<ui:define name="title">
+		<h:outputLink styleClass="ax-back-icon-url" hreflang="search">
+			<i class="ax-icon ti-arrow-left"></i>
+			#{msgs['orsFeesToBeCharged.title']}
+		</h:outputLink>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="caseType"
+								value="#{msgs['orsFeesToBeCharged.caseType.label']}" />
+							<p:inputText id="caseType" disabled="true"
+								value="#{feeToBeChargedEditView.caseFeeTypeVO.caseType.caseTypeDesc}">
+							</p:inputText>
+							<p:column></p:column>
+							<p:column></p:column>
+							<p:outputLabel for="feesItem"
+								value="#{msgs['orsFeesToBeCharged.feesItem.label']}" />
+							<p:inputText id="feesItem" disabled="true"
+								value="#{feeToBeChargedEditView.caseFeeTypeVO.caseFeeTypeName}">
+							</p:inputText>
+							<p:outputLabel for="feesName"
+								value="#{msgs['orsFeesToBeCharged.feesName.label']}" />
+							<p:inputText id="feesName" disabled="true"
+								value="#{feeToBeChargedEditView.caseFeeTypeVO.caseFeeTypeDesc}">
+							</p:inputText>
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<p:dataTable id="resultTable" reflow="true" paginator="false"
+					var="caseFeeCharge"
+					value="#{feeToBeChargedEditView.caseFeeToBeChargedList}">
+					<p:column
+						headerText="#{msgs['orsFeesToBeCharged.analysis.column.header']}">
+						<p:commandLink href="javascript:void(0)"
+							action="#{feeToBeChargedEditView.toEditAnalysis}"
+							update="createForm,createForm:analysisFullName">
+							<h:outputText value="#{caseFeeCharge.analysisCode.analysisCode}" />
+							<f:setPropertyActionListener value="#{caseFeeCharge}"
+								target="#{feeToBeChargedEditView.caseFeeToBeChargedVO}" />
+							<f:param name="caseFeeToBeChargedId"
+								value="#{caseFeeCharge.caseFeeToBeChargedId}" />
+						</p:commandLink>
+					</p:column>
+					<p:column
+						headerText="#{msgs['orsFeesToBeCharged.analysis.code.column.header']}">
+						<h:outputText value="#{caseFeeCharge.analysisCode.fullName}" />
+					</p:column>
+					<p:column
+						headerText="#{msgs['orsFeesToBeCharged.analysis.action.column.header']}"
+						styleClass="ax-action-w dont-print">
+						<p:menuButton value="#{msgs['action.menuButton.label']}">
+							<p:menuitem value="#{msgs['edit.menuitem.label']}"
+								update="createForm:pg,createForm:analysisFullName"
+								action="#{feeToBeChargedEditView.toEditAnalysis}"
+								onclick="PF('editDialog').show();" process="@this">
+								<f:param name="caseFeeToBeChargedId"
+									value="#{caseFeeCharge.caseFeeToBeChargedId}" />
+								<f:setPropertyActionListener value="#{caseFeeCharge}"
+									target="#{feeToBeChargedEditView.caseFeeToBeChargedVO}" />
+							</p:menuitem>
+							<p:menuitem value="#{msgs['delete.menuitem.label']}"
+								action="#{feeToBeChargedEditView.changeStatus}"
+								update="editForm">
+								<f:setPropertyActionListener value="#{caseFeeCharge}"
+									target="#{feeToBeChargedEditView.caseFeeToBeChargedVO}" />
+								<f:param name="caseFeeToBeChargedId"
+									value="#{caseFeeCharge.caseFeeToBeChargedId}" />
+							</p:menuitem>
+						</p:menuButton>
+					</p:column>
+				</p:dataTable>
+				<div class="ax-btn-set aR">
+					<p:commandButton
+						value="#{msgs['orsFeesToBeCharged.analysis.datatable.add.btn']}"
+						update="createForm:pg"
+						action="#{feeToBeChargedEditView.toEditAnalysis}"
+						onclick="PF('editDialog').show();" icon="ti-plus" />
+				</div>
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						action="#{feeToBeChargedEditView.saveORFeeItemWithAnalysisCodeCharged}" />
+					<p:commandButton value="#{msgs['edit.btn']}" update="@form" />
+				</div>
+			</h:form>
+			<h:form id="createForm">
+				<p:dialog id="editDialog"
+					header="#{msgs['orsFeesToBeCharged.editAnalysis.title']}"
+					widgetVar="editDialog" modal="true" width="500" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:ajax event="close" update="@form,editForm" resetValues="true">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="2"
+							columnClasses="ui-grid-col-3,ui-grid-col-10" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel
+								value="#{msgs['orsFeesToBeCharged.analysis.code.edit.label']}" />
+							<p:column>
+								<p:selectOneMenu id="analysisCode" required="true"
+									value="#{feeToBeChargedEditView.caseFeeToBeChargedVO.analysisCode.analysisCodeId}">
+									<f:selectItem itemLabel=" - ALL - " />
+									<f:selectItems
+										value="#{feeToBeChargedEditView.analysisCodeVOs}" var="a"
+										itemLabel="#{a.analysisCode}" itemValue="#{a.analysisCodeId}" />
+									<p:ajax event="change"
+										listener="#{feeToBeChargedEditView.changeAnalysisName}"
+										update="analysisFullName" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:outputLabel
+								value="#{msgs['orsFeesToBeCharged.analysis.code.name.edit.label']}" />
+							<p:column>
+								<p:inputText id="analysisFullName"
+									value="#{feeToBeChargedEditView.caseFeeToBeChargedVO.analysisCode.fullName}"
+									disabled="true" />
+							</p:column>
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['save.btn']}"
+							action="#{feeToBeChargedEditView.addAnalysisCodeItem}"
+							update="pg,msgs,editForm:resultTable">
+						</p:commandButton>
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('editDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+
+
+
+

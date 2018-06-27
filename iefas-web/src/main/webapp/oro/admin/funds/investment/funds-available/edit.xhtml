@@ -1,0 +1,662 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui" template="./funds-available.xhtml">
+
+	<ui:define name="title">
+		<h:outputLink styleClass="ax-back-icon-url" hreflang="search">
+			<i class="ax-icon ti-arrow-left"></i>
+			#{msgs['available.title']}
+		</h:outputLink>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form>
+				<!-- basic information start -->
+				<p:panel id="toggleable"
+					header="#{msgs['bank.account.basic.info.title']}" toggleable="true"
+					toggleSpeed="200" widgetVar="panel">
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+							<p:outputLabel for="InvDate"
+								value="#{msgs['available.investment.date.label']}" />
+							<p:calendar id="InvDate" showOn="button"
+								value="#{placingDepositsDetailView.detailVO.investmentDate}"
+								pattern="#{appResourceUtils.dateFormat}" disabled="true">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</p:calendar>
+
+							<p:outputLabel />
+							<p:outputLabel />
+
+							<p:outputLabel for="SubmittedBy"
+								value="#{msgs['available.submitted.by.label']}" />
+							<p:inputText id="SubmittedBy"
+								value="#{placingDepositsDetailView.detailVO.submittedBy}"
+								disabled="true" />
+
+							<p:outputLabel for="ApprovedBy"
+								value="#{msgs['available.approved.by.label']}" />
+							<p:inputText id="ApprovedBy"
+								value="#{placingDepositsDetailView.detailVO.approvedBy}"
+								disabled="true" />
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<!-- basic information end -->
+				<div>
+					<div id="dataTableA"
+						class="ui-datatable ui-widget ui-datatable-reflow">
+						<div class="ui-datatable-tablewrapper">
+							<table role="grid">
+								<thead id="dataTableA_head">
+									<tr role="row">
+										<th class="ui-state-default ax-num-w-d" role="columnheader"><span
+											class="ui-column-title"></span></th>
+										<th class="ui-state-default aC" role="columnheader"
+											colspan="4"><p:outputLabel
+												value="#{msgs['available.companies.liquidation.account.label']}" />
+										</th>
+										<th class="ui-state-default aC" role="columnheader"
+											colspan="3"><p:outputLabel
+												value="#{msgs['available.bankruptcy.label']}" /></th>
+										<th class="ui-state-default aC" role="columnheader"><p:outputLabel
+												value="#{msgs['available.bea.label']}" /></th>
+										<th class="ui-state-default aC" role="columnheader"><p:outputLabel
+												value="#{msgs['available.iva.label']}" /></th>
+									</tr>
+									<tr role="row">
+										<th class="ui-state-default" role="columnheader"><span
+											class="ui-column-title"></span></th>
+										<th class="ui-state-default aC" role="columnheader"><p:outputLabel
+												value="#{msgs['available.ll.ls.lv.label']}" /></th>
+										<th class="ui-state-default aC" role="columnheader"><p:outputLabel
+												value="#{msgs['available.lg2.label']}" /></th>
+										<th class="ui-state-default aC" role="columnheader"><p:outputLabel
+												value="#{msgs['available.lg3.label']}" /></th>
+										<th class="ui-state-default aC" role="columnheader"></th>
+										<th class="ui-state-default aC" role="columnheader"><p:outputLabel
+												value="#{msgs['available.bb.ba.label']}" /></th>
+										<th class="ui-state-default aC" role="columnheader"><p:outputLabel
+												value="#{msgs['available.bg.label']}" /></th>
+										<th class="ui-state-default aC" role="columnheader"></th>
+										<th class="ui-state-default aC" role="columnheader"><p:outputLabel
+												value="#{msgs['available.eg.label']}" /></th>
+										<th class="ui-state-default aC" role="columnheader"><p:outputLabel
+												value="#{msgs['available.eg.label']}" /></th>
+									</tr>
+									<tr role="row">
+										<th class="ui-state-default" role="columnheader"></th>
+										<th class="ui-state-default aC u i" role="columnheader">
+											<p:outputLabel value="#{msgs['available.separate.label']}" />
+										</th>
+										<th class="ui-state-default aC u i" role="columnheader">
+											<p:outputLabel value="#{msgs['available.pool.label']}" />
+										</th>
+										<th class="ui-state-default aC u i" role="columnheader">
+											<p:outputLabel value="#{msgs['available.group.label']}" />
+										</th>
+										<th class="ui-state-default aC u i" role="columnheader">
+											<p:outputLabel value="#{msgs['available.total.label']}" />
+										</th>
+										<th class="ui-state-default aC u i" role="columnheader">
+											<p:outputLabel value="#{msgs['available.separate.label']}" />
+										</th>
+										<th class="ui-state-default aC u i" role="columnheader">
+											<p:outputLabel value="#{msgs['available.group.label']}" />
+										</th>
+										<th class="ui-state-default aC u i" role="columnheader">
+											<p:outputLabel value="#{msgs['available.total.label']}" />
+										</th>
+										<th class="ui-state-default aC u i" role="columnheader"></th>
+										<th class="ui-state-default aC u i" role="columnheader"></th>
+									</tr>
+								</thead>
+								<tbody id="dataTableA_data"
+									class="ui-datatable-data ui-widget-content">
+									<tr data-ri="0"
+										class="ui-widget-content ui-datatable-even color-022"
+										role="row">
+										<td role="gridcell" colspan="3"><p:outputLabel
+												value="#{msgs['available.book.balance.label']}" /></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line1.column4 eq null)?0:placingDepositsDetailView.availables.line1.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line1.column1 eq null)?0:placingDepositsDetailView.availables.line1.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line1.column6 eq null)?0:placingDepositsDetailView.availables.line1.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line1.column6 eq null)?0:placingDepositsDetailView.availables.line1.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+									</tr>
+
+									<tr data-ri="0"
+										class="ui-widget-content ui-datatable-even color-022"
+										role="row">
+										<td role="gridcell" colspan="3"><p:outputLabel
+												value="#{msgs['available.uncleared.cheque.label']}" /></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line2.column4 eq null)?0:placingDepositsDetailView.availables.line2.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line2.column1 eq null)?0:placingDepositsDetailView.availables.line2.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line2.column6 eq null)?0:placingDepositsDetailView.availables.line2.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line2.column6 eq null)?0:placingDepositsDetailView.availables.line2.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+									</tr>
+
+									<tr data-ri="0"
+										class="ui-widget-content ui-datatable-even color-022"
+										role="row">
+										<td role="gridcell" colspan="3"><p:outputLabel
+												value="#{msgs['available.pending.cheque.label']}" /></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line3.column4 eq null)?0:placingDepositsDetailView.availables.line3.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line3.column1 eq null)?0:placingDepositsDetailView.availables.line3.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line3.column6 eq null)?0:placingDepositsDetailView.availables.line3.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line3.column6 eq null)?0:placingDepositsDetailView.availables.line3.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+									</tr>
+
+									<tr data-ri="0"
+										class="ui-widget-content ui-datatable-even color-022"
+										role="row">
+										<td role="gridcell"><p:outputLabel
+												value="#{msgs['available.available.bank.balance.label']}" /></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line1.column4 - placingDepositsDetailView.availables.line2.column4 - placingDepositsDetailView.availables.line3.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line1.column4 - placingDepositsDetailView.availables.line2.column4 - placingDepositsDetailView.availables.line3.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line1.column1 - placingDepositsDetailView.availables.line2.column1 - placingDepositsDetailView.availables.line3.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line1.column1 - placingDepositsDetailView.availables.line2.column1 - placingDepositsDetailView.availables.line3.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line1.column6 - placingDepositsDetailView.availables.line2.column6 - placingDepositsDetailView.availables.line3.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line1.column6 - placingDepositsDetailView.availables.line2.column6 - placingDepositsDetailView.availables.line3.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+									</tr>
+
+									<tr data-ri="0" class="ui-widget-content ui-datatable-even"
+										role="row">
+										<td role="gridcell"><p:outputLabel
+												value="#{msgs['available.intra.account.transfer.label']}" /></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line4.column5 eq null)?0:placingDepositsDetailView.availables.line4.column5}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line4.column3 eq null)?0:placingDepositsDetailView.availables.line4.column3}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line4.column4 eq null)?0:placingDepositsDetailView.availables.line4.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line4.column5 + placingDepositsDetailView.availables.line4.column3 + placingDepositsDetailView.availables.line4.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line4.column2 eq null)?0:placingDepositsDetailView.availables.line4.column2}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line4.column1 eq null)?0:placingDepositsDetailView.availables.line4.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line4.column2 + placingDepositsDetailView.availables.line4.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line4.column6 eq null)?0:placingDepositsDetailView.availables.line4.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line4.column6 eq null)?0:placingDepositsDetailView.availables.line4.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+									</tr>
+									<tr data-ri="0" class="ui-widget-content ui-datatable-even"
+										role="row">
+										<td role="gridcell"><p:outputLabel
+												value="#{msgs['available.funds.to.be.received.label']}" /></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line5.column4 eq null)?0:placingDepositsDetailView.availables.line5.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line5.column4 eq null)?0:placingDepositsDetailView.availables.line5.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line5.column1 eq null)?0:placingDepositsDetailView.availables.line5.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line5.column1 eq null)?0:placingDepositsDetailView.availables.line5.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line5.column6 eq null)?0:placingDepositsDetailView.availables.line5.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line5.column6 eq null)?0:placingDepositsDetailView.availables.line5.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+									</tr>
+									<tr data-ri="0" class="ui-widget-content ui-datatable-even"
+										role="row">
+										<td role="gridcell"><p:outputLabel
+												value="#{msgs['available.deposit.matured.interest.label']}" /></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line6.column5 eq null)?0:placingDepositsDetailView.availables.line6.column5}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line6.column3 eq null)?0:placingDepositsDetailView.availables.line6.column3}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line6.column4 eq null)?0:placingDepositsDetailView.availables.line6.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line6.column5 + placingDepositsDetailView.availables.line6.column3 + placingDepositsDetailView.availables.line6.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line6.column2 eq null)?0:placingDepositsDetailView.availables.line6.column2}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line6.column1 eq null)?0:placingDepositsDetailView.availables.line6.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line6.column2 + placingDepositsDetailView.availables.line6.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line6.column6 eq null)?0:placingDepositsDetailView.availables.line6.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line6.column6 eq null)?0:placingDepositsDetailView.availables.line6.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+									</tr>
+									<tr data-ri="0" class="ui-widget-content ui-datatable-even"
+										role="row">
+										<td role="gridcell"><p:outputLabel
+												value="#{msgs['available.interest.transfer.label']}" /></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line7.column5 eq null)?0:placingDepositsDetailView.availables.line7.column5}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line7.column3 eq null)?0:placingDepositsDetailView.availables.line7.column3}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line7.column4 eq null)?0:placingDepositsDetailView.availables.line7.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line7.column5 + placingDepositsDetailView.availables.line7.column3 + placingDepositsDetailView.availables.line7.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line7.column2 eq null)?0:placingDepositsDetailView.availables.line7.column2}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line7.column1 eq null)?0:placingDepositsDetailView.availables.line7.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line7.column2 + placingDepositsDetailView.availables.line7.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line7.column6 eq null)?0:placingDepositsDetailView.availables.line7.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line7.column6 eq null)?0:placingDepositsDetailView.availables.line7.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+									</tr>
+									<tr data-ri="0" class="ui-widget-content ui-datatable-even"
+										role="row">
+										<td role="gridcell"><p:outputLabel
+												value="#{msgs['available.payments.except.dividend.label']}" /></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line8.column4 eq null)?0:placingDepositsDetailView.availables.line8.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line8.column4 eq null)?0:placingDepositsDetailView.availables.line8.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line8.column1 eq null)?0:placingDepositsDetailView.availables.line8.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line8.column1 eq null)?0:placingDepositsDetailView.availables.line8.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line8.column6 eq null)?0:placingDepositsDetailView.availables.line8.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line8.column6 eq null)?0:placingDepositsDetailView.availables.line8.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+									</tr>
+									<tr data-ri="0" class="ui-widget-content ui-datatable-even"
+										role="row">
+										<td role="gridcell"><p:outputLabel
+												value="#{msgs['available.dividend.label']}" /></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line9.column4 eq null)?0:placingDepositsDetailView.availables.line9.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line9.column4 eq null)?0:placingDepositsDetailView.availables.line9.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line9.column1 eq null)?0:placingDepositsDetailView.availables.line9.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line9.column1 eq null)?0:placingDepositsDetailView.availables.line9.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line9.column6 eq null)?0:placingDepositsDetailView.availables.line9.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line9.column6 eq null)?0:placingDepositsDetailView.availables.line9.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+									</tr>
+									<tr data-ri="0" class="ui-widget-content ui-datatable-even"
+										role="row">
+										<td role="gridcell"><p:outputLabel
+												value="#{msgs['available.buffer.label']}" /></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line10.column4 eq null)?0:placingDepositsDetailView.availables.line10.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line10.column4 eq null)?0:placingDepositsDetailView.availables.line10.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line10.column1 eq null)?0:placingDepositsDetailView.availables.line10.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line10.column1 eq null)?0:placingDepositsDetailView.availables.line10.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line10.column6 eq null)?0:placingDepositsDetailView.availables.line10.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line10.column6 eq null)?0:placingDepositsDetailView.availables.line10.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+									</tr>
+									<tr data-ri="0" class="ui-widget-content ui-datatable-even"
+										role="row">
+										<td role="gridcell"><p:outputLabel
+												value="#{msgs['available.pending.payments.label']}" /></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line11.column4 eq null)?0:placingDepositsDetailView.availables.line11.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line11.column4 eq null)?0:placingDepositsDetailView.availables.line11.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line11.column1 eq null)?0:placingDepositsDetailView.availables.line11.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line11.column1 eq null)?0:placingDepositsDetailView.availables.line11.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line11.column6 eq null)?0:placingDepositsDetailView.availables.line11.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber
+												value="#{(placingDepositsDetailView.availables.line11.column6 eq null)?0:placingDepositsDetailView.availables.line11.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+									</tr>
+									<tr data-ri="0"
+										class="ui-widget-content ui-datatable-even color-012"
+										role="row">
+										<td role="gridcell"><p:outputLabel
+												value="#{msgs['available.balance.label']}" /></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line4.column5 + placingDepositsDetailView.availables.line6.column5 + placingDepositsDetailView.availables.line7.column5}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line4.column3 + placingDepositsDetailView.availables.line6.column3 + placingDepositsDetailView.availables.line7.column3}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line1.column4 + placingDepositsDetailView.availables.line2.column4 + placingDepositsDetailView.availables.line3.column4 + placingDepositsDetailView.availables.line4.column4 + placingDepositsDetailView.availables.line5.column4 + placingDepositsDetailView.availables.line6.column4 + placingDepositsDetailView.availables.line7.column4 + placingDepositsDetailView.availables.line8.column4 + placingDepositsDetailView.availables.line9.column4 + placingDepositsDetailView.availables.line10.column4 + placingDepositsDetailView.availables.line11.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line1.column4 - placingDepositsDetailView.availables.line2.column4 - placingDepositsDetailView.availables.line3.column4 + placingDepositsDetailView.availables.line4.column5 + placingDepositsDetailView.availables.line4.column3 + placingDepositsDetailView.availables.line4.column4 + placingDepositsDetailView.availables.line5.column4 +placingDepositsDetailView.availables.line6.column5 + placingDepositsDetailView.availables.line6.column3 + placingDepositsDetailView.availables.line6.column4 + placingDepositsDetailView.availables.line7.column5 + placingDepositsDetailView.availables.line7.column3 + placingDepositsDetailView.availables.line7.column4 + placingDepositsDetailView.availables.line8.column4 + placingDepositsDetailView.availables.line9.column4 + placingDepositsDetailView.availables.line10.column4 + placingDepositsDetailView.availables.line11.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line4.column2 + placingDepositsDetailView.availables.line6.column2 + placingDepositsDetailView.availables.line7.column2}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line1.column1 + placingDepositsDetailView.availables.line2.column1 + placingDepositsDetailView.availables.line3.column1 + placingDepositsDetailView.availables.line4.column1 + placingDepositsDetailView.availables.line5.column1 + placingDepositsDetailView.availables.line6.column1 + placingDepositsDetailView.availables.line7.column1 + placingDepositsDetailView.availables.line8.column1 + placingDepositsDetailView.availables.line9.column1 + placingDepositsDetailView.availables.line10.column1 + placingDepositsDetailView.availables.line11.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line1.column1 - placingDepositsDetailView.availables.line2.column1 - placingDepositsDetailView.availables.line3.column1 + placingDepositsDetailView.availables.line4.column2 + placingDepositsDetailView.availables.line4.column1 + placingDepositsDetailView.availables.line5.column1 + placingDepositsDetailView.availables.line6.column2 + placingDepositsDetailView.availables.line6.column1 + placingDepositsDetailView.availables.line7.column2 + placingDepositsDetailView.availables.line7.column1 + placingDepositsDetailView.availables.line8.column1 + placingDepositsDetailView.availables.line9.column1 + placingDepositsDetailView.availables.line10.column1 + placingDepositsDetailView.availables.line11.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line1.column6 + placingDepositsDetailView.availables.line2.column6 + placingDepositsDetailView.availables.line3.column6 + placingDepositsDetailView.availables.line4.column6 + placingDepositsDetailView.availables.line5.column6 + placingDepositsDetailView.availables.line6.column6 + placingDepositsDetailView.availables.line7.column6 + placingDepositsDetailView.availables.line8.column6 + placingDepositsDetailView.availables.line9.column6 + placingDepositsDetailView.availables.line10.column6 + placingDepositsDetailView.availables.line11.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line1.column6 + placingDepositsDetailView.availables.line2.column6 + placingDepositsDetailView.availables.line3.column6 + placingDepositsDetailView.availables.line4.column6 + placingDepositsDetailView.availables.line5.column6 + placingDepositsDetailView.availables.line6.column6 + placingDepositsDetailView.availables.line7.column6 + placingDepositsDetailView.availables.line8.column6 + placingDepositsDetailView.availables.line9.column6 + placingDepositsDetailView.availables.line10.column6 + placingDepositsDetailView.availables.line11.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+									</tr>
+									<tr data-ri="0"
+										class="ui-widget-content ui-datatable-even color-012"
+										role="row">
+										<td role="gridcell"><p:outputLabel
+												value="#{msgs['available.place.deposit.label']}" /></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line12.column5 eq null)?0:placingDepositsDetailView.availables.line12.column5}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line12.column3 eq null)?0:placingDepositsDetailView.availables.line12.column3}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line12.column4 eq null)?0:placingDepositsDetailView.availables.line12.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line12.column5 + placingDepositsDetailView.availables.line12.column3 + placingDepositsDetailView.availables.line12.column4}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line12.column2 eq null)?0:placingDepositsDetailView.availables.line12.column2}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line12.column1 eq null)?0:placingDepositsDetailView.availables.line12.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line12.column2 + placingDepositsDetailView.availables.line12.column1}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line12.column6 eq null)?0:placingDepositsDetailView.availables.line12.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{(placingDepositsDetailView.availables.line12.column6 eq null)?0:placingDepositsDetailView.availables.line12.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+									</tr>
+									<tr data-ri="0"
+										class="ui-widget-content ui-datatable-even color-012"
+										role="row">
+										<td class="b" role="gridcell"><p:outputLabel
+												value="#{msgs['available.total.deposit.label']}" /></td>
+										<td role="gridcell"><p:inputNumber disabled="true"
+												value="#{placingDepositsDetailView.availables.line12.column5 + placingDepositsDetailView.availables.line12.column3 + placingDepositsDetailView.availables.line12.column4 + placingDepositsDetailView.availables.line12.column2 + placingDepositsDetailView.availables.line12.column1 + placingDepositsDetailView.availables.line12.column6 + placingDepositsDetailView.availables.line12.column6}">
+												<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+											</p:inputNumber></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"></td>
+										<td role="gridcell"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<script id="dataTableA_s" type="text/javascript">
+						$(function() {
+							PrimeFaces.cw("DataTable", "widget_dataTableA", {
+								id : "dataTableA",
+								reflow : true
+							});
+						});
+					</script>
+				</div>
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						disabled="#{placingDepositsDetailView.detailVO.status eq 'SUB' or placingDepositsDetailView.detailVO.status eq 'APR' }"
+						action="#{placingDepositsDetailView.save}" />
+					<p:menuButton value="#{msgs['action.menuButton.label']}"
+						disabled="#{placingDepositsDetailView.detailVO.status eq 'APR'}">
+						<p:menuitem update="@form"
+							rendered="#{placingDepositsDetailView.detailVO.status eq 'DRT' or placingDepositsDetailView.detailVO.status eq 'REJ'}"
+							value="#{msgs['submit.btn']}"
+							action="#{placingDepositsDetailView.submit}" />
+						<p:menuitem update="@form"
+							rendered="#{placingDepositsDetailView.detailVO.status eq 'SUB'}"
+							value="#{msgs['approve.btn']}"
+							action="#{placingDepositsDetailView.approve}" />
+						<p:menuitem update="@form"
+							rendered="#{placingDepositsDetailView.detailVO.status eq 'SUB'}"
+							value="#{msgs['reject.btn']}"
+							action="#{placingDepositsDetailView.reject}" />
+					</p:menuButton>
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+
+</ui:composition>

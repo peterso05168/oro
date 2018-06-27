@@ -1,0 +1,194 @@
+<!DOCTYPE html [
+    <!ENTITY bull "&#8226;">
+]>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:i="http://iefas.oro.hk/ui"
+	template="../tp-base.xhtml">
+
+	<ui:define name="page-content">
+
+		<input class="ax-system-time" id="system_time" name="system_time"
+			value="#{appResourceUtils.getFormatedBusinessDate() }" type="text" />
+		<input class="ax-user-id" id="user_id" name="user_id"
+			value="#{menuView.userSession.userFullName}" type="text" />
+		<script>
+			_initMenuCheckbox('mainLayout')
+		</script>
+		<div class="menu-layout" data-layout-id="mainLayout"
+			data-layout-type="side-menu">
+
+			<h:form>
+				<i:iefasMenu model="#{menuView.userSession.menuModel}" />
+			</h:form>
+
+			<div class="menu-content">
+				<div class="body-header">
+					<div class="header">
+						<div class="logo">
+							<a href="#{request.contextPath}" title=""> <p:graphicImage
+									library="primefaces-oro" name="images/logo.png" />
+							</a>
+						</div>
+						<div class="app-name">
+							<div class="sep"></div>
+							<div class="text">
+								<div class="row-01">Official Receiver's Office</div>
+								<div class="row-02 Arial">Insolvency Estate Funds and
+									Accounting System</div>
+							</div>
+						</div>
+						<div class="dropdown profile">
+							<a title=""><img
+								src="#{request.contextPath}/resources/oro/images/resource/profile-icon.png"
+								alt="" />#{menuView.userSession.userFullName}<i class="caret"></i>
+							</a>
+							<h:form>
+								<div class="profile drop-list">
+									<ul>
+										<li><p:link outcome="profile-edit">
+												<i class="ti-user"></i>My Profile</p:link></li>
+										<li><p:commandLink
+												actionListener="#{dialogBean.openSwitchUserDialog}"
+												process="@this">
+												<p:ajax event="dialogReturn"
+													listener="#{menuView.onUserChosen}" />
+												<i class="ti-control-shuffle"></i>Switch User</p:commandLink></li>
+										<li><p:link href="javascript:void(0)"
+												onclick="PF('notificationDialog').show();">
+												<i class="ti-comment-alt"></i>System Notice</p:link></li>
+										<li><a title="System Time"><i class="ti-time"></i><span
+												class="system-time">2019-01-01 05:43:50</span></a></li>
+										<li><p:link href="/logout">
+												<i class="ti-share"></i>
+											Logout</p:link></li>
+									</ul>
+								</div>
+							</h:form>
+						</div>
+
+						<p:idleMonitor
+							timeout="#{(appResourceUtils.sessionTimeout-5)*1000}"
+							onidle="PF('sessionCD').show()" />
+						<p:confirmDialog id="sessionCD" widgetVar="sessionCD"
+							appendTo="@(body)" showEffect="fade" hideEffect="fade"
+							closable="false"
+							message="#{appResourceUtils.getSessionTimeoutMsg()}"
+							header="Session Confirmation">
+							<p:button value="Yes" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+								outcome="/oro/admin/index/login.xhtml" />
+						</p:confirmDialog>
+
+						<script type="text/javascript">
+							jQuery(document)
+									.ready(
+											function() {
+												//**** Notification Dropdown ***//
+												$(
+														'.notification-list.dropdown > a')
+														.click(
+																function(e) {
+																	$(
+																			".notification.drop-list")
+																			.fadeToggle(
+																					"fast");
+																	e
+																			.stopPropagation();
+																});
+												//**** Profile Dropdown ***//
+												$('.profile.dropdown > a')
+														.click(
+																function(e) {
+																	$(
+																			".profile.drop-list")
+																			.fadeToggle(
+																					"fast");
+																	e
+																			.stopPropagation();
+																});
+												$("body")
+														.click(
+																function() {
+																	$(
+																			".notification.drop-list:visible")
+																			.fadeOut(
+																					"fast");
+																	$(
+																			".profile.drop-list:visible")
+																			.fadeOut(
+																					"fast");
+																});
+											});
+						</script>
+						<div class="ax-printing">
+							<ul>
+								<li class="printer" onClick="_printPreview()"
+									title="Print Preview"><i class="ti-printer"></i></li>
+								<li class="print-now" onClick="_printNow()" title="Print Now"><i
+									class="ti-printer"></i></li>
+								<li class="print-cancel" onClick="_printCancel()" title="Cancel"><i
+									class="ti-close"></i></li>
+							</ul>
+						</div>
+						<div class="ax-trm-menu">
+							<ul>
+								<li class="menu-toggle" data-layout-id="mainLayout"
+									data-menu-id="mainMenu"><i></i></li>
+								<li class="refresh" onClick="_refreshNow()" title="Refresh"><i
+									class="ti-reload"></i></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="body-content">
+					<div>
+						<ui:insert name="page-view-container" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			_initAllTxMenu();
+		</script>
+
+		<h:form>
+			<p:dialog header="System Notification" widgetVar="notificationDialog"
+				width="600">
+				<div>
+					<p:textEditor
+						value="#{systemNotificationView.sysNotificationContent}"
+						rendered="false"></p:textEditor>
+					<div class="ql-editor" contenteditable="true">
+						<h:outputText
+							value="#{systemNotificationView.sysNotificationContent}"
+							escape="false" />
+					</div>
+				</div>
+				<br />
+				<br />
+				<f:facet name="footer">
+					<div class="ax-btn-set">
+						<p:commandButton value="Close"
+							onclick="PF('notificationDialog').hide();" />
+					</div>
+				</f:facet>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+
+
+

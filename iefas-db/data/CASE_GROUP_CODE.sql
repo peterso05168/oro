@@ -1,0 +1,1 @@
+INSERT INTO "CASE_GROUP_CODE" VALUES (1, 1, 'Group A', 'Group A', 'Group A', 'ACT', 0, 'Accentrix', 'System Admin', TO_DATE('20180320153615', 'YYYYMMDDHH24MISS'), 'Accentrix', 'System Admin', TO_DATE('20180320153615', 'YYYYMMDDHH24MISS'));

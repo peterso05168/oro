@@ -1,0 +1,116 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="./create-bank-transfer-file.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left" />
+            #{msgs['payment.handling.create.bank.transfer.file.bank.transfer.file.detail.title']}
+        </h:link>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<h:form id="editForm">
+			<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+				toggleable="true" toggleSpeed="300" widgetVar="panel">
+				<p:messages id="msgs" closable="true" />
+				<div>
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+						<p:outputLabel for="paymentFileId"
+							value="#{msgs['payment.handling.create.bank.transfer.file.payment.file.id.label']}" />
+						<p:inputText id="paymentFileId" disabled="true" />
+						<p:outputLabel for="paymentType"
+							value="#{msgs['payment.handling.create.bank.transfer.file.payment.type.label']}" />
+						<p:inputText id="paymentType" disabled="true" />
+						<p:outputLabel for="processDate"
+							value="#{msgs['payment.handling.create.bank.transfer.file.process.date.label']}" />
+						<p:inputText id="processDate" disabled="true" />
+						<p:outputLabel for="totalAmount"
+							value="#{msgs['payment.handling.create.bank.transfer.file.total.amount.label']}" />
+						<p:inputText id="totalAmount" disabled="true" />
+						<p:outputLabel for="status"
+							value="#{msgs['payment.handling.create.bank.transfer.file.status.label']}" />
+						<p:inputText id="status" disabled="true" />
+						<p:outputLabel for="currency"
+							value="#{msgs['payment.handling.create.bank.transfer.file.currency.label']}" />
+						<p:inputText id="currency" disabled="true" />
+						<p:outputLabel for="groupAApprover"
+							value="#{msgs['payment.handling.create.bank.transfer.file.group.a.approver.label']}" />
+						<p:selectOneMenu id="groupAApprover" required="true">
+							<f:selectItem itemLabel="- All -" noSelectionOption="true" />
+						</p:selectOneMenu>
+						<p:outputLabel for="groupBApprover"
+							value="#{msgs['payment.handling.create.bank.transfer.file.group.b.approver.label']}" />
+						<p:selectOneMenu id="groupBApprover" required="true">
+							<f:selectItem itemLabel="- All -" noSelectionOption="true" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+				</div>
+			</p:panel>
+			<p:tabView id="tabView" activeIndex="0">
+				<p:tab
+					title="#{msgs['payment.handling.create.bank.transfer.file.item.title']}">
+					<p:dataTable lazy="true" reflow="true" paginator="true"
+						paginatorPosition="bottom" rows="5"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15" draggableColumns="true">
+
+						<p:column
+							headerText="#{msgs['payment.handling.create.bank.transfer.file.item.number.column.head']}">
+							<h:outputText />
+						</p:column>
+
+						<p:column
+							headerText="#{msgs['payment.handling.create.bank.transfer.file.transfer.date.column.head']}">
+							<h:outputText />
+						</p:column>
+
+						<p:column
+							headerText="#{msgs['payment.handling.create.bank.transfer.file.voucher.number.column.head']}">
+							<h:outputText />
+						</p:column>
+						<p:column
+							headerText="#{msgs['payment.handling.create.bank.transfer.file.from.account.column.head']}">
+							<h:outputText />
+						</p:column>
+						<p:column
+							headerText="#{msgs['payment.handling.create.bank.transfer.file.to.account.column.head']}">
+							<h:outputText />
+						</p:column>
+						<p:column
+							headerText="#{msgs['payment.handling.create.bank.transfer.file.to.account.column.head']}">
+							<h:outputText />
+						</p:column>
+					</p:dataTable>
+				</p:tab>
+			</p:tabView>
+			<div class="ax-btn-set">
+				<p:button value="#{msgs['back.btn']}"
+					styleClass="ui-priority-secondary" icon="ti-arrow-left"
+					outcome="search"></p:button>
+				<p:commandButton id="saveBtn" value="#{msgs['save.btn']}"
+					rendered="#{createBankTransferFileEditView.action.saveable}" />
+				<p:menuButton value="#{msgs['action.menuButton.label']}">
+					<p:menuitem
+						value="#{msgs['payment.handling.create.bank.transfer.file.action.submit.button.label']}"
+						rendered="#{createBankTransferFileEditView.action.submitable}">
+					</p:menuitem>
+					<p:menuitem
+						value="#{msgs['payment.handling.create.bank.transfer.file.action.approve.button.label']}"
+						rendered="#{createBankTransferFileEditView.action.approvable}">
+					</p:menuitem>
+					<p:menuitem
+						value="#{msgs['payment.handling.create.bank.transfer.file.action.reject.button.label']}"
+						rendered="#{createBankTransferFileEditView.action.rejectable}">
+					</p:menuitem>
+				</p:menuButton>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

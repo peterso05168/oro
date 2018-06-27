@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	template="./withheld-reasons.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable" header="#{msgs['withheld.reasons.search.title']}"
+				toggleable="true" toggleSpeed="200" widgetVar="panel">
+				<p:focus context="toggleable" />
+				<h:form id="searchForm">
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="withheldReasonCode"
+							value="#{msgs['withheld.reasons.search.label']}" />
+						<p:inputText id="withheldReasonCode" value="#{withheldReasonsSearchView.searchCriteria.withheldReasonCode}"/>
+						
+						<p:outputLabel for="withheldReasonsStatus"
+							value="#{msgs['withheld.reasons.Status.label']}" />
+						<p:selectOneMenu id="withheldReasonsStatus" value="#{withheldReasonsSearchView.searchCriteria.status}">
+						   <f:selectItems value="#{withheldReasonsSearchView.statusVOs}" var="s" itemLabel="#{s.statusName}" itemValue="#{s.statusVal}"/>
+						</p:selectOneMenu>
+						
+					</p:panelGrid>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['search.btn']}" icon="ti-search"
+							action="#{withheldReasonsSearchView.search}" update="formC" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary"
+							action="#{withheldReasonsSearchView.reset}" update="formC,searchForm" />
+						<p:commandButton value="#{msgs['create.btn']}" action="edit" ajax="false"/>
+					</div>
+				</h:form>
+			</p:panel>
+			<!-- dialog to show delete message -->
+			<p:dialog widgetVar="msgDialog" modal="true" closable="false">
+				<h:form id="formMsg">
+					<div class="ui-fluid">
+						<h:outputText value="#{withheldReasonsSearchView.deleteMsg}"
+							style="font-size:16px;font-weight:bold;" />
+					</div>
+					<div style="margin: 30px 0px 0px 280px;">
+						<p:commandButton value="OK" styleClass="ui-confirmdialog-yes"
+							onclick="PF('msgDialog').hide();" />
+					</div>
+				</h:form>
+			</p:dialog>
+			<!-- dialog to show delete message -->
+		</div>
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

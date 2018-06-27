@@ -1,0 +1,311 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui"
+	template="./payment-percentages-adjustment.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+	        #{msgs['payment.dividend.processing.title']}
+		</h:link>
+	</ui:define>
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:focus context="toggleable" />
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4,"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel
+								value="#{msgs['payment.dividend.processing.case.number.label']}" />
+							<com:caseNumber
+								caseTypeCodeValue="#{percentagesAdjustmentEditView.caseNumberVO.caseType}"
+								caseNoValue="#{percentagesAdjustmentEditView.caseNumberVO.caseSequence}"
+								caseYearValue="#{percentagesAdjustmentEditView.caseNumberVO.caseYear}"
+								disabled="true" />
+							<p:outputLabel for="caseName"
+								value="#{msgs['payment.dividend.processing.case.name.label']}" />
+							<p:inputText id="caseName"
+								value="#{percentagesAdjustmentEditView.percentagesAdjustmentVO.creditor.caseInfo.caseName}"
+								disabled="true" />
+							<p:outputLabel for="creditorName"
+								value="#{msgs['payment.dividend.processing.creditor.name.label']}" />
+							<p:inputText id="creditorName"
+								value="#{percentagesAdjustmentEditView.percentagesAdjustmentVO.creditor.creditorNameEng}"
+								disabled="true" />
+							<p:outputLabel for="creditorType"
+								value="#{msgs['payment.dividend.processing.creditor.type.label']}" />
+							<p:inputText id="creditorType"
+								value="#{percentagesAdjustmentEditView.percentagesAdjustmentVO.creditorType.creditorTypeName}"
+								disabled="true" />
+							<p:outputLabel for="proofNo"
+								value="#{msgs['payment.dividend.processing.proof.number.label']}" />
+							<p:inputText id="proofNo"
+								value="#{percentagesAdjustmentEditView.percentagesAdjustmentVO.creditor.proofNo}"
+								disabled="true" />
+						</p:panelGrid>
+					</div>
+				</p:panel>
+
+				<!-- tab start -->
+				<p:tabView id="tabView" activeIndex="0">
+					<p:tab title="#{msgs['payment.tab.payment.label']}">
+						<div>
+							<p:panelGrid columns="4" columnClasses="ui-grid-col-3"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:inputText
+									value="#{msgs['payment.dividend.processing.tab.payment.preferential']}"
+									disabled="true" style="text-align:center" />
+								<p:inputText
+									value="#{msgs['payment.dividend.processing.tab.payment.deferred.preferential']}"
+									style="text-align:center" disabled="true" />
+								<p:inputText
+									value="#{msgs['payment.dividend.processing.tab.payment.ordinary']}"
+									style="text-align:center" disabled="true" />
+								<p:inputText
+									value="#{msgs['payment.dividend.processing.tab.payment.deferred.ordinary']}"
+									style="text-align:center" disabled="true" />
+							</p:panelGrid>
+							<p:panelGrid columns="8"
+								columnClasses="ui-grid-col-2,ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,
+							ui-grid-col-2,ui-grid-col-1,ui-grid-col-2,ui-grid-col-1"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel for="preferentialAmount"
+									value="#{msgs['payment.dividend.processing.tab.payment.amount']}" />
+								<p:inputText id="preferentialAmount" style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Preferential'].admittedAmount}"
+									disabled="true" />
+								<p:outputLabel for="deferredPreferentialAmount"
+									value="#{msgs['payment.dividend.processing.tab.payment.amount']}" />
+								<p:inputText id="deferredPreferentialAmount"
+									style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Deferred Preferential'].admittedAmount}"
+									disabled="true" />
+								<p:outputLabel for="ordinaryAmount"
+									value="#{msgs['payment.dividend.processing.tab.payment.amount']}" />
+								<p:inputText id="ordinaryAmount" style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Ordinary'].admittedAmount}"
+									disabled="true" />
+								<p:outputLabel for="deferredOrdinaryAmount"
+									value="#{msgs['payment.dividend.processing.tab.payment.amount']}" />
+								<p:inputText id="deferredOrdinaryAmount"
+									style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Deferred Ordinary'].admittedAmount}"
+									disabled="true" />
+
+								<p:outputLabel for="preferentialAmountDistributed"
+									value="#{msgs['payment.dividend.processing.tab.payment.distributed.amount']}" />
+								<p:inputText id="preferentialAmountDistributed"
+									style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Preferential'].amountPaid}"
+									required="true">
+									<f:ajax event="blur"
+										listener="#{percentagesAdjustmentEditView.changeDistributedAmount}"
+										render="editForm" />
+								</p:inputText>
+								<p:outputLabel for="deferredPreferentialAmountDistributed"
+									value="#{msgs['payment.dividend.processing.tab.payment.distributed.amount']}" />
+								<p:inputText id="deferredPreferentialAmountDistributed"
+									style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Deferred Preferential'].amountPaid}"
+									required="true">
+									<f:ajax event="blur"
+										listener="#{percentagesAdjustmentEditView.changeDistributedAmount}"
+										render="editForm" />
+								</p:inputText>
+								<p:outputLabel for="ordinaryAmountDistributed"
+									value="#{msgs['payment.dividend.processing.tab.payment.distributed.amount']}" />
+								<p:inputText id="ordinaryAmountDistributed"
+									style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Ordinary'].amountPaid}"
+									required="true">
+									<f:ajax event="blur"
+										listener="#{percentagesAdjustmentEditView.changeDistributedAmount}"
+										render="editForm" />
+								</p:inputText>
+								<p:outputLabel for="deferredOrdinaryAmountDistributed"
+									value="#{msgs['payment.dividend.processing.tab.payment.distributed.amount']}" />
+								<p:inputText id="deferredOrdinaryAmountDistributed"
+									style="text-align: right;" required="true"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Deferred Ordinary'].amountPaid}">
+									<f:ajax event="blur"
+										listener="#{percentagesAdjustmentEditView.changeDistributedAmount}"
+										render="editForm" />
+								</p:inputText>
+
+								<p:outputLabel for="preferentialPercentage"
+									value="#{msgs['payment.dividend.processing.tab.payment.distributed.percentage']}" />
+								<p:inputText id="preferentialPercentage"
+									style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Preferential'].percentPaid}"
+									disabled="true">
+									<f:convertNumber type="percent" currencySymbol="%" />
+								</p:inputText>
+								<p:outputLabel for="deferredPreferentialPercentage"
+									inputStyle="text-align: right;"
+									value="#{msgs['payment.dividend.processing.tab.payment.distributed.percentage']}" />
+								<p:inputText id="deferredPreferentialPercentage"
+									style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Deferred Preferential'].percentPaid}"
+									disabled="true">
+									<f:convertNumber type="percent" currencySymbol="%" />
+								</p:inputText>
+								<p:outputLabel for="ordinaryPercentage"
+									value="#{msgs['payment.dividend.processing.tab.payment.distributed.percentage']}" />
+								<p:inputText id="ordinaryPercentage" style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Ordinary'].percentPaid}"
+									disabled="true">
+									<f:convertNumber type="percent" currencySymbol="%" />
+								</p:inputText>
+								<p:outputLabel for="deferredOrdinaryPercentage"
+									value="#{msgs['payment.dividend.processing.tab.payment.distributed.percentage']}" />
+								<p:inputText id="deferredOrdinaryPercentage"
+									style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Deferred Ordinary'].percentPaid}"
+									disabled="true">
+									<f:convertNumber type="percent" currencySymbol="%" />
+								</p:inputText>
+
+								<p:outputLabel for="preferentialAmountToBeDis"
+									value="#{msgs['payment.dividend.processing.tab.payment.amount.dis']}" />
+								<p:inputText id="preferentialAmountToBeDis"
+									style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Preferential'].amountToBeDistributed}"
+									disabled="true" />
+								<p:outputLabel for="deferredPreferentialAmountToBeDis"
+									value="#{msgs['payment.dividend.processing.tab.payment.amount.dis']}" />
+								<p:inputText id="deferredPreferentialAmountToBeDis"
+									style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Deferred Preferential'].amountToBeDistributed}"
+									disabled="true" />
+								<p:outputLabel for="ordinaryAmountToBeDis"
+									value="#{msgs['payment.dividend.processing.tab.payment.amount.dis']}" />
+								<p:inputText id="ordinaryAmountToBeDis"
+									style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Ordinary'].amountToBeDistributed}"
+									disabled="true" />
+								<p:outputLabel for="deferredOrdinaryAmountToBeDis"
+									value="#{msgs['payment.dividend.processing.tab.payment.amount.dis']}" />
+								<p:inputText id="deferredOrdinaryAmountToBeDis"
+									style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Deferred Ordinary'].amountToBeDistributed}"
+									disabled="true" />
+
+								<p:outputLabel for="preferentialPercentageDistributed"
+									value="#{msgs['payment.dividend.processing.tab.payment.percentage.distributed']}" />
+								<p:inputText id="preferentialPercentageDistributed"
+									style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Preferential'].percentageToBeDistributed}"
+									disabled="true">
+									<f:convertNumber type="percent" currencySymbol="%" />
+								</p:inputText>
+								<p:outputLabel for="deferredPreferentialPercentageDistributed"
+									value="#{msgs['payment.dividend.processing.tab.payment.percentage.distributed']}" />
+								<p:inputText id="deferredPreferentialPercentageDistributed"
+									style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Deferred Preferential'].percentageToBeDistributed}"
+									disabled="true">
+									<f:convertNumber type="percent" currencySymbol="%" />
+								</p:inputText>
+								<p:outputLabel for="ordinaryPercentageDistributed"
+									value="#{msgs['payment.dividend.processing.tab.payment.percentage.distributed']}" />
+								<p:inputText id="ordinaryPercentageDistributed"
+									style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Ordinary'].percentageToBeDistributed}"
+									disabled="true">
+									<f:convertNumber type="percent" currencySymbol="%" />
+								</p:inputText>
+								<p:outputLabel for="deferredOrdinaryPercentageDistributed"
+									value="#{msgs['payment.dividend.processing.tab.payment.percentage.distributed']}" />
+								<p:inputText id="deferredOrdinaryPercentageDistributed"
+									style="text-align: right;"
+									value="#{percentagesAdjustmentEditView.apprAdjResultItemMap['Deferred Ordinary'].percentageToBeDistributed}"
+									disabled="true">
+									<f:convertNumber type="percent" currencySymbol="%" />
+								</p:inputText>
+							</p:panelGrid>
+						</div>
+					</p:tab>
+
+					<p:tab title="#{msgs['payment.tab.dividend.schedule.label']}">
+						<p:dataTable var="divSchedule"
+							value="#{percentagesAdjustmentEditView.dividendScheduleItemVOs}"
+							rowKey="#{divSchedule.dividendScheduleItemId}" lazy="true"
+							reflow="true" paginator="true" paginatorPosition="bottom"
+							rows="8"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15" draggableColumns="true"
+							rendered="#{percentagesAdjustmentEditView.percentagesAdjustmentVO.dividendSchedule != null}">
+							<p:column
+								headerText="#{msgs['payment.dividend.schedule.tab.payment.date.label']}">
+								<h:outputText
+									value="#{percentagesAdjustmentEditView.dividendScheduleVO.paymentEffectiveDate}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['payment.dividend.schedule.tab.natureofclaim.label']}">
+								<h:outputText value="#{divSchedule.adjResult.natureOfClaim}" />
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['payment.dividend.schedule.tab.distributed.amount.label']}">
+								<h:outputText value="#{divSchedule.distributionAmount}" style="text-align: right;"
+									 />
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['payment.dividend.schedule.tab.distributed.percentage.label']}">
+								<h:outputText value="#{divSchedule.distributionPercentage}"
+									style="text-align: right;">
+									<f:convertNumber type="percent" currencySymbol="%" />
+								</h:outputText>
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['payment.dividend.schedule.tab.handledby.label']}">
+								<h:outputText
+									value="#{percentagesAdjustmentEditView.dividendScheduleVO.submittedBy}" />
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['payment.dividend.schedule.tab.approvedby.label']}">
+								<h:outputText
+									value="#{percentagesAdjustmentEditView.dividendScheduleVO.approvedBy}" />
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['payment.dividend.schedule.tab.status.label']}">
+								<h:outputText value="#{divSchedule.status}" />
+								<br />
+							</p:column>
+						</p:dataTable>
+					</p:tab>
+				</p:tabView>
+				<!-- tab end -->
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton value="#{msgs['payment.tab.payment.save']}"
+						update="editForm,tabView"
+						action="#{percentagesAdjustmentEditView.save}" />
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+
+
+
+

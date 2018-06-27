@@ -1,0 +1,60 @@
+name: ORO-IEFAS WS
+remote:
+  allowedAddress: 192.168.130.77
+server:
+  port: 8080
+servlet:
+  container:
+    maxThreads: 513
+spring:
+  jpa:
+    repositories:
+      enabled: true
+    generate-ddl: true
+    properties:
+      hibernate.hbm2ddl.auto: validate
+    show-sql: true
+    open-in-view: true
+    hibernate: 
+      use-new-id-generator-mappings: true
+  datasource:
+    jndi-name: java:jboss/datasources/iefas
+  batch:
+    initializer:
+      enabled: false
+  mail:
+    default-encoding: UTF-8
+    jndi-name: java:jboss/mail/iefas
+    from: iefas.dev@accentrix.com
+org:
+  quartz:
+    scheduler:
+      instanceName: iefas-quartz
+      instanceId: sit-1
+      skipUpdateCheck: true
+      startupDelay: 10
+    threadPool:
+      class: org.quartz.simpl.SimpleThreadPool
+      threadCount: 5
+      threadPriority: 5
+    jobStore:
+      class: org.quartz.impl.jdbcjobstore.JobStoreTX
+      misfireThreshold: 60000
+      driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+      useProperties: true
+      tablePrefix: QRTZ_
+      isClustered: true
+      clusterCheckinInterval: 20000
+      maxMisfiresToHandleAtATime: 1
+report:
+  server:
+    url: http://192.168.130.80:8080/jasperserver
+    username: jasperadmin
+    password: jasperadmin
+    root: reports
+    env: SIT
+iefas: 
+  ftp: 
+    watchFtpFile: false
+    output: /iefas/ftp/output/
+    input: /iefas/ftp/input/

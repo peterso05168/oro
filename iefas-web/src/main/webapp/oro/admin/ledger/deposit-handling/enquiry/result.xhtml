@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="receiveDepositResultTable">
+        <p:messages id="msgs" closable="true"/>
+        <p:dataTable var="receiveDeposit" rendered="#{receiveDepositEnquirySearchView.lazyDataModel != null}"
+                     value="#{receiveDepositEnquirySearchView.lazyDataModel}"
+                     rowKey="" lazy="true" reflow="true"
+                     paginator="true" paginatorPosition="bottom" rows="5"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rowsPerPageTemplate="5,10,15" draggableColumns="true">
+            <f:facet name="header">#{msgs['result.title']}</f:facet>
+            <p:column
+                    headerText="#{msgs['deposit.handling.enquiry.deposit.number.column.head']}">
+                <p:commandLink action="edit" ajax="false">
+                    <h:outputText value="#{receiveDeposit.depositNumber}"/>
+                    <f:param name="depositId" value="#{receiveDeposit.depositId}"/>
+                </p:commandLink>
+            </p:column>
+
+            <p:column
+                    headerText="#{msgs['deposit.handling.enquiry.date.column.head']}">
+                <h:outputText value="#{receiveDeposit.date}">
+                    <f:convertDateTime pattern="#{appResourceUtils.dateFormat}"/>
+                </h:outputText>
+            </p:column>
+            <p:column
+                    headerText="#{msgs['deposit.handling.enquiry.payer.name.column.head']}">
+                <h:outputText value="#{receiveDeposit.payerName}"/>
+            </p:column>
+            <p:column
+                    headerText="#{msgs['deposit.handling.enquiry.receipt.number.column.head']}">
+                <h:outputText value="#{receiveDeposit.receiptNumber}"/>
+            </p:column>
+            <p:column
+                    headerText="#{msgs['deposit.handling.enquiry.currency.column.head']}">
+                <h:outputText value="#{receiveDeposit.currency}"/>
+            </p:column>
+            <p:column
+                    headerText="#{msgs['deposit.handling.enquiry.amount.column.head']}">
+                <h:outputText value="#{receiveDeposit.amount}"/>
+            </p:column>
+            <p:column headerText="#{msgs['status.column.header']}"
+                      styleClass="ax-status-w-b">
+                <h:outputText value="#{msgs['deposit.handling.enquiry.status.reversed.label']}"
+                              rendered="#{receiveDeposit.status eq 'REV'}" class="status-label green"/>
+                <h:outputText value="#{msgs['deposit.handling.enquiry.status.pending.label']}"
+                              rendered="#{receiveDeposit.status eq 'PED'}" class="status-label blue"/>
+                <h:outputText value="#{msgs['deposit.handling.enquiry.status.processed.label']}"
+                              rendered="#{receiveDeposit.status eq 'PCS'}" class="status-label green"/>
+            </p:column>
+            <p:column headerText="#{msgs['deposit.handling.enquiry.case.number.column.head']}">
+                <h:outputText value="#{receiveDeposit.caseNumber}"
+                              rendered="#{receiveDeposit.status or 'PED' || receiveDeposit.status != null}"/>
+                <h:inputText value="#{receiveDepositEnquirySearchView.caseNumber}"
+                             rendered="#{receiveDeposit.status eq 'PED' and receiveDeposit.caseNumber == null}">
+                    <p:ajax event="blur" listener="#{receiveDepositEnquirySearchView.searchCaseInfo(receiveDeposit.depositId)}" />
+                </h:inputText>
+            </p:column>
+        </p:dataTable>
+        <div class="ax-btn-set">
+            <p:commandButton id="updateBtn" value="#{msgs['update.btn']}"
+                             rendered="#{receiveDepositEnquirySearchView.lazyDataModel != null}"
+                             update="receiveDepositResultTable"
+                             action="#{receiveDepositEnquirySearchView.update}"/>
+        </div>
+    </h:form>
+</ui:composition>
+
+
+
+

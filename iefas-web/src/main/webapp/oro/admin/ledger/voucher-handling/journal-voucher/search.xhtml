@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	template="./journal-voucher.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable"
+				header="#{msgs['journal.voucher.search.title']}" toggleable="true"
+				toggleSpeed="200" widgetVar="panel">
+				<p:focus context="toggleable" />
+				<h:form id="searchForm">
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="journalType"
+							value="#{msgs['journal.voucher.joucher.type.label']}" />
+						<p:selectOneMenu id="journalType"
+							value="#{journalVoucherSearchView.journalVoucherSearchVO.journalTypeId}">
+							<f:selectItem itemLabel="- All -" noSelectionOption="true" />
+							<f:selectItems value="#{journalVoucherSearchView.journalTypes}"
+								var="journalType" itemLabel="#{journalType.journalTypeCode}"
+								itemValue="#{journalType.journalTypeId}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel for="groupCode"
+							value="#{msgs['journal.voucher.group.code.label']}" />
+						<p:inputText id="groupCode"
+							value="#{journalVoucherSearchView.journalVoucherSearchVO.groupCode}" />
+
+						<p:outputLabel for="voucherNumber"
+							value="#{msgs['journal.voucher.voucher.number.label']}" />
+						<p:inputText id="voucherNumber"
+							value="#{journalVoucherSearchView.journalVoucherSearchVO.voucherNumber}" />
+
+						<p:outputLabel for="voucherDate"
+							value="#{msgs['journal.voucher.voucher.date.label']}" />
+						<p:calendar id="voucherDate" showOn="button"
+							pattern="#{appResourceUtils.dateFormat}"
+							value="#{journalVoucherSearchView.journalVoucherSearchVO.voucherDate}"></p:calendar>
+
+						<p:outputLabel for="accountNumber"
+							value="#{msgs['journal.voucher.account.number.label']}" />
+						<com:accountNumber id="accountNumber"
+							caseTypeCodeValue="#{journalVoucherSearchView.journalVoucherSearchVO.caseType}"
+							caseNoValue="#{journalVoucherSearchView.journalVoucherSearchVO.caseNumber}"
+							caseYearValue="#{journalVoucherSearchView.journalVoucherSearchVO.caseYear}"
+							accountTypeCodeValue="#{journalVoucherSearchView.journalVoucherSearchVO.accountType}"
+							disabled="false" />
+
+						<p:outputLabel for="analysisCode"
+							value="#{msgs['journal.voucher.analysis.code.label']}" />
+						<p:autoComplete id="analysisCode"
+							value="#{journalVoucherSearchView.journalVoucherSearchVO.analysisCode}"
+							completeMethod="#{journalVoucherSearchView.completeAnalysisCode}"
+							var="analysisCode" itemLabel="#{analysisCode.analysisCode}"
+							itemValue="#{analysisCode.analysisCode}" cache="true"
+							cacheTimeout="30000" minQueryLength="3" forceSelection="true"></p:autoComplete>
+
+						<p:outputLabel for="status" value="#{msgs['status.label']}" />
+						<p:selectOneMenu id="status"
+							value="#{journalVoucherSearchView.journalVoucherSearchVO.statusId}">
+							<f:selectItem itemLabel="- All -" noSelectionOption="true" />
+							<f:selectItems value="#{journalVoucherSearchView.statusVOs}"
+								var="status" itemLabel="#{status.statusName}"
+								itemValue="#{status.statusId}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['search.btn']}" icon="ti-search"
+							action="#{journalVoucherSearchView.search}" update="resultForm" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary"
+							action="#{journalVoucherSearchView.reset}"
+							update="searchForm,resultForm" />
+						<p:button value="#{msgs['create.btn']}" outcome="edit" />
+					</div>
+				</h:form>
+			</p:panel>
+		</div>
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

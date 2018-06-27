@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<h:form id="formC">
+		<p:dataTable var="bank"
+			value="#{bankAccountSearchView.bankAccountDataModel}"
+			rowKey="#{bank.bankInfoId}" lazy="true" reflow="true"
+			paginator="true" paginatorPosition="bottom" rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true"
+			rendered="#{bankAccountSearchView.bankAccountDataModel != null}">
+			<f:facet name="header">#{msgs['bank.account.result.title']}</f:facet>
+
+			<p:column headerText="#{msgs['bank.name.column.header']}"
+				sortBy="#{bank.bankName}">
+				<p:commandLink href="javascript:void(0)" action="edit" ajax="false">
+					<h:outputText value="#{bank.bankName}" />
+					<f:param name="bankInfoId" value="#{bank.bankInfoId}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column headerText="#{msgs['bank.short.name.column.header']}"
+				sortBy="#{bank.bankShortName}">
+				<h:outputText value="#{bank.bankShortName}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['bank.code.column.header']}"
+				sortBy="#{bank.bankCode}">
+				<h:outputText value="#{bank.bankCode}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['bank.available.room.column.header']}"
+				sortBy="#{bank.avaiableRoom}">
+				<h:outputText value="#{bank.avaiableRoom}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['status.column.header']}"
+				sortBy="#{bank.status}" styleClass="ax-status-w-b">
+				<h:outputText value="#{msgs['inactive.status.label']}"
+					rendered="#{bank.status eq 'INA'}" class="status-label red" />
+				<h:outputText value="#{msgs['active.status.label']}"
+					rendered="#{bank.status eq 'ACT'}" class="status-label green" />
+			</p:column>
+
+			<p:column headerText="#{msgs['action.column.header']}"
+				styleClass="ax-action-w dont-print">
+				<p:menuButton value="#{msgs['action.menuButton.label']}">
+					<p:menuitem value="#{msgs['edit.menuitem.label']}" action="edit" ajax="false">
+						<f:param name="bankInfoId" value="#{bank.bankInfoId}" />
+					</p:menuitem>
+					<p:menuitem value="#{msgs['inactive.status.label']}"
+						rendered="#{bank.status eq 'ACT'}"
+						action="#{bankAccountSearchView.changeStatus}" update="formC">
+						<f:setPropertyActionListener value="#{bank.bankInfoId}"
+							target="#{bankAccountSearchView.bankInfoId}" />
+					</p:menuitem>
+					<p:menuitem value="#{msgs['active.status.label']}"
+						rendered="#{bank.status eq 'INA'}"
+						action="#{bankAccountSearchView.changeStatus}" update="formC">
+						<f:setPropertyActionListener value="#{bank.bankInfoId}"
+							target="#{bankAccountSearchView.bankInfoId}" />
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+
+	</h:form>
+</ui:composition>
+
+
+
+

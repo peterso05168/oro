@@ -1,0 +1,104 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="./outsider.xhtml">
+
+    <ui:define name="title">
+        <h:link styleClass="ax-back-icon-url" outcome="search">
+            <i class="ax-icon ti-arrow-left"/>
+            #{msgs['outsider.title']}
+        </h:link>
+    </ui:define>
+
+    <ui:define name="main-content">
+        <div>
+            <h:form id="editForm">
+                <p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+                         toggleable="true" toggleSpeed="300" widgetVar="panel">
+                    <p:focus context="toggleable"/>
+                    <p:messages id="msgs" closable="true"/>
+                    <div>
+                        <p:panelGrid columns="4"
+                                     columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                                     layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                            <p:outputLabel for="outsiderType"
+                                           value="#{msgs['maintenance.outsider.type.label']}"/>
+                            <p:selectOneMenu id="outsiderType" required="true"
+                                             value="#{outsiderEditView.outsiderVO.outsiderType.outsiderTypeId}">
+                                <f:selectItem itemLabel="- All -" noSelectionOption="true"/>
+                                <f:selectItems value="#{outsiderEditView.outsiderTypeVOs}"
+                                               var="outsiderType" itemLabel="#{outsiderType.outsiderTypeName}"
+                                               itemValue="#{outsiderType.outsiderTypeId}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="outsiderName"
+                                           value="#{msgs['maintenance.outsider.name.label']}"/>
+                            <p:inputText id="outsiderName" required="true"
+                                         validator="#{outsiderValidator.validateOutsiderName}"
+                                         value="#{outsiderEditView.outsiderVO.outsiderName}"/>
+
+                            <p:outputLabel for="EngAddress"
+                                           value="#{msgs['common.creditor.eng.address.label']}"/>
+                            <p:inputText id="EngAddress" required="true" placeholder="Flat,Floor,Block"
+                                         validator="#{outsiderValidator.validateEngAddress}"
+                                         value="#{outsiderEditView.outsiderVO.address.address1}"/>
+
+                            <p:outputLabel for="ChiAddress"
+                                           value="#{msgs['common.creditor.chi.address.label']}"/>
+                            <p:inputText id="ChiAddress" placeholder="Flat,Floor,Block"
+                                         validator="#{outsiderValidator.validateChiAddress}"
+                                         value="#{outsiderEditView.outsiderVO.address.chiAddress1}"/>
+                            <p:outputLabel/>
+                            <p:inputText id="EngAddr1" placeholder="Street,Road"
+                                         validator="#{outsiderValidator.validateEngAddress}"
+                                         value="#{outsiderEditView.outsiderVO.address.address2}"/>
+
+                            <p:outputLabel/>
+                            <p:inputText id="ChiAddr1" placeholder="Stree,Road"
+                                         validator="#{outsiderValidator.validateChiAddress}"
+                                         value="#{outsiderEditView.outsiderVO.address.chiAddress2}"/>
+
+                            <p:outputLabel/>
+                            <p:inputText id="EngAddr2" placeholder="District"
+                                         validator="#{outsiderValidator.validateEngAddress}"
+                                         value="#{outsiderEditView.outsiderVO.address.address3}"/>
+
+                            <p:outputLabel/>
+                            <p:inputText id="ChiAddr2" placeholder="District"
+                                         validator="#{outsiderValidator.validateChiAddress}"
+                                         value="#{outsiderEditView.outsiderVO.address.chiAddress3}"/>
+
+                            <p:outputLabel for="contactPerson"
+                                           value="#{msgs['maintenance.outsider.contact.person.label']}"/>
+                            <p:inputText id="contactPerson"
+                                         value="#{outsiderEditView.outsiderVO.contactPerson}"/>
+
+                            <p:outputLabel for="email"
+                                           value="#{msgs['maintenance.outsider.email.label']}"/>
+                            <p:inputText id="email" required="true"
+                                         value="#{outsiderEditView.outsiderVO.email}"
+                                         validatorMessage="Please enter a valid email address">
+                                <f:validateRegex
+                                        pattern="^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+"/>
+                            </p:inputText>
+
+                            <p:outputLabel for="telephone"
+                                           value="#{msgs['maintenance.outsider.telephone.label']}"/>
+                            <p:inputText id="telephone" required="true"
+                                         value="#{outsiderEditView.outsiderVO.contactNo}"/>
+                        </p:panelGrid>
+                    </div>
+                </p:panel>
+                <div class="ax-btn-set">
+                    <p:button value="#{msgs['back.btn']}"
+                              styleClass="ui-priority-secondary" icon="ti-arrow-left"
+                              outcome="search"/>
+                    <p:commandButton value="#{msgs['save.btn']}" update="@form"
+                                     action="#{outsiderEditView.save}"/>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

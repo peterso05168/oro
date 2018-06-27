@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="./division-administrator.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable"
+				header="#{msgs['division.administrator.search.title']}"
+				toggleable="true" toggleSpeed="200" widgetVar="panel">
+				<p:focus context="toggleable"/>
+				<h:form id="searchForm">
+					<div>
+						<input type="checkbox" id="basicAdvance" name="basicAdvance"
+							class="basicAdvance hidden-checkbox" checked="checked" />
+						<div class="search-basic">
+							<p:panelGrid columns="1" layout="grid"
+								columnClasses="ui-grid-col-12"
+								styleClass="ui-panelgrid-blank ui-fluid">
+								<p:inputText />
+								<p:column>
+									<label for="basicAdvance" class="basicAdvanceLabel advance"><i
+										class="ti-search"></i> Advanced Search</label>
+									<div class="note">Division</div>
+								</p:column>
+							</p:panelGrid>
+						</div>
+						<div class="search-advance">
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+								<p:outputLabel for="Division"
+									value="#{msgs['division.administrator.division.label']}" />
+								<p:selectOneMenu id="Division"
+									value="#{divisionAdministratorSearchView.criteria.divisionId}">
+									<f:selectItem itemLabel="- All -" itemValue="" />
+									<f:selectItems
+										value="#{divisionAdministratorSearchView.divisionVOs}"
+										var="division" itemLabel="#{division.divisionName}"
+										itemValue="#{division.divisionId}" />
+								</p:selectOneMenu>
+
+							</p:panelGrid>
+							<p:panelGrid columns="6" columnClasses="ui-grid-col-12"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:column styleClass="ui-grid-col-12">
+									<label for="basicAdvance" class="basicAdvanceLabel advance"><i
+										class="ti-search"></i>Basic Search</label>
+								</p:column>
+							</p:panelGrid>
+						</div>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['search.btn']}" icon="ti-search"
+							action="#{divisionAdministratorSearchView.search}"
+							update="divisionSearchTable" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary"
+							action="#{divisionAdministratorSearchView.reset}"
+							update="@form, divisionSearchTable" />
+						<p:commandButton value="#{msgs['create.btn']}"
+							action="#{divisionAdministratorSearchView.dialogHandleOpen}"
+							update="divisionSearchTable" />
+					</div>
+				</h:form>
+			</p:panel>
+		</div>
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

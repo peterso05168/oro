@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="R001_CONTENT1" pageWidth="401" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="401" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="b4eb36bd-d348-4ef0-8187-67a562bb4c98">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORODCDataAdapter.xml"/>
+	<style name="Style1" isDefault="true" fontName="Courier" fontSize="9" isBold="true"/>
+	<parameter name="ORACLE_REF_CURSOR" class="java.sql.ResultSet" isForPrompting="false"/>
+	<parameter name="account_no" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["BB0108900"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RPT_CONT_PATH" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="plsql">
+		<![CDATA[{call RACC0001.RACC0001_CONTENT2_PROC($P{ORACLE_REF_CURSOR},$P{account_no})}]]>
+	</queryString>
+	<field name="ANA_CODE" class="java.lang.String"/>
+	<field name="debit" class="java.math.BigDecimal"/>
+	<field name="item_desc" class="java.lang.String"/>
+	<field name="SHOW_ZERO" class="java.lang.String"/>
+	<variable name="total" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{debit}]]></variableExpression>
+	</variable>
+	<variable name="cashInHand" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="10" y="0" width="50" height="10" isRemoveLineWhenBlank="true" uuid="590dfed6-0e17-465b-a27e-49da4b8984e5">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<printWhenExpression><![CDATA[$F{debit}.compareTo( BigDecimal.ZERO ) != 0 || "Y".equalsIgnoreCase( $F{SHOW_ZERO} )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ANA_CODE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="300" y="0" width="100" height="10" isRemoveLineWhenBlank="true" uuid="54c2eaca-87b7-4c20-98de-322693c9c9bc">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<printWhenExpression><![CDATA[$F{debit}.compareTo( BigDecimal.ZERO ) != 0 || "Y".equalsIgnoreCase( $F{SHOW_ZERO} )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{debit}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="60" y="0" width="240" height="10" isRemoveLineWhenBlank="true" uuid="eb12bee3-55a3-48d4-aa0b-02d4d468721b">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<printWhenExpression><![CDATA[$F{debit}.compareTo( BigDecimal.ZERO ) != 0 || "Y".equalsIgnoreCase( $F{SHOW_ZERO} )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{item_desc}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="71" splitType="Stretch">
+			<textField isStretchWithOverflow="true" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="300" y="1" width="100" height="15" isRemoveLineWhenBlank="true" uuid="f8fcb9dd-eef0-43cd-885e-766442a726c2">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<printWhenExpression><![CDATA[$V{total} != null]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="16" width="401" height="40" isRemoveLineWhenBlank="true" uuid="871d6ccb-4bfb-4238-bc33-d8522735064a"/>
+				<subreportParameter name="account_no">
+					<subreportParameterExpression><![CDATA[$P{account_no}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="total" toVariable="cashInHand"/>
+				<subreportExpression><![CDATA[($P{RPT_CONT_PATH}==null?"":$P{RPT_CONT_PATH} + "RACC0001/")+"RACC0001_CONTENT3.jrxml"]]></subreportExpression>
+			</subreport>
+			<textField isStretchWithOverflow="true" evaluationTime="Auto" pattern="#,##0.00#;(#,##0.00#)" isBlankWhenNull="true">
+				<reportElement x="300" y="56" width="100" height="15" uuid="96f3f532-573b-4d3d-8ec8-cf20d975c10c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[BigDecimal.ZERO.add($V{total}==null?BigDecimal.ZERO:$V{total}).add( $V{cashInHand}==null?BigDecimal.ZERO:$V{cashInHand})]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>

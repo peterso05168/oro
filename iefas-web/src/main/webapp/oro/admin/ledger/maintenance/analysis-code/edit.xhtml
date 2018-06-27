@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	template="./analysis-code.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+           #{msgs['analysis.code.title']}
+        </h:link>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="basicPanel" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="300" widgetVar="basicPanel">
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="AnalysisCode"
+								value="#{msgs['analysis.code.analysis.code.label']}" />
+							<p:inputMask id="AnalysisCode" required="true" mask="999-999"
+								validator="#{analysisCodeValidator.validateAnalysisCode}"
+								value="#{analysisCodeEditView.analysisCodeVO.analysisCode}" />
+
+							<p:outputLabel for="VoucherType"
+								value="#{msgs['analysis.code.voucher.type.label']}" />
+							<p:selectOneMenu id="VoucherType" required="true"
+								value="#{analysisCodeEditView.analysisCodeVO.voucherType.voucherTypeId}">
+								<f:selectItem itemLabel="- Please Select -"
+									noSelectionOption="true" />
+								<f:selectItems value="#{analysisCodeEditView.voucherTypeVOs}"
+									var="type" itemLabel="#{type.voucherTypeName}"
+									itemValue="#{type.voucherTypeId}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel for="ShortName"
+								value="#{msgs['analysis.code.short.name.label']}" />
+							<p:inputText id="ShortName" required="true"
+								value="#{analysisCodeEditView.analysisCodeVO.shortName}" />
+
+							<p:outputLabel for="FullName"
+								value="#{msgs['analysis.code.full.name.label']}" />
+							<p:inputText id="FullName" required="true"
+								value="#{analysisCodeEditView.analysisCodeVO.fullName}" />
+
+							<p:outputLabel for="CodeType"
+								value="#{msgs['analysis.code.code.type.label']}" />
+							<p:selectOneMenu id="CodeType" required="true"
+								value="#{analysisCodeEditView.analysisCodeVO.analysisCodeType.analysisCodeTypeId}">
+								<f:selectItem itemLabel="- Please Select -"
+									noSelectionOption="true" />
+								<f:selectItems value="#{analysisCodeEditView.codeTypeVOs}"
+									var="type" itemLabel="#{type.analysisCodeTypeName}"
+									itemValue="#{type.analysisCodeTypeId}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel for="RealizationFee"
+								value="#{msgs['analysis.code.realization.fee.label']}" />
+							<p:selectOneMenu id="RealizationFee" required="true"
+								value="#{analysisCodeEditView.analysisCodeVO.realizationFee}">
+								<f:selectItem itemLabel="- Please Select -"
+									noSelectionOption="true" />
+								<f:selectItems
+									value="#{analysisCodeEditView.realizationFeeOptions}"
+									var="option" itemLabel="#{option.codeDesc}"
+									itemValue="#{option.codeValue}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel for="Status" value="#{msgs['status.label']}" />
+							<p:selectOneMenu id="Status" required="true"
+								value="#{analysisCodeEditView.analysisCodeVO.status}">
+								<f:selectItem itemLabel="- Please Select -"
+									noSelectionOption="true" />
+								<f:selectItems value="#{analysisCodeEditView.statusVOs}"
+									var="status" itemLabel="#{status.statusName}"
+									itemValue="#{status.statusVal}" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+					</div>
+				</p:panel>
+
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search" />
+					<p:commandButton value="#{msgs['save.btn']}" validateClient="true"
+						action="#{analysisCodeEditView.save}" update="@form" />
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

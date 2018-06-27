@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RFUN0003_PAGEHEADER" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0cc42640-e369-4fe9-94c3-44bc38346441">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORODCDataAdapter.xml"/>
+	<style name="Style1" isDefault="true" fontName="Courier" fontSize="9" isBold="true"/>
+	<parameter name="ORACLE_REF_CURSOR" class="java.sql.ResultSet" isForPrompting="false"/>
+	<parameter name="REQUEST_REPORT_ID" class="java.lang.Long" isForPrompting="false">
+		<defaultValueExpression><![CDATA[8L]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RPT_CONT_PATH" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="pageNumber" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString language="plsql">
+		<![CDATA[{call RFUN0003.RFUN0003_PAGEHEADER_PROC($P{ORACLE_REF_CURSOR},$P{REQUEST_REPORT_ID})}]]>
+	</queryString>
+	<field name="TRANSACTION_DATE" class="java.lang.String"/>
+	<variable name="TRANSACTION_DATE" class="java.lang.String">
+		<variableExpression><![CDATA[$F{TRANSACTION_DATE}==null?"":$F{TRANSACTION_DATE}.substring( 6)+"/"+$F{TRANSACTION_DATE}.substring( 4, 6 )+"/"+$F{TRANSACTION_DATE}.substring( 0, 4 )]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="65" splitType="Stretch">
+			<textField evaluationTime="Auto">
+				<reportElement x="238" y="30" width="365" height="30" uuid="7f80cff7-3a5e-4072-bad6-299739d90ce5">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["RANGE OF CASE NO. : - -00000-00 - z-z-99999-99\n"+
+"RANGE OF DEPOSIT REF NO. : 00-00000 - z99-99999\n"+
+"RANGE OF TRANSACTION DATE : "+$V{TRANSACTION_DATE}+" - "+$V{TRANSACTION_DATE}+"\n"]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="-18" y="0" width="842" height="25" uuid="a730f3fd-a7b1-45b8-8d2f-8a2b05123abb"/>
+				<subreportParameter name="pageNumber">
+					<subreportParameterExpression><![CDATA[$P{pageNumber}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REQUEST_REPORT_ID">
+					<subreportParameterExpression><![CDATA[$P{REQUEST_REPORT_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="RPT_CONT_PATH">
+					<subreportParameterExpression><![CDATA[$P{RPT_CONT_PATH}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[($P{RPT_CONT_PATH}==null?"":$P{RPT_CONT_PATH})+"Common/Header/A4L_Header.jrxml"]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageHeader>
+</jasperReport>

@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="./control-account.xhtml">
+
+    <ui:define name="title">
+        <h:link styleClass="ax-back-icon-url" outcome="search">
+            <i class="ax-icon ti-arrow-left"></i>
+            #{msgs['maintenance.control.account.title']}
+        </h:link>
+    </ui:define>
+
+    <ui:define name="main-content">
+        <div>
+            <h:form id="editForm">
+                <p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+                         toggleable="true" toggleSpeed="300" widgetVar="panel">
+                    <p:focus context="toggleable"/>
+                    <p:messages id="msgs" closable="true"/>
+                    <div>
+                        <p:panelGrid columns="4"
+                                     columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                                     layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+                            <p:outputLabel for="controlAccountName"
+                                           value="#{msgs['maintenance.control.account.control.account.name.label']}"/>
+                            <p:inputText id="controlAccountName" required="true"
+                                         validator="#{controlAccountValidator.validateControlAccountName}"
+                                         value="#{controlAccountEditView.controlAccount.ctlAcName}"/>
+                            <p:outputLabel for="controlAccountCode"
+                                           value="#{msgs['maintenance.control.account.control.account.code.label']}"/>
+                            <p:inputText id="controlAccountCode" required="true"
+                                         validator="#{controlAccountValidator.validateControlAccountCode}"
+                                         value="#{controlAccountEditView.controlAccount.ctlAcCode}"/>
+                            <p:outputLabel for="balanceNature"
+                                           value="#{msgs['maintenance.control.account.balance.nature.label']}"/>
+                            <p:selectOneMenu id="balanceNature" required="true"
+                                             value="#{controlAccountEditView.controlAccount.balanceNature}">
+                                <f:selectItem itemLabel="- All -" noSelectionOption="true"/>
+                                <f:selectItems value="#{controlAccountEditView.balanceNatures}"
+                                               var="balanceNature" itemLabel="#{balanceNature.statusName}"
+                                               itemValue="#{balanceNature.statusVal}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel for="accountType"
+                                           value="#{msgs['maintenance.control.account.account.type.label']}"/>
+                            <p:selectOneMenu id="accountType" required="true"
+                                             value="#{controlAccountEditView.controlAccount.shrCtlAcType.ctlAcTypeId}">
+                                <f:selectItem itemLabel="- All -" noSelectionOption="true"/>
+                                <f:selectItems value="#{controlAccountEditView.controlAccountTypeVOS}"
+                                               var="accountType" itemLabel="#{accountType.ctlAcTypeName}"
+                                               itemValue="#{accountType.ctlAcTypeId}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel for="currency"
+                                           value="#{msgs['maintenance.control.account.currency.label']}"/>
+                            <p:selectOneMenu id="currency" required="true"
+                                             value="#{controlAccountEditView.controlAccount.curcyId}">
+                                <f:selectItem itemLabel="- All -" noSelectionOption="true"/>
+                                <f:selectItems value="#{controlAccountEditView.currencyVOS}"
+                                               var="currency" itemLabel="#{currency.curcyName}"
+                                               itemValue="#{currency.curcyId}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel for="status"
+                                           value="#{msgs['maintenance.control.account.status.label']}"/>
+                            <p:selectOneMenu id="status" required="true"
+                                             value="#{controlAccountEditView.controlAccount.status}">
+                                <f:selectItem itemLabel="- All -" noSelectionOption="true"/>
+                                <f:selectItems value="#{controlAccountEditView.statusVOS}"
+                                               var="status" itemLabel="#{status.statusName}"
+                                               itemValue="#{status.statusVal}"/>
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                    </div>
+                </p:panel>
+                <div class="ax-btn-set">
+                    <p:button value="#{msgs['back.btn']}"
+                              styleClass="ui-priority-secondary" icon="ti-arrow-left"
+                              outcome="search"/>
+                    <p:commandButton value="#{msgs['save.btn']}" update="@form"
+                                     action="#{controlAccountEditView.save}"/>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui" template="./ground-code.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+	        #{msgs['ground.code.title']}
+		</h:link>
+	</ui:define>
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:focus context="toggleable" />
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-3,ui-grid-col-6" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="casetype"
+								value="#{msgs['ground.code.casetype.label']}" />
+							<p:inputText id="casetype"
+								value="#{groundCodeEditView.groundCodeVO.caseType.caseTypeDesc}"
+								disabled="true" />
+							<p:outputLabel for="groundtype"
+								value="#{msgs['ground.code.ground.type.label']}" />
+							<p:inputText id="groundtype"
+								value="#{groundCodeEditView.groundCodeVO.natureOfClaim}"
+								disabled="true" />
+							<p:outputLabel for="groundcode"
+								value="#{msgs['ground.code.groundcode.label']}" />
+							<p:inputText id="groundcode"
+								value="#{groundCodeEditView.groundCodeVO.groundCodeCode}"
+								disabled="true" />
+							<p:outputLabel for="groundCodedesc"
+								value="#{msgs['ground.code.ground.descriptionEN.label']}" />
+							<p:inputTextarea rows="3" cols="15" id="groundCodedesc"
+								value="#{groundCodeEditView.groundCodeVO.groundCodeDesc}"
+								required="true" maxlength="400"
+								disabled="#{!groundCodeEditView.editable}" />
+							<p:outputLabel for="groundCodedescchi"
+								value="#{msgs['ground.code.ground.descriptionCN.label']}" />
+							<p:inputTextarea rows="3" cols="15" id="groundCodedescchi"
+								value="#{groundCodeEditView.groundCodeVO.groundCodeDescChi}"
+								required="true" maxlength="600"
+								disabled="#{!groundCodeEditView.editable}" />
+							<p:outputLabel for="groundCodeStatus"
+								value="#{msgs['ground.code.ground.status.label']}" />
+							<p:inputText id="groundCodeStatus"
+								value="#{groundCodeEditView.groundCodeVO.status eq 'ACT' ? 'Active' : 'InActive'}"
+								disabled="true" />
+						</p:panelGrid>
+					</div>
+				</p:panel>
+
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						action="#{groundCodeEditView.save}"
+						disabled="#{!groundCodeEditView.editable}" />
+					<p:commandButton value="#{msgs['report.btn']}" update="@form" />
+					<p:commandButton value="#{msgs['edit.menuitem.label']}"
+						action="#{groundCodeEditView.changeToEdit}"
+						disabled="#{!groundCodeEditView.clikable}" update="@form"/>
+					<p:commandButton value="#{msgs['delete.menuitem.label']}"
+						action="#{groundCodeEditView.changeStatus}" update="@form"
+						disabled="#{groundCodeEditView.groundCodeVO.status != 'ACT' or groundCodeEditView.groundCodeVO.groundCodeId ==null}">
+						<p:confirm header="#{msgs['delete.dialog.header']}"
+							message="#{msgs['delete.dialog.msg']}" icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="#{msgs['delete.yes.btn']}" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="#{msgs['delete.no.btn']}" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+
+
+
+

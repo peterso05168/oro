@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RDIV0008_GroupTotal" pageWidth="802" pageHeight="518" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="6417055c-2655-4c6e-9bd9-49a48605e40a">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORODCDataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<style name="Style1" isDefault="true" fontName="Courier" fontSize="9" isBold="true"/>
+	<parameter name="ORACLE_REF_CURSOR" class="java.sql.ResultSet" isForPrompting="false"/>
+	<parameter name="CASENO" class="java.lang.String">
+		<defaultValueExpression><![CDATA["BB0108900"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RPT_CONT_PATH" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString language="plsql">
+		<![CDATA[{call RDIV0008.RDIV0008_SUBTOTAL_PROC($P{ORACLE_REF_CURSOR},$P{CASENO})}]]>
+	</queryString>
+	<field name="CURRENCY" class="java.lang.String"/>
+	<field name="total_claim" class="java.math.BigDecimal"/>
+	<field name="NATURE_OF_CLAIM" class="java.lang.String"/>
+	<variable name="recordCount" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{NATURE_OF_CLAIM}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<group name="totalGroup">
+		<groupExpression><![CDATA[1]]></groupExpression>
+		<groupFooter>
+			<band height="10">
+				<subreport>
+					<reportElement x="0" y="0" width="802" height="10" isRemoveLineWhenBlank="true" uuid="ab607f04-f32b-45a1-ad21-1e6e631abf71"/>
+					<subreportParameter name="CASENO">
+						<subreportParameterExpression><![CDATA[$P{CASENO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[($P{RPT_CONT_PATH}==null?"":$P{RPT_CONT_PATH})+"RDIV0008/RDIV0008_GroupTotal.jrxml"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{NATURE_OF_CLAIM}]]></groupExpression>
+		<groupFooter>
+			<band height="5"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<textField pattern="#,##0.00#;(#,##0.00#)">
+				<reportElement x="280" y="0" width="110" height="10" uuid="462d8101-8685-4c29-ba05-4aaccdee2e09">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total_claim}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="242" y="0" width="30" height="10" uuid="39f827ad-5cf0-4687-bd53-0cc643d77f1b">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CURRENCY}==null?"HKD":$F{CURRENCY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="242" height="10" uuid="19a4917a-4967-43ec-8fc8-bb1c19efb5d3">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[($V{recordCount}==1?"Amount claimed for this case ":"                             ")+($V{Group1_COUNT}==1?("P".equalsIgnoreCase( $F{NATURE_OF_CLAIM} )?"Preferential  ":"Ordinary"):"")]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<noData>
+		<band height="40">
+			<textField pattern="#,##0.00#;(#,##0.00#)">
+				<reportElement x="280" y="30" width="110" height="10" uuid="6118e824-f9f2-4abf-a0e6-5c0d58f936c7">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[BigDecimal.ZERO]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="242" y="30" width="30" height="10" uuid="8ca5eb92-bc13-46ba-a281-20cc3c7f3e14">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["HKD"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#)">
+				<reportElement x="280" y="0" width="110" height="10" uuid="8b1c72f9-b124-40c2-a267-11b2d81e07f6">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[BigDecimal.ZERO]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="242" y="0" width="30" height="10" uuid="953c7baf-5c8b-4c75-90f8-adefbc231f2b">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["HKD"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="30" width="242" height="10" uuid="4c40d873-dcc9-4d61-a6f9-f7793e273c52">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT}==0 || $V{REPORT_COUNT}==1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["                             Total"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="15" width="242" height="10" uuid="3e493f11-a826-4258-8432-8a350e10e5ca">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["                             Ordinary"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="242" y="15" width="30" height="10" uuid="25425f38-22f3-45c6-9139-13dea9f96853">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["HKD"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#)">
+				<reportElement x="280" y="15" width="110" height="10" uuid="19a78b96-b55d-4183-aa89-a358398660e8">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[BigDecimal.ZERO]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="242" height="10" uuid="6f33b7f5-8f04-455d-b278-a0be26b9805c">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Amount claimed for this case Preferential  "]]></textFieldExpression>
+			</textField>
+		</band>
+	</noData>
+</jasperReport>

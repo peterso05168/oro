@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	template="./daily-investment.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable"
+				header="#{msgs['daily.investment.search.title']}"
+				toggleable="true" toggleSpeed="200" widgetVar="panel">
+				<h:form id="searchForm">
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="invDate"
+							value="#{msgs['daily.investment.search.investment.date.label']}" />
+						<p:calendar id="invDate" showOn="button"
+							pattern="#{appResourceUtils.dateFormat}">
+							<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+						</p:calendar>
+						<p:outputLabel for="invDate"
+							value="#{msgs['daily.investment.search.currency.label']}" />
+						<p:selectOneMenu id="creditorList">
+							<f:selectItem itemLabel=" - Select -" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['search.btn']}" icon="ti-search"
+							action="#{placingDepositsSearchView.search}" update="formC" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary"
+							action="#{placingDepositsSearchView.reset}"
+							update="searchForm,formC" />
+						<p:commandButton value="#{msgs['create.btn']}"
+							onclick="PF('createDialog').show();" update="createForm:pg"
+							process="@this" />
+					</div>
+				</h:form>
+			</p:panel>
+
+			<!-- dialog to create -->
+			<h:form id="createForm">
+				<p:dialog id="createDialog"
+					header="#{msgs['daily.investment.create.investment.date.title']}"
+					widgetVar="createDialog" modal="true" width="500" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:ajax event="close" update="@form" resetValues="true">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="1" columnClasses="ui-grid-col-6"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="invDate"
+								value="#{msgs['daily.investment.investment.Date.label']}" />
+							<p:calendar id="invDate" showOn="button"
+								pattern="#{appResourceUtils.dateFormat}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</p:calendar>
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['create.btn']}" action="edit"
+							ajax="false" update="pg,msgs" validateClient="true">
+						</p:commandButton>
+						<p:commandButton value="#{msgs['cancel.btn']}" ajax="false"
+							styleClass="ui-priority-secondary"
+							onclick="PF('createDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to create -->
+		</div>
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

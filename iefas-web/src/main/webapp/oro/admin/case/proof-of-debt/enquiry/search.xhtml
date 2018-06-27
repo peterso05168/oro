@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	template="../proof-of-debt.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable"
+				header="#{msgs['proof.of.debt.enquiry.search.title']}"
+				toggleable="true" toggleSpeed="200" widgetVar="panel">
+				<h:form id="searchForm">
+					<div>
+						<p:focus context="toggleable" />
+						<p:messages id="msgs" closable="true" />
+						<input type="checkbox" id="basicAdvance" name="basicAdvance"
+							class="basicAdvance hidden-checkbox" checked="checked" />
+						<div class="search-basic">
+							<p:panelGrid columns="1" layout="grid"
+								columnClasses="ui-grid-col-12"
+								styleClass="ui-panelgrid-blank ui-fluid">
+								<p:inputText />
+								<p:column>
+									<label for="basicAdvance" class="basicAdvanceLabel advance"><i
+										class="ti-search"></i> Advanced Search</label>
+									<div class="note">Case Number, Case Name, Proof Number,
+										Date of Receipt, Common Creditor Number, Common Creditor Name,
+										Section Number, Section Name</div>
+								</p:column>
+							</p:panelGrid>
+						</div>
+						<div class="search-advance">
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel
+									value="#{msgs['proof.of.debt.enquiry.case.number.label']}" />
+								<com:caseNumber
+									caseTypeCodeValue="#{proofOfDebtEnquirySearchView.criteria.caseTypeCode}"
+									caseNoValue="#{proofOfDebtEnquirySearchView.criteria.caseSeqNo}"
+									caseYearValue="#{proofOfDebtEnquirySearchView.criteria.caseYear}" />
+
+								<p:outputLabel for="CaseName"
+									value="#{msgs['proof.of.debt.enquiry.case.name.label']}" />
+								<p:inputText id="CaseName" value="#{proofOfDebtEnquirySearchView.criteria.caseName}" />
+
+								<p:outputLabel for="ProofNumber"
+									value="#{msgs['proof.of.debt.enquiry.proof.number.label']}" />
+								<p:inputText id="ProofNumber" value="#{proofOfDebtEnquirySearchView.criteria.proofNumber}" />
+
+								<p:outputLabel for="DateOfReceipt"
+									value="#{msgs['proof.of.debt.enquiry.date.of.Receipt.label']}" />
+								<p:calendar id="DateOfReceipt" showOn="button" value="#{proofOfDebtEnquirySearchView.criteria.dateOfReceipt}"
+									pattern="#{appResourceUtils.dateFormat}">
+								</p:calendar>
+
+								<p:outputLabel for="CommonCreditorNumber"
+									value="#{msgs['proof.of.debt.enquiry.common.creditor.number.label']}" />
+								<p:inputNumber id="CommonCreditorNumber" thousandSeparator=""
+									decimalPlaces="0" value="#{proofOfDebtEnquirySearchView.criteria.commonCreditorSeqNo}" />
+
+								<p:outputLabel for="CommonCreditorName"
+									value="#{msgs['proof.of.debt.enquiry.common.creditor.name.label']}" />
+								<p:inputText id="CommonCreditorName" value="#{proofOfDebtEnquirySearchView.criteria.commonCreditorName}" />
+
+								<p:outputLabel for="SectionNumber"
+									value="#{msgs['proof.of.debt.enquiry.section.number.label']}" />
+								<p:inputNumber id="SectionNumber" thousandSeparator=""
+									decimalPlaces="0" value="#{proofOfDebtEnquirySearchView.criteria.sectionSeqNo}" />
+
+								<p:outputLabel for="SectionName"
+									value="#{msgs['proof.of.debt.enquiry.section.name.label']}" />
+								<p:inputText id="SectionName" value="#{proofOfDebtEnquirySearchView.criteria.sectionName}" />
+
+							</p:panelGrid>
+							<p:panelGrid columns="6" columnClasses="ui-grid-col-12"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:column styleClass="ui-grid-col-12">
+									<label for="basicAdvance" class="basicAdvanceLabel advance"><i
+										class="ti-search"></i>Basic Search</label>
+								</p:column>
+							</p:panelGrid>
+						</div>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton id="searchBtn" value="#{msgs['search.btn']}"
+							icon="ti-search" update="proofOfDebtResultTable,searchForm"
+							action="#{proofOfDebtEnquirySearchView.search}" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary"
+							action="#{proofOfDebtEnquirySearchView.reset}"
+							update="@form,proofOfDebtResultTable" />
+						<p:button value="#{msgs['create.btn']}" outcome="proof-of-debt-form"/>
+					</div>
+				</h:form>
+			</p:panel>
+		</div>
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

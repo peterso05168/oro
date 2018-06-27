@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<h:form id="wilonAndSeverancePayResultTable">
+		<p:dataTable var="wilonAndSeverancePayDT"
+			value="#{wilonAndSeverancePaySearchView.lazyDataModel}"
+			rowKey="#{wilonAndSeverancePayDT.wilonAndSevrnPayId}" lazy="true"
+			reflow="true" paginator="true" paginatorPosition="bottom" rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15"
+			rendered="#{wilonAndSeverancePaySearchView.lazyDataModel != null}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+			<p:columnGroup type="header">
+				<p:row>
+					<p:column colspan="4"
+						headerText="#{msgs['wilon.case.name.label']} : #{wilonAndSeverancePaySearchView.caseName}" />
+				</p:row>
+				<p:row>
+					<p:column colspan="1" 
+						headerText="#{msgs['wilonAndSeverancePay.proof.column.header']}" />
+					<p:column colspan="1" 
+						headerText="#{msgs['wilonAndSeverancePay.creditor.column.header']}" />
+					<p:column colspan="1" 
+						headerText="#{msgs['wilonAndSeverancePay.wilon.column.header']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['wilonAndSeverancePay.severance.column.header']}" />
+				</p:row>
+			</p:columnGroup>
+			<p:column>
+				<p:commandLink href="javascript:void(0)" action="edit" ajax="false">
+					<h:outputText value="#{wilonAndSeverancePayDT.caseCred.proofNo}" />
+					<f:param name="wilonAndSevrnPayId"
+						value="#{wilonAndSeverancePayDT.wilonAndSevrnPayId}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column
+				sortBy="#{wilonAndSeverancePayDT.wilonAndSeverancePayDTCode}">
+				<h:outputText
+					value="#{wilonAndSeverancePayDT.caseCred.creditorNameEng}" />
+			</p:column>
+
+			<p:column sortBy="#{wilonAndSeverancePayDT.totalWilon}">
+				<h:outputText value="#{wilonAndSeverancePayDT.totalWilon}">
+					<f:convertNumber pattern="#{appResourceUtils.moneyFormat}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column sortBy="#{wilonAndSeverancePayDT.totalSever}">
+				<h:outputText value="#{wilonAndSeverancePayDT.totalSever}">
+					<f:convertNumber pattern="#{appResourceUtils.moneyFormat}" />
+				</h:outputText>
+			</p:column>
+		</p:dataTable>
+
+	</h:form>
+</ui:composition>
+
+
+
+

@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	template="/oro/admin/common/common-head.xhtml">
+
+	<ui:define name="head-title">
+        #{msgs['sup.doc.dialog.header']}
+    </ui:define>
+	<ui:define name="page-content-body">
+		<h:form id="uploadSupDocForm" enctype="multipart/form-data">
+			<p:messages id="msgs" closable="true" />
+			<p:panel>
+				<p:row>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:column>
+							<p:outputLabel for="FileName"
+								value="#{msgs['sup.doc.dialog.file.name.label']}" />
+						</p:column>
+						<p:column>
+							<p:inputText id="FileName" disabled="true"
+								value="#{uploadSupportingDocView.voucherAttachment.fileName}" />
+						</p:column>
+					</p:panelGrid>
+				</p:row>
+				<p:row>
+					<p:panelGrid columns="3"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-1"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:column>
+							<p:outputLabel for="UploadedFile"
+								value="#{msgs['sup.doc.dialog.uploaded.file.label']}" />
+						</p:column>
+						<p:column>
+							<p:fileUpload mode="simple" id="UploadedFile"
+								value="#{uploadSupportingDocView.file}" required="true"
+								allowTypes=" /(\.|\/)(pdf|PDF)$/" accept=".pdf" />
+						</p:column>
+						<p:column>
+							<p:commandButton id="btnUpload" value="#{msgs['upload.btn']}"
+								ajax="false" action="#{uploadSupportingDocView.uploadFile}" />
+						</p:column>
+					</p:panelGrid>
+				</p:row>
+				<p:row>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:column>
+							<p:outputLabel for="Remarks"
+								value="#{msgs['sup.doc.dialog.remarks.label']}" />
+						</p:column>
+						<p:column>
+							<p:inputTextarea id="Remarks"
+								value="#{uploadSupportingDocView.voucherAttachment.remark}" />
+						</p:column>
+					</p:panelGrid>
+				</p:row>
+				<p:row>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:column>
+							<p:outputLabel value="#{msgs['status.label']}" />
+						</p:column>
+						<p:column>
+							<p:inputText disabled="true"
+								value="#{msgs['active.status.label']}"
+								rendered="#{uploadSupportingDocView.voucherAttachment.status eq 'ACT'}" />
+							<p:inputText disabled="true"
+								value="#{msgs['inactive.status.label']}"
+								rendered="#{uploadSupportingDocView.voucherAttachment.status eq 'INA'}" />
+						</p:column>
+					</p:panelGrid>
+				</p:row>
+			</p:panel>
+			<div class="ax-btn-set">
+				<p:commandButton
+					value="#{msgs['sup.doc.dialog.save.and.upload.btn.label']}"
+					action="#{uploadSupportingDocView.saveAndUpload}" update="@form" />
+				<p:commandButton value="#{msgs['cancel.btn']}"
+					styleClass="ui-priority-secondary" update="@form"
+					action="#{dialogBean.closeDialog}" immediate="true" />
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+
+
+

@@ -1,0 +1,173 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui" template="./currency-rate.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+	        #{msgs['currency.rate.title']}
+		</h:link>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable"
+					header="#{msgs['currency.rate.basic.info.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:focus context="toggleable"/>
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+							<p:outputLabel for="CurrencyCode"
+								value="#{msgs['currency.code.label']}" />
+							<p:inputText id="CurrencyCode" style="text-transform:uppercase;"
+								value="#{currencyRateEditView.currencyVO.curcyCode}"
+								maxlength="3" required="true"
+								validator="#{currencyValidator.validateCurrencyCode}"
+								converter="omnifaces.ToUpperCaseConverter" />
+
+							<p:outputLabel for="CurrencyName"
+								value="#{msgs['currency.name.label']}" />
+							<p:inputText id="CurrencyName"
+								value="#{currencyRateEditView.currencyVO.curcyName}"
+								maxlength="100" required="true" />
+
+							<p:outputLabel for="CurrentRate"
+								value="#{msgs['currency.rate.label']}" />
+							<p:inputText id="CurrentRate"
+								value="#{currencyRateEditView.rateAmount}" disabled="true">
+								<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+							</p:inputText>
+
+							<p:outputLabel for="Status" value="#{msgs['status.label']}" />
+							<p:selectOneMenu id="Status"
+								value="#{currencyRateEditView.currencyVO.status}">
+								<f:selectItems value="#{currencyRateEditView.statusVOs}"
+									var="status" itemLabel="#{status.statusName}"
+									itemValue="#{status.statusVal}" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<p:tabView id="tabView" activeIndex="0">
+					<p:tab title="#{msgs['currency.setting.title']}">
+						<p:dataTable var="rate"
+							value="#{currencyRateEditView.filteredCurrencyRates}"
+							reflow="true" paginator="false" rows="5"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column headerText="#{msgs['periodFrom.label']}"
+								sortBy="#{rate.effectiveFrom}">
+								<h:outputText value="#{rate.effectiveFrom}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{msgs['periodTo.label']}"
+								sortBy="#{rate.effectiveTo}">
+								<h:outputText value="#{rate.effectiveTo}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+							</p:column>
+							<p:column
+								headerText="#{msgs['currency.setting.rate.column.header']}"
+								sortBy="#{rate.rateAmount}">
+								<h:outputText value="#{rate.rateAmount}">
+									<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{msgs['action.column.header']}"
+								styleClass="ax-action-w dont-print">
+								<p:menuButton value="#{msgs['action.menuButton.label']}">
+									<p:menuitem value="#{msgs['edit.menuitem.label']}"
+										onclick="PF('rateDialog').show();" update="createForm:pg"
+										process="@this">
+										<f:setPropertyActionListener value="#{rate}"
+											target="#{currencyRateEditView.currencyRateVO}" />
+									</p:menuitem>
+									<p:menuitem value="#{msgs['delete.menuitem.label']}"
+										update="editForm:tabView"
+										action="#{currencyRateEditView.delete}">
+										<f:setPropertyActionListener value="#{rate}"
+											target="#{currencyRateEditView.currencyRateVO}" />
+									</p:menuitem>
+								</p:menuButton>
+							</p:column>
+						</p:dataTable>
+						<div class="ax-btn-set aR">
+							<p:commandButton immediate="true" value="#{msgs['add.btn']}"
+								onclick="PF('rateDialog').show();" icon="ti-plus" />
+						</div>
+					</p:tab>
+				</p:tabView>
+
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						action="#{currencyRateEditView.save}" />
+				</div>
+			</h:form>
+
+			<h:form id="createForm">
+				<p:dialog id="rateDialog" header="#{msgs['currency.rate.title']}"
+					widgetVar="rateDialog" modal="true" width="500" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:ajax event="close" update="@form,editForm:CurrentRate"
+						resetValues="true" listener="#{currencyRateEditView.handleClose}">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="2"
+							columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="from"
+								value="#{msgs['currency.setting.period.label']}" />
+							<p:calendar id="from" placeholder="#{msgs['from.label']}"
+								showOn="button"
+								value="#{currencyRateEditView.currencyRateVO.effectiveFrom}"
+								required="true" pattern="#{appResourceUtils.dateFormat}"
+								validator="#{currencyRateValidator.setFromDateValue}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</p:calendar>
+							<p:outputLabel />
+							<p:calendar id="to" placeholder="#{msgs['to.label']}"
+								showOn="button"
+								value="#{currencyRateEditView.currencyRateVO.effectiveTo}"
+								required="true" pattern="#{appResourceUtils.dateFormat}"
+								validator="#{currencyRateValidator.validatePeriod}">
+							</p:calendar>
+							<p:outputLabel for="rate"
+								value="#{msgs['currency.setting.rate.label']}" />
+							<p:inputNumber id="rate" required="true" maxlength="16"
+								value="#{currencyRateEditView.currencyRateVO.rateAmount}" />
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['save.btn']}"
+							action="#{currencyRateEditView.addCurrencyRate}"
+							update="pg,msgs,editForm:tabView" validateClient="true">
+						</p:commandButton>
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('rateDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+		</div>
+	</ui:define>
+
+</ui:composition>
+
+
+
+

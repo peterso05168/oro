@@ -1,0 +1,56 @@
+<!DOCTYPE html [
+    <!ENTITY bull "&#8226;">
+]>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="../system-administration.xhtml">
+
+	<ui:define name="head">
+		<script>
+			function _ACTION(_type) {
+				switch (_type) {
+				case 'result1':
+					_popup('popup.html#/cp-cert-create', {
+						size : 22,
+						title : 'Create Certificate',
+						iframe : 'true'
+					});
+					break;
+				case 'create':					
+					PF('createDialog').show();
+					break;
+				case 'edit':					
+					window.location = 'edit.xhtml';
+					break;
+                    case 'edit-save':
+					window.location = 'edit.xhtml';
+                        break;
+                    case 'create-save':
+					window.location = 'edit.xhtml';
+					break;
+				case 'create-cancel':		
+					PF('createDialog').hide();
+					break;					
+				case 'search':
+					window.location = "search.xhtml";
+					break;
+				case 'result':
+					window.location = "result.xhtml";
+					break;
+				default:
+					console.log('default cp-breadcrumb.html');
+				}
+			}
+		</script>
+	</ui:define>
+	<ui:define name="breadcrumb-3">
+		<li><a title="">Holiday</a><i class="ti-angle-right"></i></li>
+	</ui:define>
+	<ui:define name="title">
+        #{msgs['holiday.main.title']}
+	</ui:define>
+</ui:composition>
+
+

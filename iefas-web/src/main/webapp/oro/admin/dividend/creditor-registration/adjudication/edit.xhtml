@@ -1,0 +1,605 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	xmlns:i="http://iefas.oro.hk/ui" template="./adjudication.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+	        #{msgs['adjudication.title']}
+		</h:link>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<!-- basic information start -->
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:focus context="toggleable" />
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel value="#{msgs['adjudication.case.number.label']}" />
+							<com:caseNumber
+								caseTypeCodeValue="#{adjudicationEditView.adjucationVO.creditor.caseInfo.caseType.caseTypeCode}"
+								caseNoValue="#{adjudicationEditView.adjucationVO.creditor.caseInfo.caseNo}"
+								caseYearValue="#{adjudicationEditView.adjucationVO.creditor.caseInfo.caseYear}"
+								disabled="true" />
+
+							<p:outputLabel value="#{msgs['status.label']}" />
+							<p:inputText value="#{adjudicationEditView.status}"
+								disabled="true" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel value="#{msgs['adjudication.case.name.label']}" />
+							<p:inputText
+								value="#{adjudicationEditView.adjucationVO.creditor.caseInfo.caseName}"
+								disabled="true" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel value="#{msgs['adjudication.proof.number.label']}" />
+							<p:inputText
+								value="#{adjudicationEditView.adjucationVO.creditor.proofNo}"
+								disabled="true" />
+
+							<p:outputLabel
+								value="#{msgs['adjudication.last.proof.number.label']}" />
+							<p:inputText
+								value="#{adjudicationEditView.adjucationVO.creditor.lastProofNo}"
+								disabled="true" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="CommonCreditor"
+								value="#{msgs['adjudication.common.creditor.label']}" />
+							<p:selectOneMenu id="CommonCreditor" required="true"
+								disabled="#{adjudicationEditView.formDisabled}"
+								value="#{adjudicationEditView.adjucationVO.creditor.commonCreditorId}">
+								<f:selectItem itemLabel="- Select -" />
+								<f:selectItems value="#{adjudicationEditView.commonCreditors}"
+									var="creditor" itemLabel="#{creditor.commonCreditorName}"
+									itemValue="#{creditor.commonCreditorId}" />
+								<p:ajax event="change"
+									listener="#{adjudicationEditView.filterCommonCreditorSection}"
+									update="CommonCreditorSection,CreNameEng,CreNameChi,PayeeNameEng,PayeeNameChi">
+								</p:ajax>
+							</p:selectOneMenu>
+
+							<p:outputLabel for="CreditorType"
+								value="#{msgs['adjudication.creditor.type.label']}" />
+							<p:selectOneMenu id="CreditorType" required="true"
+								disabled="#{adjudicationEditView.formDisabled}"
+								value="#{adjudicationEditView.adjucationVO.creditorType.creditorTypeId}">
+								<f:selectItem itemLabel="- Select -" />
+								<f:selectItems value="#{adjudicationEditView.creditorTypes}"
+									var="creType" itemLabel="#{creType.creditorTypeName}"
+									itemValue="#{creType.creditorTypeId}" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="CommonCreditorSection"
+								value="#{msgs['adjudication.common.creditor.section.label']}" />
+							<p:selectOneMenu id="CommonCreditorSection"
+								disabled="#{adjudicationEditView.formDisabled}"
+								value="#{adjudicationEditView.adjucationVO.creditor.commonCredSectionId}">
+								<f:selectItem itemLabel="- Select -" />
+								<f:selectItems
+									value="#{adjudicationEditView.commonCreditorSections}"
+									var="creSec" itemLabel="#{creSec.sectionName}"
+									itemValue="#{creSec.commonCreditorSectionId}" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="CreNameEng"
+								value="#{msgs['adjudication.creditor.name.eng.label']}" />
+							<p:inputText id="CreNameEng" maxlength="100"
+								disabled="#{adjudicationEditView.formDisabled}"
+								value="#{adjudicationEditView.adjucationVO.creditor.creditorNameEng}" />
+
+							<p:outputLabel for="CreNameChi"
+								value="#{msgs['adjudication.creditor.name.chi.label']}" />
+							<p:inputText id="CreNameChi" maxlength="100"
+								disabled="#{adjudicationEditView.formDisabled}"
+								value="#{adjudicationEditView.adjucationVO.creditor.creditorNameChi}" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="PayeeNameEng"
+								value="#{msgs['adjudication.payee.name.eng.label']}" />
+							<p:inputText id="PayeeNameEng" maxlength="60"
+								disabled="#{adjudicationEditView.formDisabled}"
+								value="#{adjudicationEditView.adjucationVO.creditor.payeeName}" />
+
+							<p:outputLabel for="PayeeNameChi"
+								value="#{msgs['adjudication.payee.name.chi.label']}" />
+							<p:inputText id="PayeeNameChi" maxlength="180"
+								disabled="#{adjudicationEditView.formDisabled}"
+								value="#{adjudicationEditView.adjucationVO.creditor.payeeNameChinese}" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel value="#{msgs['adjudication.phone.number.label']}" />
+							<p:inputText required="true" maxlength="20"
+								disabled="#{adjudicationEditView.formDisabled}"
+								value="#{adjudicationEditView.adjucationVO.creditor.creditorContactNo}" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel
+								value="#{msgs['adjudication.creditor.address.eng.label']}" />
+							<p:inputText maxlength="100"
+								disabled="#{adjudicationEditView.formDisabled}"
+								value="#{adjudicationEditView.adjucationVO.creditor.address.address1}" />
+
+							<p:outputLabel
+								value="#{msgs['adjudication.creditor.address.chi.label']}" />
+							<p:inputText maxlength="300"
+								disabled="#{adjudicationEditView.formDisabled}"
+								value="#{adjudicationEditView.adjucationVO.creditor.address.chiAddress1}" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel />
+							<p:inputText maxlength="100"
+								disabled="#{adjudicationEditView.formDisabled}"
+								value="#{adjudicationEditView.adjucationVO.creditor.address.address2}" />
+							<p:outputLabel />
+							<p:inputText maxlength="300"
+								disabled="#{adjudicationEditView.formDisabled}"
+								value="#{adjudicationEditView.adjucationVO.creditor.address.chiAddress2}" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel />
+							<p:inputText maxlength="100"
+								disabled="#{adjudicationEditView.formDisabled}"
+								value="#{adjudicationEditView.adjucationVO.creditor.address.address3}" />
+							<p:outputLabel />
+							<p:inputText maxlength="300"
+								disabled="#{adjudicationEditView.formDisabled}"
+								value="#{adjudicationEditView.adjucationVO.creditor.address.chiAddress3}" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel
+								value="#{msgs['adjudication.account.number.label']}" />
+							<p:commandButton value="#{msgs['adjudication.view.btn']}"
+								immediate="true" update="acctForm:msgs"
+								action="#{adjudicationEditView.viewAccountNumbers}" />
+
+							<p:outputLabel
+								value="#{msgs['adjudication.amount.claimed.label']}" />
+							<p:commandButton value="#{msgs['adjudication.view.btn']}"
+								immediate="true" onclick="PF('claimAmountDialog').show();" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="AddressType"
+								value="#{msgs['adjudication.address.type.label']}" />
+							<p:selectOneMenu id="AddressType" required="true"
+								disabled="#{adjudicationEditView.formDisabled}"
+								value="#{adjudicationEditView.adjucationVO.addressType}">
+								<f:selectItem itemLabel="- Select -" />
+								<f:selectItems value="#{adjudicationEditView.addressTypes}"
+									var="lo" itemValue="#{lo.codeValue}" itemLabel="#{lo.codeDesc}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel for="NatureOfClaim"
+								value="#{msgs['adjudication.nature.of.claim']}" />
+							<p:selectOneMenu id="NatureOfClaim" required="true"
+								disabled="#{adjudicationEditView.formDisabled}"
+								value="#{adjudicationEditView.adjucationVO.natureOfClaim}">
+								<f:selectItem itemLabel="- Select -" />
+								<f:selectItems value="#{adjudicationEditView.natureOfClaims}"
+									var="nature" itemValue="#{nature.codeValue}"
+									itemLabel="#{nature.codeDesc}" />
+								<p:ajax event="change"
+									listener="#{adjudicationEditView.filterGroundCodes}"
+									update="tabView" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel value="#{msgs['adjudication.remark.label']}" />
+							<p:inputTextarea disabled="#{adjudicationEditView.formDisabled}"
+								value="#{adjudicationEditView.adjucationVO.remark}"
+								maxlength="300" />
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<!-- basic information end -->
+
+				<!-- tab start -->
+				<p:tabView id="tabView" activeIndex="0">
+					<p:tab title="#{msgs['adjudication.result.title']}">
+						<p:panel
+							rendered="#{adjudicationEditView.adjucationVO.natureOfClaim eq 'ORD'}"
+							header="#{msgs['adjudication.ordinary.header']}">
+							<p:dataTable var="adjucationApplyItem"
+								value="#{adjudicationEditView.adjucationVO.adjucationApplyItems}"
+								reflow="true" paginator="false">
+								<p:column
+									headerText="#{msgs['adjudication.claim.amount.header']}"
+									sortBy="#{adjucationApplyItem.foreignAmount}">
+									<p:inputNumber inputStyle="text-align: right;"
+										value="#{adjucationApplyItem.foreignAmount != null ? adjucationApplyItem.foreignAmount : 0}"
+										disabled="true" />
+								</p:column>
+								<p:column headerText="#{msgs['adjudication.currency.header']}"
+									sortBy="#{adjucationApplyItem.currencyBasicInfo.curcyName}">
+									<p:selectOneMenu id="currency" required="true"
+										disabled="#{adjudicationEditView.formDisabled}"
+										value="#{adjucationApplyItem.currencyBasicInfo.curcyId}">
+										<f:selectItem itemLabel="- Select -" />
+										<f:selectItems value="#{adjudicationEditView.currencyInfos}"
+											var="currency" itemValue="#{currency.curcyId}"
+											itemLabel="#{currency.curcyName}" />
+									</p:selectOneMenu>
+								</p:column>
+								<p:column
+									headerText="#{msgs['adjudication.currency.rate.header']}"
+									sortBy="#{adjucationApplyItem.foreignRate}">
+									<p:inputNumber inputStyle="text-align: right;"
+										value="#{adjucationApplyItem.foreignRate}" maxlength="16"
+										disabled="#{adjudicationEditView.formDisabled}" />
+								</p:column>
+								<p:column headerText="#{msgs['adjudication.hkd.amount.header']}"
+									sortBy="#{adjucationApplyItem.appHkAmount}">
+									<p:inputNumber inputStyle="text-align: right;"
+										value="#{adjucationApplyItem.appHkAmount}" disabled="true" />
+								</p:column>
+							</p:dataTable>
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel />
+								<p:outputLabel />
+								<p:outputLabel value="#{msgs['adjudication.claim.total.label']}" />
+								<p:inputNumber inputStyle="text-align: right;" disabled="true"
+									value="#{adjudicationEditView.total != null ? adjudicationEditView.total : 0}" />
+
+								<p:outputLabel for="pre"
+									value="#{msgs['adjudication.preferential.header']}" />
+								<p:inputNumber inputStyle="text-align: right;" id="pre"
+									maxlength="16" disabled="#{adjudicationEditView.formDisabled}"
+									value="#{adjudicationEditView.preAdmitted != null ? adjudicationEditView.preAdmitted : 0}" />
+								<p:outputLabel for="ord"
+									value="#{msgs['adjudication.ordinary.header']}" />
+								<p:inputNumber inputStyle="text-align: right;" id="ord"
+									disabled="#{adjudicationEditView.formDisabled}"
+									value="#{adjudicationEditView.ordAdmitted != null ? adjudicationEditView.ordAdmitted : 0}" />
+
+								<p:outputLabel for="defPre"
+									value="#{msgs['adjudication.deferred.preferential.label']}" />
+								<p:inputNumber inputStyle="text-align: right;" id="defPre"
+									disabled="#{adjudicationEditView.formDisabled}"
+									value="#{adjudicationEditView.defPreAdmitted != null ? adjudicationEditView.defPreAdmitted : 0}" />
+								<p:outputLabel for="defOrd"
+									value="#{msgs['adjudication.deferred.ordinary.label']}" />
+								<p:inputNumber inputStyle="text-align: right;" id="defOrd"
+									disabled="#{adjudicationEditView.formDisabled}"
+									value="#{adjudicationEditView.defOrdAdmitted != null ? adjudicationEditView.defOrdAdmitted : 0}" />
+
+								<p:outputLabel />
+								<p:outputLabel />
+								<p:outputLabel
+									value="#{msgs['adjudication.reject.amount.label']}" />
+								<p:inputNumber inputStyle="text-align: right;" disabled="true"
+									value="#{adjudicationEditView.reject != null ? adjudicationEditView.reject : 0}" />
+
+								<p:outputLabel value="#{msgs['adjudication.ground.label']}" />
+								<p:selectCheckboxMenu multiple="true"
+									disabled="#{adjudicationEditView.formDisabled}"
+									value="#{adjudicationEditView.selectedGroundCodes}"
+									panelStyle="width:250px">
+									<f:selectItems
+										value="#{adjudicationEditView.displayGroundCodes}"
+										var="grdCode" itemLabel="#{grdCode.groundCodeCode}"
+										itemValue="#{grdCode.groundCodeCode}"
+										itemDescription="#{grdCode.groundCodeDesc}" />
+								</p:selectCheckboxMenu>
+							</p:panelGrid>
+						</p:panel>
+
+						<p:panel
+							rendered="#{adjudicationEditView.adjucationVO.natureOfClaim eq 'PRE'}"
+							header="#{msgs['adjudication.preferential.header']}">
+							<p:dataTable var="preAdjucationItem"
+								value="#{adjudicationEditView.adjucationVO.preAdjucationItems}"
+								reflow="true" paginator="false">
+								<p:column>
+									<p:outputLabel value="#{preAdjucationItem.pajTypeDesc}" />
+								</p:column>
+								<p:column
+									headerText="#{msgs['adjudication.preferential.header']}"
+									sortBy="#{preAdjucationItem.preferential}">
+									<p:inputNumber inputStyle="text-align: right;"
+										value="#{preAdjucationItem.preferential != null ? preAdjucationItem.preferential : 0}"
+										disabled="#{preAdjucationItem.pajTypeCode eq 'TOT' or adjudicationEditView.formDisabled}" />
+								</p:column>
+								<p:column headerText="#{msgs['adjudication.ordinary.header']}"
+									sortBy="#{preAdjucationItem.ordinary}">
+									<p:inputNumber inputStyle="text-align: right;"
+										value="#{preAdjucationItem.ordinary != null ? preAdjucationItem.ordinary : 0}"
+										disabled="#{preAdjucationItem.pajTypeCode eq 'TOT' or adjudicationEditView.formDisabled}" />
+								</p:column>
+								<p:column
+									headerText="#{msgs['adjudication.deferred.ground.header']}">
+									<p:selectCheckboxMenu multiple="true" label="groundCodeCode"
+										disabled="#{adjudicationEditView.formDisabled}"
+										rendered="#{preAdjucationItem.pajTypeCode ne 'TOT'}"
+										value="#{preAdjucationItem.ordGroundCodes}"
+										panelStyle="width:250px">
+										<f:selectItems
+											value="#{adjudicationEditView.displayGroundCodes}"
+											var="grdCode" itemLabel="#{grdCode.groundCodeCode}"
+											itemValue="#{grdCode.groundCodeCode}"
+											itemDescription="#{grdCode.groundCodeDesc}" />
+										<p:ajax event="change" update="editForm:tabView" />
+									</p:selectCheckboxMenu>
+								</p:column>
+								<p:column headerText="#{msgs['adjudication.reject.header']}"
+									sortBy="#{preAdjucationItem.reject}">
+									<p:inputNumber inputStyle="text-align: right;"
+										value="#{preAdjucationItem.reject != null ? preAdjucationItem.reject : 0}"
+										disabled="#{preAdjucationItem.pajTypeCode eq 'TOT' or adjudicationEditView.formDisabled}" />
+								</p:column>
+								<p:column
+									headerText="#{msgs['adjudication.reject.ground.header']}">
+									<p:selectCheckboxMenu multiple="true" label="groundCodeCode"
+										disabled="#{adjudicationEditView.formDisabled}"
+										rendered="#{preAdjucationItem.pajTypeCode ne 'TOT'}"
+										value="#{preAdjucationItem.rejGroundCodes}" filter="true"
+										filterMatchMode="startsWith" panelStyle="width:250px">
+										<f:selectItems
+											value="#{adjudicationEditView.displayGroundCodes}"
+											var="grdCode" itemLabel="#{grdCode.groundCodeCode}"
+											itemValue="#{grdCode.groundCodeCode}"
+											itemDescription="#{grdCode.groundCodeDesc}" />
+										<p:ajax event="change" update="editForm:tabView" />
+									</p:selectCheckboxMenu>
+								</p:column>
+							</p:dataTable>
+						</p:panel>
+					</p:tab>
+
+					<p:tab title="#{msgs['adjudication.history.title']}">
+						<p:dataTable var="approveHis"
+							value="#{adjudicationEditView.adjucationVO.approveHistories}"
+							reflow="true" paginator="true" rows="5"
+							paginatorPosition="bottom"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column
+								headerText="#{msgs['adjudication.workflow.type.header']}">
+								<h:outputText value="Approval" />
+							</p:column>
+							<p:column headerText="#{msgs['adjudication.action.header']}"
+								sortBy="#{approveHis.action}">
+								<h:outputText value="#{approveHis.action}" />
+							</p:column>
+							<p:column headerText="#{msgs['adjudication.action.by.header']}"
+								sortBy="#{approveHis.actionByPerson}">
+								<h:outputText value="#{approveHis.actionByPerson}" />
+							</p:column>
+							<p:column headerText="#{msgs['adjudication.date.time.header']}"
+								sortBy="#{approveHis.actionDate}">
+								<h:outputText value="#{approveHis.actionDate}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+							</p:column>
+							<p:column
+								headerText="#{msgs['adjudication.remark.reason.header']}"
+								sortBy="#{approveHis.remark}">
+								<h:outputText value="#{approveHis.remark}" />
+							</p:column>
+						</p:dataTable>
+					</p:tab>
+				</p:tabView>
+				<!-- tab end -->
+
+				<!-- button below -->
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						action="#{adjudicationEditView.save}"
+						rendered="#{adjudicationEditView.saveable}" />
+					<p:button value="#{msgs['report.btn']}" disabled="true" />
+					<p:menuButton value="#{msgs['action.menuButton.label']}"
+						rendered="#{adjudicationEditView.submitable or adjudicationEditView.approvable or adjudicationEditView.rejectable or adjudicationEditView.deletable}">
+						<p:menuitem update="@form"
+							rendered="#{adjudicationEditView.submitable}"
+							value="#{msgs['submit.btn']}"
+							action="#{adjudicationEditView.submit}" />
+						<p:menuitem update="@form"
+							rendered="#{adjudicationEditView.approvable}"
+							value="#{msgs['approve.btn']}"
+							action="#{adjudicationEditView.approve}" />
+						<p:menuitem update="@form"
+							rendered="#{adjudicationEditView.rejectable}"
+							value="#{msgs['reject.btn']}"
+							onclick="PF('rejectDialog').show();" />
+						<p:menuitem update="@form"
+							rendered="#{adjudicationEditView.deletable}"
+							value="#{msgs['delete.menuitem.label']}"
+							action="#{adjudicationEditView.delete}">
+							<p:confirm header="#{msgs['delete.dialog.header']}"
+								message="#{msgs['delete.dialog.msg']}" icon="ui-icon-alert" />
+						</p:menuitem>
+					</p:menuButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="#{msgs['delete.yes.btn']}" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="#{msgs['delete.no.btn']}" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</div>
+				<!-- button below -->
+			</h:form>
+
+			<!-- dialog to show account numbers -->
+			<h:form id="acctForm">
+				<p:dialog id="acctNumDialog"
+					header="#{msgs['adjudication.account.number.label']}"
+					widgetVar="acctNumDialog" modal="true" width="800" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:dataTable var="adjAccount" id="pd"
+							value="#{adjudicationEditView.adjucationAccounts}" reflow="true"
+							paginator="false">
+							<p:column
+								headerText="#{msgs['adjudication.account.number.label']}"
+								sortBy="#{adjAccount.adjucationAccount}">
+								<p:inputText value="#{adjAccount.adjucationAccount}"
+									disabled="#{adjudicationEditView.formDisabled}" maxlength="30">
+									<p:ajax event="change" update="acctForm:pd" />
+								</p:inputText>
+							</p:column>
+							<p:column headerText="#{msgs['action.column.header']}"
+								styleClass="ax-action-w dont-print">
+								<p:menuButton value="#{msgs['action.menuButton.label']}"
+									disabled="#{adjudicationEditView.formDisabled}">
+									<p:menuitem value="#{msgs['delete.menuitem.label']}"
+										immediate="false"
+										action="#{adjudicationEditView.deleteAccountNumber}"
+										update="pd">
+										<f:setPropertyActionListener value="#{adjAccount}"
+											target="#{adjudicationEditView.adjucationAccountVO}" />
+									</p:menuitem>
+								</p:menuButton>
+							</p:column>
+						</p:dataTable>
+					</div>
+					<div class="ax-btn-set aR">
+						<p:commandButton disabled="#{adjudicationEditView.formDisabled}"
+							value="#{msgs['adjudication.account.number.label']}"
+							immediate="true" update="pd,msgs"
+							action="#{adjudicationEditView.addAccountNumber}" icon="ti-plus" />
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['save.btn']}" immediate="true"
+							disabled="#{adjudicationEditView.formDisabled}"
+							action="#{adjudicationEditView.saveAccountNumber}" update="msgs"
+							validateClient="true" />
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary" update="pd" immediate="true"
+							action="#{adjudicationEditView.cancelAccountNumbers}" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to show account numbers -->
+
+			<!-- dialog to show claim amounts -->
+			<h:form>
+				<p:dialog id="claimAmountDialog"
+					header="#{msgs['adjudication.amount.claimed.label']}"
+					widgetVar="claimAmountDialog" modal="true" width="800"
+					minHeight="50" resizable="false" dynamic="true"
+					style="position: fixed">
+					<div class="ui-fluid">
+						<p:dataTable var="item" id="pd"
+							value="#{adjudicationEditView.adjucationVO.adjucationApplyItems}"
+							reflow="true" paginator="false">
+							<p:column headerText="#{msgs['adjudication.currency.header']}"
+								sortBy="#{item.currencyBasicInfo.curcyName}">
+								<p:inputText value="#{item.currencyBasicInfo.curcyName}"
+									disabled="true" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['adjudication.claim.amount.header']}">
+								<p:inputNumber inputStyle="text-align: right;"
+									value="#{item.appHkAmount != null ? item.appHkAmount : 0}"
+									disabled="true" />
+							</p:column>
+						</p:dataTable>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('claimAmountDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to show claim amounts -->
+
+			<!-- dialog to reject adjudication -->
+			<h:form id="rejectForm">
+				<p:dialog id="rejectDialog" header="#{msgs['reject.dialog.header']}"
+					widgetVar="rejectDialog" modal="true" width="500" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid columns="2" id="pd"
+							columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel value="#{msgs['common.reason.label']}" />
+							<p:selectOneMenu required="true"
+								value="#{adjudicationEditView.remarkReson}">
+								<f:selectItem itemLabel="- Select -" />
+								<f:selectItems var="reason"
+									value="#{adjudicationEditView.sysRejectReasons}"
+									itemLabel="#{reason.rejectReasonDesc}"
+									itemValue="#{reason.rejectReasonDesc}" />
+								<p:ajax event="change" update="rejectForm:pd" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="#{msgs['reject.reason.label']}" />
+							<p:inputTextarea value="#{adjudicationEditView.remarkReson}"
+								disabled="true">
+							</p:inputTextarea>
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['confirm.btn']}"
+							action="#{adjudicationEditView.rejectAdjudication}"
+							update="pd,msgs,editForm" validateClient="true" />
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('rejectDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to reject adjudication -->
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	template="./common-creditor.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable"
+				header="#{msgs['common.creditor.search.title']}" toggleable="true"
+				toggleSpeed="200" widgetVar="panel">
+				<p:focus context="toggleable"/>
+				<h:form id="searchForm">
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="Name"
+							value="#{msgs['common.creditor.name.label']}" />
+						<p:inputText id="Name"
+							value="#{commonCreditorSearchView.criteriaVO.commonCreditorName}" />
+
+						<p:outputLabel for="Status" value="#{msgs['status.label']}" />
+						<p:selectOneMenu id="Status"
+							value="#{commonCreditorSearchView.criteriaVO.status}">
+							<f:selectItem itemLabel="- All -" />
+							<f:selectItems value="#{commonCreditorSearchView.statusVOs}"
+								var="status" itemLabel="#{status.statusName}"
+								itemValue="#{status.statusVal}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['search.btn']}" icon="ti-search"
+							action="#{commonCreditorSearchView.search}" update="formC" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary"
+							action="#{commonCreditorSearchView.reset}"
+							update="searchForm,formC" />
+						<p:button value="#{msgs['create.btn']}" outcome="edit" />
+					</div>
+				</h:form>
+			</p:panel>
+		</div>
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

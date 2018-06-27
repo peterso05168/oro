@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2018-04-23T16:10:17 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TESTMAINREPORT" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="99d38d89-86e6-4680-90c0-980ce9423ec1">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORODataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Style1" isDefault="true" fontName="Courier" fontSize="9" isBold="true"/>
+	<parameter name="ORACLE_REF_CURSOR" class="java.sql.ResultSet" isForPrompting="false"/>
+	<parameter name="REQUEST_REPORT_ID" class="java.lang.Long" isForPrompting="false">
+		<defaultValueExpression><![CDATA[1L]]></defaultValueExpression>
+	</parameter>
+	<parameter name="REQUEST_CRITERIA_ID" class="java.lang.Long" isForPrompting="false"/>
+	<parameter name="RPT_ROOT" class="java.lang.String"/>
+	<parameter name="RPT_ENV" class="java.lang.String"/>
+	<parameter name="RPT_CONT_PATH" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[($P{RPT_ROOT} != null && !$P{RPT_ROOT}.isEmpty() ? "/" + $P{RPT_ROOT} + "/" : "") + ($P{RPT_ENV} != null && !$P{RPT_ENV}.isEmpty() ? $P{RPT_ENV} + "/" : "")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RPT_CONT_TMPL" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["Common/Header/Test6_sub.jrxml"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="plsql">
+		<![CDATA[{call MAINREPORT.MAIN_PROC($P{ORACLE_REF_CURSOR},$P{REQUEST_REPORT_ID},$P{REQUEST_CRITERIA_ID})}]]>
+	</queryString>
+	<field name="RPT_REQ_ID" class="java.lang.Long"/>
+	<field name="RPT_REQ_CRI_ID" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="842" splitType="Stretch">
+			<subreport isUsingCache="true" runToBottom="true">
+				<reportElement key="" x="0" y="0" width="595" height="842" uuid="a201ef93-2458-482d-a5c8-767b81206300">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<subreportParameter name="REQUEST_REPORT_ID">
+					<subreportParameterExpression><![CDATA[$P{REQUEST_REPORT_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REQUEST_CRITERIA_ID">
+					<subreportParameterExpression><![CDATA[$F{RPT_REQ_CRI_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["TESTSUBREPORT.jrxml"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

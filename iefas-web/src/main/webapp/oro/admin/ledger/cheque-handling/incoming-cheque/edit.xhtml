@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:com="http://java.sun.com/jsf/composite/common"
+                template="./incoming-cheque.xhtml">
+
+    <ui:define name="title">
+        <h:link styleClass="ax-back-icon-url" outcome="search">
+            <i class="ax-icon ti-arrow-left"></i>
+            #{msgs['cheque.handling.incoming.cheque.title']}
+        </h:link>
+    </ui:define>
+
+    <ui:define name="main-content">
+        <div>
+            <p:panel id="toggleable" header="#{msgs['cheque.handling.incoming.cheque.edit.title']}"
+                     toggleable="true" toggleSpeed="200" widgetVar="panel">
+                <h:form id="editForm">
+                    <div>
+                        <p:focus context="toggleable"/>
+                        <p:messages id="msgs" closable="true"/>
+                        <input type="checkbox" id="basicAdvance" name="basicAdvance"
+                               class="basicAdvance hidden-checkbox" checked="checked"/>
+                        <div class="search-basic">
+                            <p:panelGrid columns="1" layout="grid"
+                                         columnClasses="ui-grid-col-12"
+                                         styleClass="ui-panelgrid-blank ui-fluid">
+                                <p:inputText/>
+                                <p:column>
+                                    <label for="basicAdvance" class="basicAdvanceLabel advance"><i
+                                            class="ti-search"/> Advanced Search</label>
+                                    <div class="note">Case Number, Case Name, Case Types</div>
+                                </p:column>
+                            </p:panelGrid>
+                        </div>
+                        <div class="search-advance">
+                            <p:panelGrid columns="4"
+                                         columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                                         layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                                <p:outputLabel for="chequeNumber"
+                                               value="#{msgs['cheque.handling.incoming.cheque.cheque.number.label']}"/>
+                                <p:inputText id="chequeNumber" required="true"
+                                             value="#{incomingChequeEditView.chequeVO.chequeNo}"
+                                             validator="#{chequeValidator.validateChequeNumber}"/>
+                                <p:outputLabel for="amount"
+                                               value="#{msgs['cheque.handling.incoming.cheque.amount.label']}"/>
+                                <p:inputText id="amount" value="#{incomingChequeEditView.chequeVO.chequeAmount}"
+                                             required="true"/>
+                                <p:outputLabel for="bankCode"
+                                               value="#{msgs['cheque.handling.incoming.cheque.bank.code.label']}"/>
+                                <p:inputText id="bankCode" value="#{incomingChequeEditView.chequeVO.bankCode}"
+                                             required="true"/>
+                                <p:outputLabel for="payerName"
+                                               value="#{msgs['cheque.handling.incoming.cheque.name.of.payer.label']}"/>
+                                <p:inputText id="payerName" value="#{incomingChequeEditView.chequeVO.payee}"
+                                             required="true"/>
+                                <p:outputLabel
+                                        value="#{msgs['cheque.handling.incoming.cheque.case.number.label']}"/>
+                                <com:caseNumber allMandatory="true"
+                                                caseTypeCodeValue="#{incomingChequeEditView.caseNumberVO.caseType}"
+                                                caseNoValue="#{incomingChequeEditView.caseNumberVO.caseSequence}"
+                                                caseYearValue="#{incomingChequeEditView.caseNumberVO.caseYear}"
+                                                autoSearchListener="#{incomingChequeEditView.searchCaseInfo}"
+                                                autoSearchEnabled="true" autoSearchUpdate="@form:caseOfficer"/>
+                                <p:outputLabel for="caseOfficer"
+                                               value="#{msgs['cheque.handling.incoming.cheque.case.officer.label']}"/>
+                                <p:inputText id="caseOfficer" disabled="true"
+                                             value="#{incomingChequeEditView.chequeVO.caseInfo.post.postTitle}"/>
+                                <p:outputLabel for="receiveDate"
+                                               value="#{msgs['cheque.handling.incoming.cheque.receive.date.label']}"/>
+                                <p:calendar id="receiveDate" required="true" pattern="#{appResourceUtils.dateFormat}"
+                                            maxdate="#{incomingChequeEditView.today}"
+                                            value="#{incomingChequeEditView.chequeVO.receiptDate}" showOn="button"/>
+                                <p:outputLabel for="chequeDate"
+                                               value="#{msgs['cheque.handling.incoming.cheque.cheque.date.label']}"/>
+                                <p:calendar id="chequeDate" required="true" pattern="#{appResourceUtils.dateFormat}"
+                                            maxdate="#{incomingChequeEditView.today}"
+                                            value="#{incomingChequeEditView.chequeVO.chequeDate}" showOn="button">
+                                </p:calendar>
+                                <p:outputLabel for="currency"
+                                               value="#{msgs['cheque.handling.incoming.cheque.currency.label']}"/>
+                                <p:selectOneMenu id="currency"
+                                                 value="#{incomingChequeEditView.chequeVO.curcy.curcyId}">
+                                    <f:selectItem itemLabel="- Select -"/>
+                                    <f:selectItems value="#{incomingChequeEditView.currencyBasicInfoVOS}"
+                                                   var="currency"
+                                                   itemLabel="#{currency.curcyName}"
+                                                   itemValue="#{currency.curcyId}"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel for="remark"
+                                               value="#{msgs['cheque.handling.incoming.cheque.remark.label']}"/>
+                                <p:inputText id="remark" value="#{incomingChequeEditView.chequeVO.remark}"/>
+                            </p:panelGrid>
+                        </div>
+                    </div>
+                    <div class="ax-btn-set">
+                        <p:button value="#{msgs['back.btn']}"
+                                  styleClass="ui-priority-secondary" ajax="false"
+                                  outcome="search"/>
+                        <p:commandButton id="saveBtn" value="#{msgs['save.btn']}" update="editForm"
+                                         action="#{incomingChequeEditView.save}"/>
+                    </div>
+                </h:form>
+            </p:panel>
+        </div>
+    </ui:define>
+</ui:composition>

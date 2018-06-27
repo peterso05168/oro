@@ -1,0 +1,19 @@
+<!DOCTYPE aspectj PUBLIC "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+<aspectj>
+
+	<weaver options="-Xset:weaveJavaxPackages=true">
+		<!-- only weave classes in our application-specific packages -->
+		<include within="hk.oro.iefas..*" />
+	</weaver>
+
+	<aspects>
+		<aspect
+			name="org.springframework.beans.factory.aspectj.AnnotationBeanConfigurerAspect" />
+		<aspect
+			name="org.springframework.scheduling.aspectj.AnnotationAsyncExecutionAspect" />
+		<aspect
+			name="org.springframework.transaction.aspectj.AnnotationTransactionAspect" />
+		<aspect name="org.springframework.cache.aspectj.AnnotationCacheAspect" />
+	</aspects>
+
+</aspectj>

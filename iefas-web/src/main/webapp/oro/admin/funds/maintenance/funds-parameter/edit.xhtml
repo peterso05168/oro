@@ -1,0 +1,218 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	template="./funds-parameter.xhtml">
+
+	<!-- 	<ui:define name="breadcrumb-3"> -->
+	<!-- 		<li><a title="">Other Parameter</a><i class="ti-angle-right"></i></li> -->
+	<!-- 	</ui:define> -->
+
+	<ui:define name="main-content">
+		<h:form id="editForm">
+			<p:messages id="msgs" closable="true" />
+			<p:panel id="toggleable" header="#{msgs['funds.parameter.header']}" toggleable="true"
+				toggleSpeed="200" widgetVar="panel">
+				<p:focus context="toggleable"/>
+				<p:panel id="bankAccount" header="#{msgs['funds.parameter.bank.account.header']}">
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="depositLimitInput"
+							value="#{msgs['funds.parameter.default.deposit.limit.title']}"></p:outputLabel>
+						<p:column>
+							<p:inputText id="depositLimitInput"
+								value="#{fundsParameterEditView.defaultDepositLimitValue}"
+								style="width:50%" />
+							<span class="note">#{msgs['funds.parameter.currencyHKD.unit']}</span>
+						</p:column>
+					</p:panelGrid>
+				</p:panel>
+				<p:panel id="depositTarget" header="#{msgs['funds.parameter.deposit.limit.title']}">
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="depositTargetBasic"
+							value="#{msgs['funds.parameter.deposit.limit.title']}"></p:outputLabel>
+						<p:column>
+							<p:selectManyCheckbox id="depositTargetBasic"
+								value="#{fundsParameterEditView.depositTargetValue}"
+								required="true">
+								<f:selectItem itemLabel="#{msgs['funds.day.mon']}" itemValue="1" />
+								<f:selectItem itemLabel="#{msgs['funds.day.tue']}" itemValue="2" />
+								<f:selectItem itemLabel="#{msgs['funds.day.wed']}" itemValue="3" />
+								<f:selectItem itemLabel="#{msgs['funds.day.thu']}" itemValue="4" />
+								<f:selectItem itemLabel="#{msgs['funds.day.fri']}" itemValue="5" />
+							</p:selectManyCheckbox>
+						</p:column>
+					</p:panelGrid>
+				</p:panel>
+				<p:panel id="cashRequirement" header="#{msgs['funds.parameter.cashreq.header']}">
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="cashRequirementDefaultPeriodInput"
+							value="#{msgs['funds.parameter.cashreqperiod.label']}"></p:outputLabel>
+						<p:column>
+							<p:inputText id="cashRequirementDefaultPeriodInput"
+								value="#{fundsParameterEditView.cashRequirementDefaultPeriodValue}"
+								style="width:50%" />
+							<span class="note">#{msgs['funds.parameter.day.unit']}</span>
+						</p:column>
+					</p:panelGrid>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="cashRequirementMaximumPeriodInput"
+							value="#{msgs['funds.parameter.cashreqmaxperiod.label']}"></p:outputLabel>
+						<p:column>
+							<p:inputText id="cashRequirementMaximumPeriodInput"
+								value="#{fundsParameterEditView.cashRequirementMaximumPeriodValue}"
+								style="width:50%" />
+							<span class="note">#{msgs['funds.parameter.day.unit']}</span>
+						</p:column>
+					</p:panelGrid>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="surplusThresholdInput"
+							value="#{msgs['funds.parameter.surplus.label']}"></p:outputLabel>
+						<p:column>
+							<p:inputText id="surplusThresholdInput"
+								value="#{fundsParameterEditView.surplusThresholdValue}"
+								style="width:50%" />
+							<span class="note">#{msgs['funds.parameter.currencyHKD.unit']}</span>
+						</p:column>
+					</p:panelGrid>
+				</p:panel>
+				<p:panel id="investmentInstruction" header="#{msgs['funds.parameter.invins.header']}">
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="investmentVoucherParticularInput"
+							value="#{msgs['funds.parameter.invvouchpart.label']}"></p:outputLabel>
+						<p:column>
+							<p:inputText id="investmentVoucherParticularInput"
+								value="#{fundsParameterEditView.investmentVoucherParticularValue}" />
+						</p:column>
+					</p:panelGrid>
+				</p:panel>
+				<p:panel id="fundsAvailableForPlacingDeposits"
+					header="#{msgs['funds.parameter.fundsava.header']}">
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="dayOfPendingChequeInput"
+							value="#{msgs['funds.parameter.daypending.label']}"></p:outputLabel>
+						<p:column>
+							<p:inputText id="dayOfPendingChequeInput"
+								value="#{fundsParameterEditView.dayOfPendingChequeValue}"
+								style="width:50%" />
+							<span class="note">#{msgs['funds.parameter.day.unit']}</span>
+						</p:column>
+					</p:panelGrid>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="defaultBufferValueInput"
+							value="#{msgs['funds.parameter.buffer.label']}"></p:outputLabel>
+						<p:column>
+							<p:inputText id="defaultBufferValueInput"
+								value="#{fundsParameterEditView.defaultBufferValue}"
+								style="width:50%" />
+							<span class="note">#{msgs['funds.parameter.currencyHKD.unit']}</span>
+						</p:column>
+					</p:panelGrid>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="placeDepositRoundingDecimalInput"
+							value="#{msgs['funds.parameter.depositround.label']}"></p:outputLabel>
+						<p:column>
+							<p:inputText id="placeDepositRoundingDecimalInput"
+								value="#{fundsParameterEditView.placeDepositRoundingDecimalValue}"
+								style="width:50%" />
+						</p:column>
+					</p:panelGrid>
+				</p:panel>
+				<p:panel id="misc" header="#{msgs['funds.parameter.misc.header']}">
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="interBankTransferChargeInput"
+							value="#{msgs['funds.parameter.depositround.label']}"></p:outputLabel>
+						<p:column>
+							<p:inputText id="interBankTransferChargeInput"
+								value="#{fundsParameterEditView.interBankTransferChargeValue}"
+								style="width:50%" />
+							<span class="note">#{msgs['funds.parameter.currencyHKD.unit']}</span>
+						</p:column>
+					</p:panelGrid>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="interestThresholdForSeparateInvestmentInput"
+							value="#{msgs['funds.parameter.interthre.label']}"></p:outputLabel>
+						<p:column>
+							<p:inputText id="interestThresholdForSeparateInvestmentInput"
+								value="#{fundsParameterEditView.interestThresholdForSeparateInvestmentValue}"
+								style="width:50%" />
+							<span class="note">#{msgs['funds.parameter.percentage.unit']}</span>
+						</p:column>
+					</p:panelGrid>
+				</p:panel>
+			</p:panel>
+			<p:panel id="upliftDayParameter" header="#{msgs['funds.parameter.upliftday.header']}">
+				<p:dataTable var="uplift"
+					value="#{fundsParameterEditView.upliftDateParameters}"
+					reflow="true" paginator="false" rows="5"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+					<p:column headerText="#{msgs['fromHKDValue.label']}">
+						<p:inputNumber decimalPlaces="2" value="#{uplift.fromValue}"
+							disabled="true" />
+					</p:column>
+					<p:column headerText="#{msgs['toHKDValue.label']}">
+						<p:inputNumber decimalPlaces="2" value="#{uplift.toValue}"
+							rendered="#{!uplift.lastColumn}" required="true"
+							maxValue="999999999999">
+							<p:ajax event="change"
+								listener="#{fundsParameterEditView.syncFromDateAndToDate}"
+								update="editForm:upliftDayParameter" />
+						</p:inputNumber>
+					</p:column>
+					<p:column headerText="#{msgs['upliftDate.label']}">
+						<p:inputNumber maxValue="9999" decimalPlaces="0"
+							converter="javax.faces.Integer" value="#{uplift.upliftDay}"
+							required="true" validator="#{fundsParameterValidator.validateUpliftDate}" />
+					</p:column>
+					<p:column headerText="#{msgs['action.column.header']}"
+						styleClass="ax-action-w dont-print">
+						<p:menuButton value="#{msgs['action.menuButton.label']}"
+							rendered="#{!uplift.lastColumn}">
+							<p:menuitem value="#{msgs['add.menuitem.label']}"
+								update="editForm:upliftDayParameter"
+								action="#{fundsParameterEditView.addUpliftParameter}"
+								rendered="#{!uplift.disableAdd}">
+								<f:setPropertyActionListener value="#{uplift}"
+									target="#{fundsParameterEditView.upliftDateParameter}" />
+							</p:menuitem>
+							<p:menuitem value="#{msgs['delete.menuitem.label']}"
+								update="editForm:upliftDayParameter"
+								action="#{fundsParameterEditView.deleteUpliftParameter}"
+								rendered="#{!uplift.disableDelete}">
+								<f:setPropertyActionListener value="#{uplift}"
+									target="#{fundsParameterEditView.upliftDateParameter}" />
+							</p:menuitem>
+						</p:menuButton>
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+			<div class="ax-btn-set">
+				<p:commandButton value="#{msgs['save.btn']}" update="@form"
+					action="#{fundsParameterEditView.updateParameter}" />
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

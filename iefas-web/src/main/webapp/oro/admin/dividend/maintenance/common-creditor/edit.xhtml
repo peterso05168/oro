@@ -1,0 +1,292 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui" template="./common-creditor.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+	        #{msgs['common.creditor.title']}
+		</h:link>
+	</ui:define>
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:focus context="toggleable" />
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+							<p:outputLabel for="CreditorName"
+								value="#{msgs['common.creditor.name.label']}" />
+							<p:inputText id="CreditorName"
+								value="#{commonCreditorEditView.commonCreditorVO.commonCreditorName}"
+								required="true" />
+
+							<p:outputLabel for="ContactPerson"
+								value="#{msgs['common.creditor.person.label']}" />
+							<p:inputText id="ContactPerson"
+								value="#{commonCreditorEditView.commonCreditorVO.contactPerson}"
+								maxlength="100" />
+
+							<p:outputLabel for="ContactNumber"
+								value="#{msgs['common.creditor.number.label']}" />
+							<p:inputText id="ContactNumber"
+								value="#{commonCreditorEditView.commonCreditorVO.contactNo}">
+							</p:inputText>
+							<p:outputLabel />
+							<p:outputLabel />
+
+							<p:outputLabel for="EngPayeeName"
+								value="#{msgs['common.creditor.eng.payeename.label']}" />
+							<p:inputText id="EngPayeeName" required="true"
+								value="#{commonCreditorEditView.commonCreditorVO.payeeName}">
+							</p:inputText>
+
+							<p:outputLabel for="ChiPayeeName"
+								value="#{msgs['common.creditor.chi.payeename.label']}" />
+							<p:inputText id="ChiPayeeName"
+								value="#{commonCreditorEditView.commonCreditorVO.payeeNameChinese}">
+
+							</p:inputText>
+
+							<p:outputLabel for="EngAddress"
+								value="#{msgs['common.creditor.eng.address.label']}" />
+							<p:inputText id="EngAddress"
+								value="#{commonCreditorEditView.commonCreditorVO.address.address1}">
+
+							</p:inputText>
+
+							<p:outputLabel for="ChiAddress"
+								value="#{msgs['common.creditor.chi.address.label']}" />
+							<p:inputText id="ChiAddress"
+								value="#{commonCreditorEditView.commonCreditorVO.address.chiAddress1}">
+
+							</p:inputText>
+
+							<p:outputLabel />
+							<p:inputText id="EngAddr1"
+								value="#{commonCreditorEditView.commonCreditorVO.address.address2}" />
+							<p:outputLabel />
+							<p:inputText id="ChiAddr1"
+								value="#{commonCreditorEditView.commonCreditorVO.address.chiAddress2}" />
+
+							<p:outputLabel />
+							<p:inputText id="EngAddr2"
+								value="#{commonCreditorEditView.commonCreditorVO.address.address3}" />
+							<p:outputLabel />
+							<p:inputText id="ChiAddr2"
+								value="#{commonCreditorEditView.commonCreditorVO.address.chiAddress3}" />
+
+							<p:outputLabel for="Reference"
+								value="#{msgs['common.creditor.reference.label']}" />
+							<p:inputText id="Reference"
+								value="#{commonCreditorEditView.commonCreditorVO.reference}" />
+
+							<p:outputLabel for="Status" value="#{msgs['status.label']}" />
+							<p:inputText id="Status" disabled="true"
+								value="#{commonCreditorEditView.statusMap.get(commonCreditorEditView.commonCreditorVO.status)}" />
+						</p:panelGrid>
+					</div>
+				</p:panel>
+
+				<p:panel id="basic"
+					header="#{msgs['common.creditor.sections.title']}"
+					style="margin-bottom:20px">
+					<p:dataTable var="section" id="sectionsData"
+						value="#{commonCreditorEditView.commonCreditorVO.commonCreditorSections}"
+						reflow="true" paginator="false" rows="5"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<p:column headerText="#{msgs['section.name.column.header']}"
+							sortBy="#{section.sectionName}">
+							<h:outputText value="#{section.sectionName}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['section.contact.number.column.header']}"
+							sortBy="#{section.contactNo}">
+							<h:outputText value="#{section.contactNo}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['section.contact.person.column.header']}"
+							sortBy="#{section.contactPerson}">
+							<h:outputText value="#{section.contactPerson}" />
+						</p:column>
+						<p:column headerText="#{msgs['payee.name.eng.column.header']}"
+							sortBy="#{section.payeeName}">
+							<h:outputText value="#{section.payeeName}" />
+						</p:column>
+						<p:column headerText="#{msgs['payee.name.chi.column.header']}"
+							sortBy="#{section.payeeNameChinese}">
+							<h:outputText value="#{section.payeeNameChinese}" />
+						</p:column>
+						<p:column headerText="#{msgs['address.eng.column.header']}"
+							sortBy="#{section.address.address1}">
+							<h:outputText value="#{section.address.address1}" />
+						</p:column>
+						<p:column headerText="#{msgs['address.chi.column.header']}"
+							sortBy="#{section.address.chiAddress1}">
+							<h:outputText value="#{section.address.chiAddress1}" />
+						</p:column>
+						<p:column headerText="#{msgs['reference.column.header']}"
+							sortBy="#{section.reference}">
+							<h:outputText value="#{section.reference}" />
+						</p:column>
+						<p:column headerText="#{msgs['status.column.header']}"
+							sortBy="#{section.status}" styleClass="ax-status-w-b">
+							<h:outputText value="#{msgs['inactive.status.label']}"
+								rendered="#{section.status eq 'INA'}" class="status-label red" />
+							<h:outputText value="#{msgs['active.status.label']}"
+								rendered="#{section.status eq 'ACT'}" class="status-label green" />
+						</p:column>
+
+						<p:column headerText="#{msgs['action.column.header']}"
+							styleClass="ax-action-w dont-print">
+							<p:menuButton value="#{msgs['action.menuButton.label']}">
+								<p:menuitem value="Edit" onclick="PF('sectionDialog').show();"
+									update="sectionForm:pg" process="@this">
+									<f:setPropertyActionListener value="#{section}"
+										target="#{commonCreditorEditView.commonCreditorSectionVO}" />
+								</p:menuitem>
+								<p:menuitem value="#{msgs['inactive.status.label']}"
+									rendered="#{section.status eq 'ACT'}"
+									action="#{commonCreditorEditView.changeSectionStatus}"
+									update="editForm">
+									<f:setPropertyActionListener value="#{section}"
+										target="#{commonCreditorEditView.commonCreditorSectionVO}" />
+								</p:menuitem>
+								<p:menuitem value="#{msgs['active.status.label']}"
+									rendered="#{section.status eq 'INA'}"
+									action="#{commonCreditorEditView.changeSectionStatus}"
+									update="editForm">
+									<f:setPropertyActionListener value="#{section}"
+										target="#{commonCreditorEditView.commonCreditorSectionVO}" />
+								</p:menuitem>
+							</p:menuButton>
+						</p:column>
+					</p:dataTable>
+					<div class="ax-btn-set aR">
+						<p:commandButton immediate="true"
+							value="#{msgs['section.add.btn']}"
+							onclick="PF('sectionDialog').show();" icon="ti-plus" />
+					</div>
+				</p:panel>
+
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						action="#{commonCreditorEditView.save}" />
+				</div>
+			</h:form>
+
+			<!-- dialog to edit section -->
+			<h:form id="sectionForm">
+				<p:dialog id="sectionDialog"
+					header="#{msgs['common.creditor.sections.title']}"
+					widgetVar="sectionDialog" modal="true" width="1000" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:ajax event="close" update="@form" resetValues="true"
+						listener="#{commonCreditorEditView.sectionHandleClose}">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="SectionName"
+								value="#{msgs['section.name.label']}" />
+							<p:inputText id="SectionName" required="true"
+								value="#{commonCreditorEditView.commonCreditorSectionVO.sectionName}" />
+
+							<p:outputLabel for="SectionNumber"
+								value="#{msgs['section.contact.number.label']}" />
+							<p:inputText id="SectionNumber"
+								value="#{commonCreditorEditView.commonCreditorSectionVO.contactNo}">
+							</p:inputText>
+
+							<p:outputLabel for="SectionPerson"
+								value="#{msgs['section.contact.person.label']}" />
+							<p:inputText id="SectionPerson"
+								value="#{commonCreditorEditView.commonCreditorSectionVO.contactPerson}"
+								maxlength="100" />
+							<p:outputLabel />
+							<p:outputLabel />
+
+							<p:outputLabel for="SectionEngPayeeName"
+								value="#{msgs['common.creditor.eng.payeename.label']}" />
+							<p:inputText id="SectionEngPayeeName" required="true"
+								value="#{commonCreditorEditView.commonCreditorSectionVO.payeeName}">
+							</p:inputText>
+
+							<p:outputLabel for="SectionChiPayeeName"
+								value="#{msgs['common.creditor.chi.payeename.label']}" />
+							<p:inputText id="SectionChiPayeeName"
+								value="#{commonCreditorEditView.commonCreditorSectionVO.payeeNameChinese}">
+
+							</p:inputText>
+
+							<p:outputLabel for="SectionEngAddress"
+								value="#{msgs['common.creditor.eng.address.label']}" />
+							<p:inputText id="SectionEngAddress"
+								value="#{commonCreditorEditView.commonCreditorSectionVO.address.address1}">
+
+							</p:inputText>
+
+							<p:outputLabel for="SectionChiAddress"
+								value="#{msgs['common.creditor.chi.address.label']}" />
+							<p:inputText id="SectionChiAddress"
+								value="#{commonCreditorEditView.commonCreditorSectionVO.address.chiAddress1}">
+
+							</p:inputText>
+
+							<p:outputLabel />
+							<p:inputText id="SectionEngAddr1"
+								value="#{commonCreditorEditView.commonCreditorSectionVO.address.address2}" />
+							<p:outputLabel />
+							<p:inputText id="SectionChiAddr1"
+								value="#{commonCreditorEditView.commonCreditorSectionVO.address.chiAddress2}" />
+
+							<p:outputLabel />
+							<p:inputText id="SectionEngAddr2"
+								value="#{commonCreditorEditView.commonCreditorSectionVO.address.address3}" />
+							<p:outputLabel />
+							<p:inputText id="SectionChiAddr2"
+								value="#{commonCreditorEditView.commonCreditorSectionVO.address.chiAddress3}" />
+
+							<p:outputLabel for="SectionReference"
+								value="#{msgs['common.creditor.reference.label']}" />
+							<p:inputText id="SectionReference"
+								style="text-transform:uppercase;"
+								value="#{commonCreditorEditView.commonCreditorSectionVO.reference}" />
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['save.btn']}"
+							action="#{commonCreditorEditView.addSection}"
+							update="pg,msgs,editForm:sectionsData" validateClient="true">
+						</p:commandButton>
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('sectionDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to edit section -->
+		</div>
+	</ui:define>
+
+</ui:composition>
+
+
+
+

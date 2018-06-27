@@ -1,0 +1,71 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="./user.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable" header="#{msgs['user.mgt.search.title']}"
+				toggleable="true" toggleSpeed="200" widgetVar="panel">
+				<h:form id="searchForm">
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+						<p:outputLabel for="LoginId"
+							value="#{msgs['user.mgt.login.id.label']}" />
+						<p:inputText id="LoginId"
+							value="#{userMgtSearchView.searchUserCriteriaVO.loginName}" />
+
+						<p:outputLabel for="Email"
+							value="#{msgs['user.mgt.email.addr.label']}" />
+						<p:inputText id="Email"
+							value="#{userMgtSearchView.searchUserCriteriaVO.emailAddress}" />
+
+						<p:outputLabel for="Division"
+							value="#{msgs['user.mgt.division.label']}" />
+						<p:selectOneMenu id="Division"
+							value="#{userMgtSearchView.searchUserCriteriaVO.divisionId}">
+							<f:selectItem itemLabel="- All -" itemValue="" />
+							<f:selectItems value="#{userMgtSearchView.divisionVOs}"
+								var="division" itemLabel="#{division.divisionName}"
+								itemValue="#{division.divisionId}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel for="Post" value="#{msgs['user.mgt.post.label']}" />
+						<p:selectOneMenu id="Post"
+							value="#{userMgtSearchView.searchUserCriteriaVO.postId}">
+							<f:selectItem itemLabel="- All -" itemValue="" />
+							<f:selectItems value="#{userMgtSearchView.posts}" var="post"
+								itemLabel="#{post.postTitle}" itemValue="#{post.postId}" />
+						</p:selectOneMenu>
+
+						<p:outputLabel for="EngName"
+							value="#{msgs['user.mgt.eng.name.label']}" />
+						<p:inputText id="EngName"
+							value="#{userMgtSearchView.searchUserCriteriaVO.englishName}" />
+
+						<p:outputLabel for="Status" value="#{msgs['status.label']}" />
+						<p:selectOneMenu id="Status"
+							value="#{userMgtSearchView.searchUserCriteriaVO.recordStatus}">
+							<f:selectItem itemLabel="- All -" itemValue="" />
+							<f:selectItems value="#{userMgtSearchView.statusVOs}"
+								var="status" itemLabel="#{status.statusName}"
+								itemValue="#{status.statusVal}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['search.btn']}" icon="ti-search"
+							action="#{userMgtSearchView.search}" update="formC" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary"
+							action="#{userMgtSearchView.reset}" update="searchForm,formC" />
+						<p:button value="#{msgs['create.btn']}" outcome="edit" />
+					</div>
+				</h:form>
+			</p:panel>
+		</div>
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

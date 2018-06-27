@@ -1,0 +1,175 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	template="./employee-wilon-severance-pay.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editFrom">
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="caseNumberValue"
+								value="#{msgs['wilon.casenumber.label']}" />
+							<com:caseNumber id="caseNumberValue"
+								caseTypeCodeValue="#{wilonAndSeverancePayEditView.wilonAndSeverancePay.caseInfo.caseType.caseTypeCode}"
+								caseNoValue="#{wilonAndSeverancePayEditView.wilonAndSeverancePay.caseInfo.caseNo}"
+								caseYearValue="#{wilonAndSeverancePayEditView.wilonAndSeverancePay.caseInfo.caseYear}"
+								disabled="true" />
+							<p:outputLabel for="caseNameValue"
+								value="#{msgs['wilon.casename.label']}" />
+							<p:inputText id="caseNameValue" disabled="true"
+								value="#{wilonAndSeverancePayEditView.wilonAndSeverancePay.caseInfo.caseName}" />
+							<p:outputLabel for="creditorNameValue"
+								value="#{msgs['wilon.creditor.label']}" />
+							<p:inputText id="creditorNameValue" disabled="true"
+								value="#{wilonAndSeverancePayEditView.wilonAndSeverancePay.caseCred.creditorNameEng}" />
+							<p:outputLabel for="proofNumberValue"
+								value="#{msgs['wilon.proof.label']}" />
+							<p:inputText id="proofNumberValue" disabled="true"
+								value="#{wilonAndSeverancePayEditView.wilonAndSeverancePay.caseCred.proofNo}" />
+						</p:panelGrid>
+					</div>
+				</p:panel>
+
+				<p:tabView id="tabView" activeIndex="0">
+					<p:tab title="#{msgs['wilon.detail.label']}">
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="employeeTypeValue"
+								value="#{msgs['wilon.employee.type.label']}" />
+							<p:selectOneMenu id="employeeTypeValue"
+								value="#{wilonAndSeverancePayEditView.wilonAndSeverancePay.employeeType}">
+								<f:selectItem itemLabel=" - - ALL - -" />
+								<f:selectItems
+									value="#{wilonAndSeverancePayEditView.employeeTypeList}"
+									var="e" itemLabel="#{e.codeValue}" itemValue="#{e.codeValue}" />
+								<f:ajax
+									render="wageRateValue appointmentDateValue laidOffValue wilonPanel severPanel"
+									execute="employeeTypeValue wageRateValue appointmentDateValue laidOffValue"
+									event="change"
+									listener="#{wilonAndSeverancePayEditView.fillWILONAndSeveranceData}" />
+							</p:selectOneMenu>
+							<p:outputLabel for="wageRateValue"
+								value="#{msgs['wilon.wage.rate.label']}" />
+							<p:inputText id="wageRateValue" disabled="false"
+								value="#{wilonAndSeverancePayEditView.wilonAndSeverancePay.wageRate}">
+								<f:convertNumber pattern="#{appResourceUtils.moneyFormat}" />
+								<f:ajax
+									render="wageRateValue appointmentDateValue laidOffValue wilonPanel severPanel"
+									execute="employeeTypeValue wageRateValue appointmentDateValue laidOffValue"
+									event="blur"
+									listener="#{wilonAndSeverancePayEditView.fillWILONAndSeveranceData}" />
+							</p:inputText>
+							<p:outputLabel for="appointmentDateValue"
+								value="#{msgs['wilon.appointment.date.label']}" />
+							<p:calendar id="appointmentDateValue" showOn="button" readonlyInput="true"
+								value="#{wilonAndSeverancePayEditView.wilonAndSeverancePay.appointmentDate}"
+								pattern="#{appResourceUtils.dateFormat}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								<f:ajax
+									render="wageRateValue appointmentDateValue laidOffValue wilonPanel severPanel"
+									execute="employeeTypeValue wageRateValue appointmentDateValue laidOffValue"
+									event="dateSelect"
+									listener="#{wilonAndSeverancePayEditView.fillWILONAndSeveranceData}" />
+							</p:calendar>
+							<p:outputLabel for="laidOffValue"
+								value="#{msgs['wilon.laid.off.label']}" />
+							<p:calendar id="laidOffValue" showOn="button"
+								value="#{wilonAndSeverancePayEditView.wilonAndSeverancePay.laidOffDate}"
+								pattern="#{appResourceUtils.dateFormat}" readonlyInput="true">
+								<f:ajax
+									render="wageRateValue appointmentDateValue laidOffValue wilonPanel severPanel"
+									execute="employeeTypeValue wageRateValue appointmentDateValue laidOffValue"
+									event="dateSelect"
+									listener="#{wilonAndSeverancePayEditView.fillWILONAndSeveranceData}" />
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</p:calendar>
+						</p:panelGrid>
+
+						<p:panel id="wilonPanel" header="#{msgs['wilon.wilon.label']}"
+							widgetVar="panel">
+							<div>
+								<p:panelGrid columns="6"
+									columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+									layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+									<p:outputLabel for="wilonPrefValue"
+										value="#{msgs['wilon.preferential.label']}" />
+									<p:inputText id="wilonPrefValue" disabled="true"
+										value="#{wilonAndSeverancePayEditView.wilonAndSeverancePay.wilonPref}">
+										<f:convertNumber pattern="#{appResourceUtils.moneyFormat}" />
+									</p:inputText>
+									<p:outputLabel for="wilonOrdiValue"
+										value="#{msgs['wilon.ordinary.label']}" />
+									<p:inputText id="wilonOrdiValue" disabled="true"
+										value="#{wilonAndSeverancePayEditView.wilonAndSeverancePay.wilonOrdi}">
+										<f:convertNumber pattern="#{appResourceUtils.moneyFormat}" />
+									</p:inputText>
+									<p:outputLabel for="wilonTotalValue"
+										value="#{msgs['wilon.total.label']}" />
+									<p:inputText id="wilonTotalValue" disabled="true"
+										value="#{wilonAndSeverancePayEditView.wilonAndSeverancePay.totalWilon}">
+										<f:convertNumber pattern="#{appResourceUtils.moneyFormat}" />
+									</p:inputText>
+								</p:panelGrid>
+							</div>
+						</p:panel>
+
+						<p:panel id="severPanel" header="#{msgs['wilon.severance.label']}"
+							widgetVar="panel">
+							<div>
+								<p:panelGrid columns="6"
+									columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+									layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+									<p:outputLabel for="severPrefValue"
+										value="#{msgs['wilon.preferential.label']}" />
+									<p:inputText id="severPrefValue" disabled="true"
+										value="#{wilonAndSeverancePayEditView.wilonAndSeverancePay.severPref}">
+										<f:convertNumber pattern="#{appResourceUtils.moneyFormat}" />
+									</p:inputText>
+									<p:outputLabel for="severOrdiValue"
+										value="#{msgs['wilon.ordinary.label']}" />
+									<p:inputText id="severOrdiValue" disabled="true"
+										value="#{wilonAndSeverancePayEditView.wilonAndSeverancePay.severOrdi}">
+										<f:convertNumber pattern="#{appResourceUtils.moneyFormat}" />
+									</p:inputText>
+									<p:outputLabel for="severTotalValue"
+										value="#{msgs['wilon.total.label']}" />
+									<p:inputText id="severTotalValue" disabled="true"
+										value="#{wilonAndSeverancePayEditView.wilonAndSeverancePay.totalSever}">
+										<f:convertNumber pattern="#{appResourceUtils.moneyFormat}" />
+									</p:inputText>
+								</p:panelGrid>
+							</div>
+						</p:panel>
+					</p:tab>
+
+				</p:tabView>
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						disabled="false"
+						action="#{wilonAndSeverancePayEditView.saveWILONAndSeverancePay}" />
+					<p:commandButton value="#{msgs['report.btn']}" update="@form"
+						action="#{wilonAndSeverancePayEditView.printReport}"
+						disabled="#{!wilonAndSeverancePayEditView.reportReady}" />
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+
+</ui:composition>
+
+
+
+

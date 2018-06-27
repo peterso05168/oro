@@ -1,0 +1,118 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:com="http://java.sun.com/jsf/composite/common"
+                template="../deposit-handling.xhtml">
+
+    <ui:define name="title">
+        <h:link styleClass="ax-back-icon-url" outcome="search">
+            <i class="ax-icon ti-arrow-left"/>
+            #{msgs['deposit.handling.enquiry.title']}
+        </h:link>
+    </ui:define>
+
+    <ui:define name="main-content">
+        <div>
+            <h:form id="editForm">
+                <p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+                         toggleable="true" toggleSpeed="300" widgetVar="panel">
+                    <p:focus context="toggleable"/>
+                    <p:messages id="msgs" closable="true"/>
+                    <div>
+                        <p:panelGrid columns="4"
+                                     columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                                     layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                            <p:outputLabel for="depositNumber"
+                                           value="#{msgs['deposit.handling.enquiry.deposit.number.label']}"/>
+                            <p:inputText id="depositNumber" disabled="true"
+                                         value="#{receiveDepositEnquiryEditView.receiveDeposit.depositNo}"/>
+                            <p:outputLabel for="payerName"
+                                           value="#{msgs['deposit.handling.enquiry.payer.name.label']}"/>
+                            <p:inputText id="payerName" required="true"
+                                         value="#{receiveDepositEnquiryEditView.receiveDeposit.payer}"/>
+                            <p:outputLabel for="contactNumber"
+                                           value="#{msgs['deposit.handling.enquiry.contact.number.label']}"/>
+                            <p:inputText id="contactNumber"
+                                         value="#{receiveDepositEnquiryEditView.receiveDeposit.contactNo}"/>
+                            <p:outputLabel for="amount"
+                                           value="#{msgs['deposit.handling.enquiry.amount.label']}"/>
+                            <p:inputText id="amount" required="true"
+                                         value="#{receiveDepositEnquiryEditView.receiveDeposit.depositAmount}"/>
+                            <p:outputLabel for="paymentType"
+                                           value="#{msgs['deposit.handling.enquiry.payment.type.label']}"/>
+                            <p:selectOneMenu id="paymentType" required="true"
+                                             value="#{receiveDepositEnquiryEditView.receiveDeposit.paymentTypeId}">
+                                <f:selectItem itemLabel="- Select -"/>
+                                <f:selectItems value="#{receiveDepositEnquiryEditView.paymentTypeVOS}"
+                                               var="paymentType"
+                                               itemLabel="#{paymentType.paymentTypeName}"
+                                               itemValue="#{paymentType.paymentTypeId}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel for="chequeNumber"
+                                           value="#{msgs['deposit.handling.enquiry.cheque.number.label']}"/>
+                            <p:inputText id="chequeNumber"
+                                         value="#{receiveDepositEnquiryEditView.receiveDeposit.chequeNo}"
+                                         validator="#{receiveDepositValidator.validateChequeNumber}"
+                                         required="true"/>
+                            <p:outputLabel for="receiveDate"
+                                           value="#{msgs['deposit.handling.enquiry.receive.date.label']}"/>
+                            <p:calendar id="receiveDate"
+                                        value="#{receiveDepositEnquiryEditView.receiveDeposit.receiveDate}"
+                                        disabled="true"
+                                        pattern="#{appResourceUtils.dateFormat}"/>
+                            <p:outputLabel for="receiptNumber"
+                                           value="#{msgs['deposit.handling.enquiry.receipt.number.label']}"/>
+                            <p:inputText id="receiptNumber"
+                                         value="#{receiveDepositEnquiryEditView.receiveDeposit.shrReceipt.receiptNo}"
+                                         disabled="true"/>
+                            <p:outputLabel
+                                    value="#{msgs['deposit.handling.enquiry.case.number.label']}"/>
+                            <com:caseNumber
+                                    caseTypeCodeValue="#{receiveDepositEnquiryEditView.caseNumber.caseType}"
+                                    caseNoValue="#{receiveDepositEnquiryEditView.caseNumber.caseSequence}"
+                                    caseYearValue="#{receiveDepositEnquiryEditView.caseNumber.caseYear}"
+                                    autoSearchEnabled="true"
+                                    autoSearchListener="#{receiveDepositEnquiryEditView.searchCaseInfo}"/>
+                            <p:outputLabel for="currency" value="#{msgs['deposit.handling.enquiry.currency.label']}"/>
+                            <p:selectOneMenu id="currency"
+                                             value="#{receiveDepositEnquiryEditView.receiveDeposit.curcy.curcyId}">
+                                <f:selectItem itemLabel="- Select -"/>
+                                <f:selectItems value="#{receiveDepositEnquiryEditView.currencyBasicInfoVOS}"
+                                               var="currency"
+                                               itemLabel="#{currency.curcyName}"
+                                               itemValue="#{currency.curcyId}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="#{msgs['deposit.handling.enquiry.status.label']}" for="status"/>
+                            <p:selectOneMenu id="status" value="#{receiveDepositEnquiryEditView.receiveDeposit.status}"
+                                             disabled="true">
+                                <f:selectItem itemLabel="STATUS"/>
+                                <f:selectItems value="#{receiveDepositEnquiryEditView.statusVOS}"
+                                               var="status"
+                                               itemLabel="#{status.statusName}"
+                                               itemValue="#{status.statusVal}"/>
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                    </div>
+                </p:panel>
+                <div class="ax-btn-set">
+                    <p:button value="#{msgs['back.btn']}"
+                              styleClass="ui-priority-secondary" icon="ti-arrow-left"
+                              outcome="search"/>
+
+                    <p:commandButton value="#{msgs['save.btn']}" update="@form"
+                                     action="#{receiveDepositEnquiryEditView.save}"/>
+
+                    <p:commandButton value="#{msgs['print.receipt.btn']}" update="@form"
+                                     disabled="#{receiveDepositEnquiryEditView.receiveDeposit.depositId == null}"
+                                     action="#{receiveDepositEnquiryEditView.printReceipt}"/>
+
+                    <p:commandButton value="#{msgs['reverse.btn']}" update="@form"
+                                     disabled="#{receiveDepositEnquiryEditView.receiveDeposit.depositId == null}"
+                                     action="#{receiveDepositEnquiryEditView.reverse}"/>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

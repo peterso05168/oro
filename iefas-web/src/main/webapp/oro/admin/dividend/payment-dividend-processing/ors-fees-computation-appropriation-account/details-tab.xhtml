@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+	<div class="ax-section-title">#{feeComputationEditView.vcase.caseType.caseTypeDesc}
+		- (#{feeComputationEditView.paymentType})</div>
+	<div class="sep type-02"></div>
+
+	<!-- The soryBy attribute has to be the same in order to show the expected result -->
+	<p:dataTable id="detailsTable" var="calculation"
+		value="#{feeComputationEditView.displayCaseFeeForDividendCalculations}"
+		paginator="false">
+		<f:facet name="header">#{feeComputationEditView.caseFeeTypeName} #{msgs['orsFeesComputation.details.table.header']}</f:facet>
+
+		<p:column
+			headerText="#{msgs['orsFeesComputation.date.column.header']}">
+			<h:outputText value="#{calculation.caseFeeDate}">
+				<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+			</h:outputText>
+		</p:column>
+		<p:column
+			headerText="#{msgs['orsFeesComputation.description.column.header']}">
+			<h:outputText
+				value="#{feeComputationEditView.gazettesMap.get(calculation.caseFeeDesc)}" />
+		</p:column>
+		<p:column headerText="#{msgs['orsFeesComputation.fee.column.header']}">
+			<p:inputNumber inputStyle="text-align: right;"
+				value="#{calculation.caseFeeAmount != null ? calculation.caseFeeAmount : 0}" />
+		</p:column>
+		<p:column headerText="#{msgs['action.column.header']}"
+			styleClass="ax-action-w dont-print">
+			<p:menuButton value="#{msgs['action.menuButton.label']}"
+				disabled="#{feeComputationEditView.formDisabled}">
+				<p:menuitem value="#{msgs['edit.menuitem.label']}"
+					onclick="PF('editDialog').show();" update="createForm:pd"
+					process="@this">
+					<f:setPropertyActionListener value="#{calculation}"
+						target="#{feeComputationEditView.caseFeeForDividendCalculation}" />
+					<f:setPropertyActionListener value="#{calculation.caseFeeDesc}"
+						target="#{feeComputationEditView.caseFeeDesc}" />
+				</p:menuitem>
+				<p:menuitem value="#{msgs['delete.menuitem.label']}"
+					action="#{feeComputationEditView.deleteGazette}"
+					update="editForm:tabView" process="@this">
+					<p:confirm header="#{msgs['delete.dialog.header']}"
+						message="#{msgs['delete.dialog.msg']}" icon="ui-icon-alert" />
+					<f:setPropertyActionListener value="#{calculation}"
+						target="#{feeComputationEditView.caseFeeForDividendCalculation}" />
+				</p:menuitem>
+			</p:menuButton>
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				<p:commandButton value="#{msgs['delete.yes.btn']}" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="#{msgs['delete.no.btn']}" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+		</p:column>
+
+		<p:columnGroup type="footer">
+			<p:row style="border:none">
+				<p:column colspan="2"
+					style="border:none;background-color:#ffffff;text-align:right"
+					footerText="#{feeComputationEditView.caseFeeTypeName}#{msgs['orsFeesComputation.details.gazette.fee.summary.label']}" />
+				<p:column
+					style="border:none;background-color:#ffffff;text-align:right"
+					footerText="#{feeComputationEditView.totalCaseFee}">
+				</p:column>
+				<p:column
+					style="border:none;background-color:#ffffff;text-align:right"></p:column>
+			</p:row>
+		</p:columnGroup>
+	</p:dataTable>
+
+	<p:panelGrid columns="4"
+		columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:commandButton value="#{msgs['orsFeesComputation.gazette.btn']}"
+			disabled="#{feeComputationEditView.formDisabled}" process="@this"
+			action="#{feeComputationEditView.popUpCreateGazette}" icon="ti-plus"
+			update="createForm" />
+		<p:column></p:column>
+	</p:panelGrid>
+
+	<div class="sep type-02"></div>
+	<ui:include src="details-edit.xhtml"></ui:include>
+</ui:composition>

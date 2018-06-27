@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<h:form id="formC">
+		<p:dataTable var="percentageAdjustment"
+			value="#{percentagesAdjustmentSearchView.lazyDataModel}"
+			rowKey="#{percentageAdjustment.adjudicationResultId}" lazy="true"
+			reflow="true" paginator="true" paginatorPosition="bottom" rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true"
+			rendered="#{percentagesAdjustmentSearchView.lazyDataModel != null}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+
+			<p:column
+				headerText="#{msgs['payment.dividend.processing.proof.number.column']}">
+				<p:commandLink href="javascript:void(0)"
+					action="#{percentagesAdjustmentSearchView.toEdit}">
+					<h:outputText value="#{percentageAdjustment.creditor.proofNo}" />
+					<f:param name="adjudicationResultId"
+						value="#{percentageAdjustment.adjudicationResultId}" />
+				</p:commandLink>
+			</p:column>
+			<p:column
+				headerText="#{msgs['payment.dividend.processing.creditor.name.column']}">
+				<h:outputText
+					value="#{percentageAdjustment.creditor.creditorNameEng}" />
+				<br />
+			</p:column>
+			<p:column
+				headerText="#{msgs['payment.dividend.processing.creditor.type.column']}">
+				<h:outputText
+					value="#{percentageAdjustment.creditorType.creditorTypeName}" />
+				<br />
+			</p:column>
+			<p:column
+				headerText="#{msgs['payment.dividend.processing.distributed.percentage.column']}">
+				<h:outputText value="#{percentageAdjustment.distributedPrecentage}">
+					<f:convertNumber maxFractionDigits="2" type="percent" />
+				</h:outputText>
+				<br />
+			</p:column>
+		</p:dataTable>
+	</h:form>
+</ui:composition>
+
+
+
+

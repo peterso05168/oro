@@ -1,0 +1,2 @@
+INSERT INTO "DASHBOARD_TYPE" VALUES (1, 1, 'Number of Processing User', 1001, 1, 'user-search', 'ACT', 1, 'admin', 'admin', TO_DATE('20180403174129', 'YYYYMMDDHH24MISS'), 'admin', 'admin', TO_DATE('20180403174129', 'YYYYMMDDHH24MISS'));
+INSERT INTO "DASHBOARD_TYPE" VALUES (2, 1, 'Number of Processing User2', 1002, 1, 'profile-edit', 'ACT', 1, 'admin', 'admin', TO_DATE('20180403174129', 'YYYYMMDDHH24MISS'), 'admin', 'admin', TO_DATE('20180403174129', 'YYYYMMDDHH24MISS'));

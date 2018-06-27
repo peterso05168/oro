@@ -1,0 +1,623 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+	<div class="sep type-02"></div>
+	<p:panelGrid columns="7" id="detail"
+		columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+		rendered="#{! feeComputationEditView.isBankruptcy}">
+		<p:outputLabel>
+			<h:panelGroup layout="block" styleClass="ax-section-title type-03">#{msgs['orsFeesComputation.details.bi.label']}</h:panelGroup>
+		</p:outputLabel>
+		<p:outputLabel for="detailsAssets"
+			value="#{msgs['orsFeesComputation.details.assets.label']}" />
+		<p:inputNumber id="detailsAssets" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbiAssets}" />
+		<p:outputLabel for="detailsActualAssets"
+			value="#{msgs['orsFeesComputation.details.actual.assets']}" />
+		<p:inputNumber id="detailsActualAssets" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbiActualAssets}">
+			<p:ajax event="change"
+				update="detailsAssetsUncharged,detailsTORF,detailsCORF"
+				listener="#{feeComputationEditView.changeActualAssets}" />
+		</p:inputNumber>
+		<p:column></p:column>
+		<p:column></p:column>
+
+		<p:column></p:column>
+		<p:outputLabel for="detailsAssetsCharged"
+			value="#{msgs['orsFeesComputation.details.assets.charged.label']}" />
+		<p:inputNumber id="detailsAssetsCharged" disabled="true"
+			inputStyle="text-align: right;"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbiAssetsCharged}" />
+		<p:outputLabel for="detailsActualAssetsCharged"
+			value="#{msgs['orsFeesComputation.details.actual.assets.charged']}" />
+		<p:inputNumber id="detailsActualAssetsCharged"
+			maxlength="16" inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbiActualAssetsCharged}">
+			<p:ajax event="change"
+				update="detailsAssetsUncharged,detailsTORF,detailsCORF"
+				listener="#{feeComputationEditView.changeActualAssets}" />
+		</p:inputNumber>
+		<p:outputLabel for="detailsAssetsUncharged"
+			value="#{msgs['orsFeesComputation.details.assets.uncharged.label']}" />
+		<p:inputNumber id="detailsAssetsUncharged" maxlength="16"
+			inputStyle="text-align: right;" disabled="true"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbiAssetsUncharged}">
+			<p:ajax event="change"
+				listener="#{feeComputationEditView.calculateTotalFee}"
+				update="detailsTORF,detailsCORF" />
+		</p:inputNumber>
+
+		<p:column></p:column>
+		<p:outputLabel for="detailsAdvaloremCharged"
+			value="#{msgs['orsFeesComputation.details.advalorem.charged.label']}" />
+		<p:inputNumber id="detailsAdvaloremCharged" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbiAdvoilCharged}" />
+		<p:outputLabel for="detailsAdvaloremUncharged"
+			value="#{msgs['orsFeesComputation.details.advalorem.uncharged.label']}" />
+		<p:inputNumber id="detailsAdvaloremUncharged"
+			maxlength="16" inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbiAdvoilUncharged}" />
+		<p:column></p:column>
+		<p:column></p:column>
+
+		<p:outputLabel>
+			<h:panelGroup layout="block" styleClass="ax-section-title type-03">#{msgs['orsFeesComputation.details.bii.label']}</h:panelGroup>
+		</p:outputLabel>
+		<p:outputLabel for="detailsPLFee"
+			value="#{msgs['orsFeesComputation.details.pl.fee.label']}" />
+		<p:inputNumber id="detailsPLFee" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbiiPrevLiquFee}">
+			<p:ajax event="change"
+				listener="#{feeComputationEditView.calculateTotalFee}"
+				update="detailsTORF,detailsCORF" />
+		</p:inputNumber>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+
+		<p:outputLabel>
+			<h:panelGroup layout="block" styleClass="ax-section-title type-03">#{msgs['orsFeesComputation.details.biii.label']}</h:panelGroup>
+		</p:outputLabel>
+		<p:outputLabel for="detailsSMFee"
+			value="#{msgs['orsFeesComputation.details.sm.fee.label']}" />
+		<p:inputNumber id="detailsSMFee" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbiiiSpecManFee}">
+			<p:ajax event="change"
+				listener="#{feeComputationEditView.calculateTotalFee}"
+				update="detailsTORF,detailsCORF" />
+		</p:inputNumber>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+
+		<p:outputLabel>
+			<h:panelGroup layout="block" styleClass="ax-section-title type-03">#{msgs['orsFeesComputation.details.biv1.label']}</h:panelGroup>
+		</p:outputLabel>
+		<p:outputLabel for="detailsMem"
+			value="#{msgs['orsFeesComputation.details.members.label']}" />
+		<p:inputNumber id="detailsMem" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbivMembers}">
+			<p:ajax event="change" update="detailsTotalParticipant"
+				listener="#{feeComputationEditView.changeParticipantNum}" />
+		</p:inputNumber>
+		<p:outputLabel for="detailsCreditors"
+			value="#{msgs['orsFeesComputation.details.creditors.label']}" />
+		<p:inputNumber id="detailsCreditors" maxlength="2"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbivCredNumber}">
+			<p:ajax event="change" update="detailsTotalParticipant"
+				listener="#{feeComputationEditView.changeParticipantNum}" />
+		</p:inputNumber>
+		<p:outputLabel for="detailsDebtors"
+			value="#{msgs['orsFeesComputation.details.debtors.label']}" />
+		<p:inputNumber id="detailsDebtors" maxlength="2"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbivDebtNumber}">
+			<p:ajax event="change" update="detailsTotalParticipant"
+				listener="#{feeComputationEditView.changeParticipantNum}" />
+		</p:inputNumber>
+
+		<p:column></p:column>
+		<p:outputLabel for="detailsTotalParticipant"
+			value="#{msgs['orsFeesComputation.details.total.participants.label']}" />
+		<p:inputNumber id="detailsTotalParticipant" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbivTotalParticipants}" />
+		<p:outputLabel for="detailsParticipantCharged"
+			value="#{msgs['orsFeesComputation.details.participant.charged.label']}" />
+		<p:inputNumber id="detailsParticipantCharged"
+			maxlength="16" inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbivParticipantsCharged}" />
+		<p:outputLabel for="detailsParticipantUncharged"
+			value="#{msgs['orsFeesComputation.details.participant.uncharged.label']}" />
+		<p:inputNumber id="detailsParticipantUncharged"
+			maxlength="16" inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbivParticipantsUncharged}" />
+
+		<p:column></p:column>
+		<p:outputLabel for="detailsStatFeeCharged"
+			value="#{msgs['orsFeesComputation.details.stat.fee.charged.label']}" />
+		<p:inputNumber id="detailsStatFeeCharged" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbivStatFeeCharged}" />
+		<p:outputLabel for="detailsStatFeeUncharged"
+			value="#{msgs['orsFeesComputation.details.stat.fee.uncharged.label']}" />
+		<p:inputNumber id="detailsStatFeeUncharged" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbivStatFeeUncharged}">
+			<p:ajax event="change"
+				listener="#{feeComputationEditView.calculateTotalFee}"
+				update="detailsTORF,detailsCORF" />
+		</p:inputNumber>
+		<p:column></p:column>
+		<p:column></p:column>
+
+		<p:outputLabel>
+			<h:panelGroup layout="block" styleClass="ax-section-title type-03">#{msgs['orsFeesComputation.details.biv2.label']}</h:panelGroup>
+		</p:outputLabel>
+		<p:outputLabel for="detailsAssetsPercentage"
+			value="#{msgs['orsFeesComputation.details.assets.percentage.label']}" />
+		<p:inputNumber id="detailsAssetsPercentage"
+			inputStyle="text-align: right;"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbivRealizedAsset}"
+			disabled="true" />
+		<p:outputLabel for="detailsActualAssetsPercentage"
+			value="#{msgs['orsFeesComputation.details.actual.assets.percentage.label']}" />
+		<p:inputNumber id="detailsActualAssetsPercentage"
+			maxlength="16" inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbivActualAssetAmount}" />
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+
+		<p:outputLabel for="detailsNumberOfTxnFixedAmount"
+			value="#{msgs['orsFeesComputation.details.number.of.txn.fixed.amount.label']}" />
+		<p:inputNumber id="detailsNumberOfTxnFixedAmount"
+			disabled="true" inputStyle="text-align: right;"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbivNumTranscation}" />
+		<p:outputLabel for="detailsActualNumberOfTxnFixedAmount"
+			value="#{msgs['orsFeesComputation.details.actual.number.of.txn.fixed.amount.label']}" />
+		<p:inputNumber id="detailsActualNumberOfTxnFixedAmount"
+			maxlength="16" inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbivActualNumTranscation}" />
+		<p:outputLabel for="detailsRealizationFee"
+			value="#{msgs['orsFeesComputation.details.realization.fee.label']}" />
+		<p:inputNumber id="detailsRealizationFee" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbivRealizationFee}">
+			<p:ajax event="change"
+				listener="#{feeComputationEditView.calculateTotalFee}"
+				update="detailsTORF,detailsCORF" />
+		</p:inputNumber>
+
+		<p:outputLabel>
+			<h:panelGroup layout="block" styleClass="ax-section-title type-03">#{msgs['orsFeesComputation.details.biv3.label']}</h:panelGroup>
+		</p:outputLabel>
+		<p:outputLabel
+			value="#{msgs['orsFeesComputation.details.on.the.amount.distributed.to.creditors.label']}" />
+		<p:column>
+			<p:commandButton process="@this"
+				value="HKD #{feeComputationEditView.calculationOfDividendFee.distributedToCreditors}"
+				action="#{feeComputationEditView.showBIV}" />
+		</p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+
+		<p:outputLabel>
+			<h:panelGroup layout="block" styleClass="ax-section-title type-03">#{msgs['orsFeesComputation.details.bv.label']}</h:panelGroup>
+		</p:outputLabel>
+		<p:outputLabel for="detailsDebentureHolder"
+			value="#{msgs['orsFeesComputation.details.debenture.holder.label']}" />
+		<p:inputNumber id="detailsDebentureHolder" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbvDebeHolder}" />
+		<p:outputLabel for="detailsDebentureRealization"
+			value="#{msgs['orsFeesComputation.details.debenture.realization.label']}" />
+		<p:inputNumber id="detailsDebentureRealization"
+			maxlength="16" inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbvDebeRealiz}" />
+		<p:outputLabel for="detailsDebentureDistribution"
+			value="#{msgs['orsFeesComputation.details.debenture.distribution.label']}" />
+		<p:inputNumber id="detailsDebentureDistribution"
+			maxlength="16" inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbvDebeDistFee}">
+			<p:ajax event="change"
+				listener="#{feeComputationEditView.calculateTotalFee}"
+				update="detailsTORF,detailsCORF" />
+		</p:inputNumber>
+
+		<p:outputLabel>
+			<h:panelGroup layout="block" styleClass="ax-section-title type-03">#{msgs['orsFeesComputation.details.bvi.label']}</h:panelGroup>
+		</p:outputLabel>
+		<p:outputLabel for="detailsSecuedCredRealized"
+			value="#{msgs['orsFeesComputation.details.secued.cred.realized.label']}" />
+		<p:inputNumber id="detailsSecuedCredRealized"
+			maxlength="16" inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbviSecuCredFee}">
+			<p:ajax event="change"
+				listener="#{feeComputationEditView.calculateTotalFee}"
+				update="detailsTORF,detailsCORF" />
+		</p:inputNumber>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+
+		<p:outputLabel>
+			<h:panelGroup layout="block" styleClass="ax-section-title type-03">#{msgs['orsFeesComputation.details.bvii.label']}</h:panelGroup>
+		</p:outputLabel>
+		<p:outputLabel for="detailsSpecialDutiesDee"
+			value="#{msgs['orsFeesComputation.details.special.duties.fee.label']}" />
+		<p:inputNumber id="detailsSpecialDutiesDee" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.lbviiPrevSpecDutiFee}">
+			<p:ajax event="change"
+				listener="#{feeComputationEditView.calculateTotalFee}"
+				update="detailsTORF,detailsCORF" />
+		</p:inputNumber>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+	</p:panelGrid>
+
+	<p:panelGrid columns="7"
+		columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+		rendered="#{feeComputationEditView.isBankruptcy}">
+		<p:outputLabel>
+			<h:panelGroup layout="block" styleClass="ax-section-title type-03">#{msgs['orsFeesComputation.details.b1.label']}</h:panelGroup>
+		</p:outputLabel>
+		<p:outputLabel for="assetsPercentage"
+			value="#{msgs['orsFeesComputation.details.assets.percentage.label']}" />
+		<p:inputNumber id="assetsPercentage"
+			inputStyle="text-align: right;"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb1AssetAmount}"
+			disabled="true" />
+		<p:outputLabel for="actualAssetsPercentage"
+			value="#{msgs['orsFeesComputation.details.actual.assets.percentage.label']}" />
+		<p:inputNumber id="actualAssetsPercentage" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb1ActualAssetAmount}" />
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+
+		<p:outputLabel for="numberOfTxnFixedAmount"
+			value="#{msgs['orsFeesComputation.details.number.of.txn.fixed.amount.label']}" />
+		<p:inputNumber id="numberOfTxnFixedAmount" disabled="true"
+			inputStyle="text-align: right;"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb1NumTranscation}" />
+		<p:outputLabel for="actualNumberOfTxnFixedAmount"
+			value="#{msgs['orsFeesComputation.details.actual.number.of.txn.fixed.amount.label']}" />
+		<p:inputNumber id="actualNumberOfTxnFixedAmount"
+			maxlength="16" inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb1ActualNumTranscation}" />
+		<p:outputLabel for="realizationFee"
+			value="#{msgs['orsFeesComputation.details.realization.fee.label']}" />
+		<p:inputNumber id="realizationFee" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb1TotalReaFee}">
+			<p:ajax event="change"
+				listener="#{feeComputationEditView.calculateTotalFee}"
+				update="detailsTORF,detailsCORF" />
+		</p:inputNumber>
+
+		<p:outputLabel>
+			<h:panelGroup layout="block" styleClass="ax-section-title type-03">#{msgs['orsFeesComputation.details.b2i.label']}</h:panelGroup>
+		</p:outputLabel>
+		<p:outputLabel for="unapprovedCompo"
+			value="#{msgs['orsFeesComputation.details.unapproved.compo.label']}" />
+		<p:inputNumber id="unapprovedCompo" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb2UnaprpvedCompo}">
+			<p:ajax event="change" update="totalCompo" />
+		</p:inputNumber>
+		<p:outputLabel for="approvedCompo"
+			value="#{msgs['orsFeesComputation.details.approved.compo.label']}" />
+		<p:inputNumber id="approvedCompo" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb2AprovedCompo}">
+			<p:ajax event="change" update="totalCompo" />
+		</p:inputNumber>
+		<p:outputLabel for="totalCompo"
+			value="#{msgs['orsFeesComputation.details.total.compo.label']}" />
+		<p:inputNumber id="totalCompo" disabled="true"
+			inputStyle="text-align: right;"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb2AprovedCompo + feeComputationEditView.calculationOfDividendFee.bb2UnaprpvedCompo}">
+			<p:ajax event="change"
+				listener="#{feeComputationEditView.calculateTotalFee}"
+				update="detailsTORF,detailsCORF" />
+		</p:inputNumber>
+
+		<p:outputLabel>
+			<h:panelGroup layout="block" styleClass="ax-section-title type-03">#{msgs['orsFeesComputation.details.b3.label']}</h:panelGroup>
+		</p:outputLabel>
+		<p:outputLabel
+			value="#{msgs['orsFeesComputation.details.on.the.amount.distributed.to.creditors.label']}" />
+		<p:column>
+			<p:commandButton process="@this"
+				value="HKD #{feeComputationEditView.calculationOfDividendFee.distributedToCreditors}"
+				action="#{feeComputationEditView.showBIV}" />
+		</p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+
+		<p:outputLabel>
+			<h:panelGroup layout="block" styleClass="ax-section-title type-03">#{msgs['orsFeesComputation.details.b4.label']}</h:panelGroup>
+		</p:outputLabel>
+		<p:outputLabel for="startInterimReceiver"
+			value="#{msgs['orsFeesComputation.details.start.interim.receiver.label']}" />
+		<p:calendar id="startInterimReceiver" showOn="button"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb4StartInterimRec}"
+			pattern="#{appResourceUtils.dateFormat}">
+			<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+			<f:ajax event="dateSelect"
+				listener="#{feeComputationEditView.changeB4Date}"
+				render="orderPerCharge endInterimReceiver" />
+		</p:calendar>
+		<p:outputLabel for="endInterimReceiver"
+			value="#{msgs['orsFeesComputation.details.end.interim.receiver.label']}" />
+		<p:calendar id="endInterimReceiver" showOn="button"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb4EndInterimRec}"
+			pattern="#{appResourceUtils.dateFormat}">
+			<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+			<f:ajax event="dateSelect"
+				listener="#{feeComputationEditView.changeB4Date}"
+				render="orderPerCharge endInterimReceiver" />
+		</p:calendar>
+		<p:outputLabel for="orderPerCharge"
+			value="#{msgs['orsFeesComputation.details.order.per.charge.label']}" />
+		<p:inputNumber id="orderPerCharge" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb4OrderAndPeriodChgs}">
+			<p:ajax event="change"
+				listener="#{feeComputationEditView.calculateTotalFee}"
+				update="detailsTORF,detailsCORF" />
+		</p:inputNumber>
+
+		<p:outputLabel>
+			<h:panelGroup layout="block" styleClass="ax-section-title type-03">#{msgs['orsFeesComputation.details.b5.label']}</h:panelGroup>
+		</p:outputLabel>
+		<p:outputLabel for="creditors"
+			value="#{msgs['orsFeesComputation.details.creditors.label']}" />
+		<p:inputNumber id="creditors" maxlength="2"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb5NumberOfCreditor}">
+			<p:ajax event="change" update="totalParticipant"
+				listener="#{feeComputationEditView.changeParticipantNum}" />
+		</p:inputNumber>
+		<p:outputLabel for="debtors"
+			value="#{msgs['orsFeesComputation.details.debtors.label']}" />
+		<p:inputNumber id="debtors" maxlength="2"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb5NumberOfDedtor}">
+			<p:ajax event="change" update="totalParticipant"
+				listener="#{feeComputationEditView.changeParticipantNum}" />
+		</p:inputNumber>
+		<p:column></p:column>
+		<p:column></p:column>
+
+		<p:column></p:column>
+		<p:outputLabel for="totalParticipant"
+			value="#{msgs['orsFeesComputation.details.total.participants.label']}" />
+		<p:inputNumber id="totalParticipant" maxlength="16"
+			disabled="true" inputStyle="text-align: right;"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb5TotalParticipants}" />
+		<p:outputLabel for="participantCharged"
+			value="#{msgs['orsFeesComputation.details.participant.charged.label']}" />
+		<p:inputNumber id="participantCharged" maxlength="16"
+			disabled="true" inputStyle="text-align: right;"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb5ParticipantsCharged}" />
+		<p:outputLabel for="participantUncharged"
+			value="#{msgs['orsFeesComputation.details.participant.uncharged.label']}" />
+		<p:inputNumber id="participantUncharged" maxlength="16"
+			inputStyle="text-align: right;" disabled="true"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb5ParticipantsUncharged}" />
+
+		<p:column></p:column>
+		<p:outputLabel for="statFeeCharged"
+			value="#{msgs['orsFeesComputation.details.stat.fee.charged.label']}" />
+		<p:inputNumber id="statFeeCharged" maxlength="16"
+			disabled="true" inputStyle="text-align: right;"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb5StatFeeCharged}" />
+		<p:outputLabel for="statFeeUncharged"
+			value="#{msgs['orsFeesComputation.details.stat.fee.uncharged.label']}" />
+		<p:inputNumber id="statFeeUncharged" maxlength="16"
+			disabled="true" inputStyle="text-align: right;"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb5StatFeeUncharged}">
+			<p:ajax event="change"
+				listener="#{feeComputationEditView.calculateTotalFee}"
+				update="detailsTORF,detailsCORF" />
+		</p:inputNumber>
+		<p:column></p:column>
+		<p:column></p:column>
+
+		<p:outputLabel>
+			<h:panelGroup layout="block" styleClass="ax-section-title type-03">#{msgs['orsFeesComputation.details.b6.label']}</h:panelGroup>
+		</p:outputLabel>
+		<p:outputLabel for="meetingFee"
+			value="#{msgs['orsFeesComputation.details.meeting.fee']}" />
+		<p:inputNumber id="meetingFee" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb6MeetingFee}">
+			<p:ajax event="change"
+				listener="#{feeComputationEditView.calculateTotalFee}"
+				update="detailsTORF,detailsCORF" />
+		</p:inputNumber>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+
+		<p:outputLabel>
+			<h:panelGroup layout="block" styleClass="ax-section-title type-03">#{msgs['orsFeesComputation.details.b9.label']}</h:panelGroup>
+		</p:outputLabel>
+		<p:outputLabel for="assets"
+			value="#{msgs['orsFeesComputation.details.assets.label']}" />
+		<p:inputNumber id="assets" disabled="true" inputStyle="text-align: right;"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb9Assets}" />
+		<p:outputLabel for="actualAssets"
+			value="#{msgs['orsFeesComputation.details.actual.assets']}" />
+		<p:inputNumber id="actualAssets" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb9ActualAssets}">
+			<p:ajax event="change"
+				update="assetsUncharged,detailsTORF,detailsCORF"
+				listener="#{feeComputationEditView.changeActualAssets}" />
+		</p:inputNumber>
+		<p:column></p:column>
+		<p:column></p:column>
+
+		<p:column></p:column>
+		<p:outputLabel for="assetsCharged"
+			value="#{msgs['orsFeesComputation.details.assets.charged.label']}" />
+		<p:inputNumber id="assetsCharged" disabled="true"
+			inputStyle="text-align: right;"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb9AssetsCharged}" />
+		<p:outputLabel for="actualAssetsCharged"
+			value="#{msgs['orsFeesComputation.details.actual.assets.charged']}" />
+		<p:inputNumber id="actualAssetsCharged" maxlength="16"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb9ActualAssetsCharged}">
+			<p:ajax event="change"
+				update="assetsUncharged,detailsTORF,detailsCORF"
+				listener="#{feeComputationEditView.changeActualAssets}" />
+		</p:inputNumber>
+		<p:outputLabel for="assetsUncharged"
+			value="#{msgs['orsFeesComputation.details.assets.uncharged.label']}" />
+		<p:inputNumber id="assetsUncharged" maxlength="16"
+			disabled="true" inputStyle="text-align: right;"
+			value="#{feeComputationEditView.calculationOfDividendFee.bb9AssetsUncharged}">
+			<p:ajax event="change"
+				listener="#{feeComputationEditView.calculateTotalFee}"
+				update="detailsTORF,detailsCORF" />
+		</p:inputNumber>
+	</p:panelGrid>
+
+	<p:panelGrid columns="5"
+		columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-6,ui-grid-col-2,ui-grid-col-2"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:column></p:column>
+		<p:outputLabel for="detailsOthers"
+			value="#{msgs['orsFeesComputation.details.others.label']}" />
+		<p:inputTextarea id="detailsOthers" rows="4"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.othersItem}" />
+		<p:outputLabel for="detailsAmount"
+			value="#{msgs['orsFeesComputation.details.amount.label']}" />
+		<p:inputNumber id="detailsAmount" rows="4"
+			inputStyle="text-align: right;"
+			disabled="#{feeComputationEditView.formDisabled}"
+			value="#{feeComputationEditView.calculationOfDividendFee.othersAmount}">
+			<p:ajax event="change"
+				listener="#{feeComputationEditView.calculateTotalFee}"
+				update="detailsTORF,detailsCORF" />
+		</p:inputNumber>
+	</p:panelGrid>
+
+	<p:panelGrid columns="5"
+		columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-4,ui-grid-col-2"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:outputLabel for="detailsCORF"
+			value="#{msgs['orsFeesComputation.details.calculated.official.receivers.fee.label']}" />
+		<p:inputNumber id="detailsCORF" inputStyle="text-align: right;"
+			value="#{feeComputationEditView.calculationOfDividendFee.calculatedOrFee}"
+			disabled="true" />
+
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:outputLabel for="detailsACORF"
+			value="#{msgs['orsFeesComputation.details.already.charged.official.receivers.fee.label']}" />
+		<p:inputNumber id="detailsACORF" inputStyle="text-align: right;"
+			value="#{feeComputationEditView.calculationOfDividendFee.alreadyChargedOrFee}"
+			disabled="true" />
+
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:outputLabel for="detailsMORF"
+			value="#{msgs['orsFeesComputation.details.minimum.official.receivers.fee.label']}" />
+		<p:column>
+			<p:selectOneMenu id="detailsMORF" required="true"
+				value="#{feeComputationEditView.calculationOfDividendFee.minOrFee}"
+				disabled="#{feeComputationEditView.calculationOfDividendFee.minOrFeeDisabled or feeComputationEditView.formDisabled}">
+				<f:selectItem itemLabel="- Select -" />
+				<f:selectItems value="#{feeComputationEditView.minimumFees}" />
+			</p:selectOneMenu>
+		</p:column>
+
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:outputLabel for="detailsTORF"
+			value="#{msgs['orsFeesComputation.details.total.official.receivers.fee.label']}" />
+		<p:inputNumber id="detailsTORF" inputStyle="text-align: right;"
+			value="#{feeComputationEditView.totalFee}" disabled="true" />
+	</p:panelGrid>
+
+	<div class="ax-btn-set" align="right">
+		<p:commandButton value="#{msgs['next.btn']}" style="max-width:50px;"
+			action="#{feeComputationEditView.changeToProvision}"
+			update="editForm:tabView" process="editForm:tabView:detail,@this" />
+	</div>
+</ui:composition>

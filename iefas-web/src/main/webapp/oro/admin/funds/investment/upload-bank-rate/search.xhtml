@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	template="./upload-bank-rate.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable"
+				header="#{msgs['uploadBankRate.search.title']}" toggleable="true"
+				toggleSpeed="200" widgetVar="panel">
+				<p:focus context="toggleable" />
+				<p:messages id="msgs" closable="true" />
+				<h:form id="searchForm">
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+						<p:outputLabel for="from"
+							value="#{msgs['uploadBankRate.investmentDate.label']}" />
+						<p:calendar id="from" placeholder="From" showOn="button"
+							value="#{bankRateSearchView.searchCriteria.effectiveFrom}"
+							pattern="#{appResourceUtils.dateFormat}">
+							<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+						</p:calendar>
+
+						<p:column></p:column>
+						<p:column></p:column>
+						<p:column></p:column>
+						<p:calendar id="to" placeholder="To" showOn="button"
+							value="#{bankRateSearchView.searchCriteria.effectiveTo}"
+							pattern="#{appResourceUtils.dateFormat}">
+						</p:calendar>
+
+					</p:panelGrid>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['search.btn']}" icon="ti-search"
+							action="#{bankRateSearchView.search}" update="formC" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary"
+							action="#{bankRateSearchView.reset}" update="searchForm,formC" />
+						<p:commandButton value="#{msgs['create.btn']}"
+							onclick="PF('createBankRateDialog').show();" />
+					</div>
+				</h:form>
+			</p:panel>
+		</div>
+		<ui:include src="./result.xhtml"></ui:include>
+
+		<h:form>
+			<p:dialog id="createBankRateDialog"
+				header="#{msgs['uploadBankRate.createBankRate.title']}"
+				widgetVar="createBankRateDialog" modal="true" width="500"
+				height="220" minHeight="50" resizable="false" dynamic="true"
+				style="position: fixed">
+				<p:ajax event="close" resetValues="true"
+					listener="#{currencyRateEditView.handleClose}">
+				</p:ajax>
+				<p:messages id="msgs" closable="true" />
+				<div class="ui-fluid">
+					<p:panelGrid id="pg" columns="2" layout="grid"
+						columnClasses="ui-grid-col-4,ui-grid-col-8"
+						styleClass="ui-panelgrid-blank ui-fluid">
+
+						<p:outputLabel for="investDate" style="text-align: left;"
+							value="#{msgs['uploadBankRate.investmentDate.label']}" />
+						<p:column>
+							<p:calendar id="investDate" showOn="button"
+								validator="#{bankRateValidator.investDateValidate}"
+								value="#{bankRateSearchView.createUploadBankRateVO.uploadDate}"
+								required="true" pattern="#{appResourceUtils.dateFormat}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</p:calendar>
+						</p:column>
+
+						<p:outputLabel for="currency" style="text-align: left;"
+							value="#{msgs['uploadBankRate.currency.label']}" />
+						<p:column>
+							<p:selectOneMenu id="currency" required="true"
+								value="#{bankRateSearchView.createUploadBankRateVO.currencyBasicInfo.curcyId}">
+								<f:selectItem itemLabel="- Select -" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{bankRateSearchView.currencyTypes}" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:panelGrid>
+				</div>
+				<div class="ax-btn-set">
+					<p:commandButton value="#{msgs['create.btn']}" update="pg,msgs"
+						action="#{bankRateSearchView.createUploadBankRate}"
+						validateClient="true">
+					</p:commandButton>
+					<p:commandButton value="#{msgs['cancel.btn']}"
+						styleClass="ui-priority-secondary"
+						onclick="PF('createBankRateDialog').hide();" />
+				</div>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	template="./receipt-voucher.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable"
+				header="#{msgs['receipt.voucher.search.title']}" toggleable="true"
+				toggleSpeed="200" widgetVar="panel">
+				<p:focus context="toggleable"/>
+				<h:form id="searchForm">
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+						<p:outputLabel for="VoucherNumber"
+							value="#{msgs['receipt.voucher.voucher.number.label']}" />
+						<p:inputText id="VoucherNumber" maxlength="3"
+							value="#{receiptVoucherSearchView.receiptiVoucherSearchVO.voucherNo}" />
+
+						<p:outputLabel for="VoucherDate"
+							value="#{msgs['receipt.voucher.voucher.date.label']}" />
+						<p:calendar id="VoucherDate" showOn="button" 
+							pattern="#{appResourceUtils.dateFormat}" 
+							value="#{receiptVoucherSearchView.receiptiVoucherSearchVO.voucherDate}">
+						</p:calendar>
+
+						<p:outputLabel for="GroupCode" value="#{msgs['receipt.voucher.group.code.label']}" />
+						<p:inputText id="GroupCode" maxlength="3"
+							value="#{receiptVoucherSearchView.receiptiVoucherSearchVO.groupCode}"/>
+						
+						<p:outputLabel id="AccountNumber"
+									value="#{msgs['receipt.voucher.account.number.label']}" />
+						<com:accountNumber 
+							caseTypeCodeValue="#{receiptVoucherSearchView.receiptiVoucherSearchVO.caseTypeCodeValue}"
+							caseNoValue="#{receiptVoucherSearchView.receiptiVoucherSearchVO.caseNoValue}"
+							caseYearValue="#{receiptVoucherSearchView.receiptiVoucherSearchVO.caseYearValue}"
+							accountTypeCodeValue="#{receiptVoucherSearchView.receiptiVoucherSearchVO.accountTypeCodeValue}"/>
+							
+						<p:outputLabel for="AnalysisCode"
+									value="#{msgs['payment.voucher.analysis.code.label']}" />
+						<p:autoComplete id="AnalysisCode" completeMethod="#{receiptVoucherSearchView.completeAnalysisCode}"
+							value="#{receiptVoucherSearchView.receiptiVoucherSearchVO.analysisCode}" 
+							var="analysisCode" itemLabel="#{analysisCode.analysisCode}" itemValue="#{analysisCode}" 
+							converter="analysisCodeConverter" cache="true" cacheTimeout="30000" minQueryLength="3">
+						</p:autoComplete>
+						<p:outputLabel for="Status" value="#{msgs['status.label']}" />
+						<p:selectOneMenu id="Status"
+							value="#{receiptVoucherSearchView.receiptiVoucherSearchVO.status}">
+							<f:selectItem itemLabel="- All -" noSelectionOption="true" />
+							<f:selectItems value="#{receiptVoucherSearchView.statusVOs}"
+								var="status" itemLabel="#{status.statusName}"
+								itemValue="#{status.statusVal}" />
+						</p:selectOneMenu>
+							
+					</p:panelGrid>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['search.btn']}" icon="ti-search"
+							action="#{receiptVoucherSearchView.search}" update="voucherResultTable,searchForm" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary"
+							action="#{receiptVoucherSearchView.reset}"
+							update="searchForm,voucherResultTable" />
+						<p:button value="#{msgs['create.btn']}" outcome="edit" />
+					</div>
+				</h:form>
+			</p:panel>
+		</div>
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

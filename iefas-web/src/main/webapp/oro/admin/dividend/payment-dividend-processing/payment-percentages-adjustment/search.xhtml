@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions" template="./payment-percentages-adjustment.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="searchForm">
+				<p:panel id="toggleable" header="#{msgs['payment.dividend.processing.search.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:messages id="msgs" closable="true" />
+					<p:panelGrid columns="4" layout="grid"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel value="#{msgs['adjudication.case.number.label']}" />
+						<com:caseNumber allMandatory="true"
+							caseTypeCodeValue="#{percentagesAdjustmentSearchView.criteria.caseNumber.caseType}"
+							caseNoValue="#{percentagesAdjustmentSearchView.criteria.caseNumber.caseSequence}"
+							caseYearValue="#{percentagesAdjustmentSearchView.criteria.caseNumber.caseYear}"/>
+					</p:panelGrid>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['search.btn']}" icon="ti-search"
+							update="formC" action="#{percentagesAdjustmentSearchView.search}" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							action="#{percentagesAdjustmentSearchView.reset}"
+							styleClass="ui-priority-secondary" update="formC,searchForm" />
+					</div>
+
+				</p:panel>
+			</h:form>
+		</div>
+
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

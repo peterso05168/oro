@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<h:form id="formC">
+		<p:dataTable var="bankRate"
+			value="#{bankRateSearchView.lazyDataModel}"
+			rowKey="#{bankRate.bankRateId}" lazy="true" reflow="true"
+			paginator="true" paginatorPosition="bottom" rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true"
+			rendered="#{bankRateSearchView.lazyDataModel != null}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+
+			<p:column
+				headerText="#{msgs['uploadBankRate.investmentDate.column.header']}"
+				sortBy="#{bankRate.investDate}">
+				<p:commandLink href="javascript:void(0)" action="edit" ajax="false">
+					<h:outputText value="#{bankRate.investmentDate}">
+						<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+					</h:outputText>
+					<f:param name="bankRateId" value="#{bankRate.bankRateId}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column></p:column>
+			<p:column></p:column>
+			<p:column></p:column>
+			<p:column></p:column>
+			<p:column></p:column>
+
+			<p:column headerText="#{msgs['status.column.header']}"
+				sortBy="#{bankRate.status}">
+				<h:outputText value="Inactive"
+					rendered="#{bankRate.status eq 'INA'}" class="status-label red" />
+				<h:outputText value="Active" rendered="#{bankRate.status eq 'ACT'}"
+					class="status-label green" />
+			</p:column>
+
+			<p:column headerText="#{msgs['action.column.header']}"
+				styleClass="ax-action-w dont-print">
+				<p:menuButton value="#{msgs['action.menuButton.label']}">
+					<p:menuitem value="#{msgs['edit.menuitem.label']}" action="edit" ajax="false">
+						<f:param name="bankRateId" value="#{bankRate.bankRateId}" />
+					</p:menuitem>
+					<p:menuitem value="#{msgs['delete.menuitem.label']}" update="formC"
+						action="#{bankRateSearchView.deleteBankRate(bankRate)}">
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+
+	</h:form>
+</ui:composition>
+
+
+
+

@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions" template="./gazette.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="searchForm">
+				<p:panel id="toggleable" header="#{msgs['gazette.search.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:messages id="msgs" closable="true" />
+
+					<p:panelGrid columns="4" layout="grid"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="searchGazetteCode"
+							value="#{msgs['gazette.search.title.label']}" />
+						<p:inputText id="searchGazetteCode"
+							value="#{gazetteSearchView.searchGazetteDescriptionVO.gazetteDescriptionCode}" />
+						<p:outputLabel for="gazetteStatus"
+							value="#{msgs['gazette.Status.label']}" />
+						<p:selectOneMenu id="gazetteStatus"
+							value="#{gazetteSearchView.searchGazetteDescriptionVO.status}">
+							<f:selectItems value="#{gazetteSearchView.statusVOs}" var="s"
+								itemLabel="#{s.statusName}" itemValue="#{s.statusVal}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['search.btn']}" icon="ti-search"
+							update="formC" action="#{gazetteSearchView.search}" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							action="#{gazetteSearchView.reset}"
+							styleClass="ui-priority-secondary" update="formC,searchForm" />
+						<p:commandButton value="#{msgs['create.btn']}" action="edit"
+							update="searchForm" ajax="false" />
+					</div>
+				</p:panel>
+			</h:form>
+			<!-- dialog to show delete message -->
+			<p:dialog widgetVar="msgDialog" modal="true" closable="false">
+				<h:form id="formMsg">
+					<div class="ui-fluid">
+						<h:outputText value="#{gazetteSearchView.deleteMsg}"
+							style="font-size:16px;font-weight:bold;" />
+					</div>
+					<div style="margin: 30px 0px 0px 280px;">
+						<p:commandButton value="OK" styleClass="ui-confirmdialog-yes"
+							onclick="PF('msgDialog').hide();" />
+					</div>
+				</h:form>
+			</p:dialog>
+			<!-- dialog to show delete message -->
+		</div>
+
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

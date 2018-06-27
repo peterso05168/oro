@@ -1,0 +1,370 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui" template="./historical-case-list.xhtml">
+
+	<!-- <ui:define name="breadcrumb-3">
+		<li><a title="">#{msgs['holiday.main.title']}</a><i class="ti-angle-right"></i></li>
+	</ui:define> -->
+
+	<ui:define name="title">
+		<a class="ax-back-icon-url" onclick="_ACTION('search')"
+			href="javascript:void(0)"> <i class="ax-icon ti-arrow-left"></i>
+			Historical Indentified Released Winding-up Case List with Estate Balance
+		</a>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="inputYear" value="List Date"/>
+						<p:calendar id="inputYear" showOn="button" mindate="#{historicalCaseListDetailView.today}"
+								value="#{historicalCaseListDetailView.histCaseListBasicInformation.histCaseListDate}" pattern="#{appResourceUtils.dateFormat}" 
+								requiredMessage="Please input Date"/>
+                                
+                         <p:outputLabel for="Status" value="#{msgs['status.label']}" />
+							<p:selectOneMenu id="Status" required="true" disabled="true"
+								value="#{historicalCaseListDetailView.histCaseListBasicInformation.status}">
+								<f:selectItem itemLabel="- All -"
+									noSelectionOption="true" />
+								<f:selectItems value="#{historicalCaseListDetailView.statusVOs}"
+									var="status" itemLabel="#{status.statusName}"
+									itemValue="#{status.statusVal}" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				
+				<p:tabView id="tabView" activeIndex="0">
+					<p:tab title="Case(s)">
+						<p:dataTable id="resultTable" reflow="true" paginator="false"
+							var="item"
+							value="#{historicalCaseListDetailView.histCaseListItemList}">
+							<p:column
+								headerText="No.">
+								<h:outputText
+									value="#{item.histCaseListItemId}" />
+							</p:column>
+							
+							<p:column
+								headerText="RU File No.">
+								<p:commandLink href="javascript:void(0)"
+									action="#{feeEditView.editCalculationMaintenanceVO(calculationMaintenanceVO)}"
+									onmouseup="PF('editDialog').show();" update="">
+									<h:outputText
+										value="#{item.fileNo}">
+									</h:outputText>
+								</p:commandLink>
+							</p:column>
+							
+							<p:column
+								headerText="RU File Name">
+								<h:outputText
+									value="#{item.fileName}" />
+							</p:column>
+							
+							<p:column
+								headerText="Case Type">
+								<h:outputText
+									value="#{item.caseType}" />
+							</p:column>
+							
+							<p:column
+								headerText="Case Number">
+								<h:outputText
+									value="#{item.caseNo}" />
+							</p:column>
+							
+							<p:column
+								headerText="Case Year">
+								<h:outputText
+									value="#{item.caseYear}" />
+							</p:column>
+							
+							<p:column
+								headerText="Case Name">
+								<h:outputText
+									value="#{item.caseName}" />
+							</p:column>
+							
+							<p:column
+								headerText="Case Officer">
+								<h:outputText
+									value="#{item.caseOfficer}" />
+							</p:column>
+							
+							<p:column
+								headerText="Case Officer Team">
+								<h:outputText
+									value="#{item.caseOfficerTeam}" />
+							</p:column>
+
+							<p:column headerText="Release Order Date">
+								<h:outputText
+									value="#{item.releaseOrderDate}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+							</p:column>
+							
+							<p:column headerText="Winding-up Order Date">
+								<h:outputText
+									value="#{item.windingUpOrderDate}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+							</p:column>
+							
+							<p:column
+								headerText="Case Status">
+								<h:outputText
+									value="#{item.status}" />
+							</p:column>
+							
+							<p:column
+								headerText="Outsider Liquidator/Agent">
+								<h:outputText
+									value="#{item.olAgent}" />
+							</p:column>
+							
+							<p:column headerText="Cash Position Date">
+								<h:outputText
+									value="#{item.cashPositionDate}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+							</p:column>
+							
+							<p:column
+								headerText="Cash Position Amount">
+								<h:outputText
+									value="#{item.cashPositionAmount}" />
+							</p:column>
+							
+							<p:column headerText="Last Transaction Date">
+								<h:outputText
+									value="#{item.lastTransactionDate}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+							</p:column>
+							
+							<p:column
+								headerText="Technical File Encl. No.">
+								<h:outputText
+									value="#{item.enclNo}" />
+							</p:column>
+							
+							<p:column
+								headerText="Instruction Memo Sender">
+								<h:outputText
+									value="#{item.fromIo}" />
+							</p:column>
+							
+							<p:column headerText="Instruction Memo Date">
+								<h:outputText
+									value="#{item.memoDate}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+							</p:column>
+							
+							<p:column
+								headerText="Amount per Instruction Memo">
+								<h:outputText
+									value="#{item.momoAmount}" />
+							</p:column>
+							
+							<p:column headerText="To General Revenue (Date)">
+								<h:outputText
+									value="#{item.toGr}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+							</p:column>
+							
+							<p:column headerText="RU Process Date">
+								<h:outputText
+									value="#{item.processDate}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+							</p:column>
+							
+							<p:column
+								headerText="Remarks 1">
+								<h:outputText
+									value="#{item.remarks}" />
+							</p:column>
+							
+							<p:column
+								headerText="Remarks 2">
+								<h:outputText
+									value="#{item.remarks2}" />
+							</p:column>
+							
+							<p:column
+								headerText="Remarks 3">
+								<h:outputText
+									value="#{item.remarks3}" />
+							</p:column>
+
+							<p:column headerText="Action"
+								styleClass="ax-action-w dont-print">
+								<p:menuButton value="#{msgs['action.menuButton.label']}"
+									disabled="false">
+									 <p:menuitem value="#{msgs['edit.menuitem.label']}"
+									 oncomplete="PF('addDialog').show();"
+									update="editForm:tabView" process="@this">
+									<f:setPropertyActionListener value="#{item}"
+										target="#{historicalCaseListDetailView.histCaseListItem}" />>
+									</p:menuitem>
+									<p:menuitem value="#{msgs['delete.menuitem.label']}"
+									update="editForm:tabView"
+									action="#{historicalCaseListDetailView.deleteHistCaseListItem}">
+									<f:setPropertyActionListener value="#{item}"
+										target="#{historicalCaseListDetailView.histCaseListItem}" />
+								    </p:menuitem>
+								</p:menuButton>
+							</p:column>
+						</p:dataTable>
+						<div class="ax-btn-set aR">
+							<p:commandButton value="Case"
+								update="addForm:pg" immediate="true" process="@none" 
+								onclick="PF('addDialog').show();" icon="ti-plus" />
+						</div>
+					</p:tab>
+
+				</p:tabView>
+
+
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}" styleClass="ui-priority-secondary"
+						icon="ti-arrow-left" outcome="search"/>
+					<p:commandButton value="#{msgs['save.btn']}" action="#{historicalCaseListDetailView.save}"
+						update="@form" rendered="true"/>
+					<p:menuButton value="#{msgs['action.menuButton.label']}"
+						disabled="false">
+						<p:menuitem update="@form"
+							rendered="true"
+							value="Re-generate"
+							action="#{adjudicationEditView.submit}" />
+						<p:menuitem update="@form"
+							rendered="true"
+							value="Confirm"
+							action="#{adjudicationEditView.approve}" />
+						<p:menuitem update="@form"
+							rendered="true"
+							value="#{msgs['delete.menuitem.label']}"
+							action="#{adjudicationEditView.delete}">
+							<p:confirm header="Confirmation"
+								message="Are you sure to Delete?" icon="ui-icon-alert" />
+						</p:menuitem>
+					</p:menuButton>
+				</div>
+			</h:form>
+			
+			<p:dialog id="addDialog" header="Create Case" widgetVar="addDialog" modal="true"
+				resizable="false" dynamic="true" width="1000" minHeight="50">
+				<h:form id="addForm">
+					<div class="ui-fluid">
+					<p:messages id="msgs" closable="true" />
+						<p:panelGrid id="pg" columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							
+							<p:outputLabel value="RU File No."/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.fileNo}" 
+                            required="true" requiredMessage="#{appResourceUtils.getRequiredMessage('PayerName')}" />
+                            
+                            <p:outputLabel value="RU File Name"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.fileName}"
+                            required="true" requiredMessage="#{appResourceUtils.getRequiredMessage('PayerName')}"/>
+                            
+                            <p:outputLabel value="Case Type"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.caseType}"
+                            required="true" requiredMessage="#{appResourceUtils.getRequiredMessage('CaseTypeCode')}"/>
+                            
+                            <p:outputLabel value="Case No"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.caseNo}"
+                            required="true" requiredMessage="#{appResourceUtils.getRequiredMessage('CaseNumber')}"/>
+                            
+                            <p:outputLabel value="Case Year"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.caseYear}"
+                            required="true" requiredMessage="#{appResourceUtils.getRequiredMessage('CaseYear')}"/>
+                            
+                            <p:outputLabel value="Case Name"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.caseName}"
+                            required="true" requiredMessage="#{appResourceUtils.getRequiredMessage('PayerName')}"/>
+                            
+                            <p:outputLabel value="Case Officer"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.caseOfficer}"
+                            required="true" requiredMessage="#{appResourceUtils.getRequiredMessage('PayerName')}"/>
+                            
+                            <p:outputLabel value="Case Officer Team"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.caseOfficerTeam}"
+                            required="true" requiredMessage="#{appResourceUtils.getRequiredMessage('PayerName')}"/>
+                            
+                            <p:outputLabel value="Release Order Date"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.releaseOrderDate}"
+                            pattern="#{appResourceUtils.dateFormat}"/>
+                            
+                            <p:outputLabel value="Winding-up Order Date"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.windingUpOrderDate}"/>
+                            
+                            <p:outputLabel value="Case Status"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.status}"/>
+                            
+                            <p:outputLabel value="Outsider Liquidator/Agent"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.olAgent}"/>
+                            
+                            <p:outputLabel value="Cash Position Date"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.cashPositionDate}"/>
+                            
+                            <p:outputLabel value="Cash Position Amount"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.cashPositionAmount}"/>
+                            
+                            <p:outputLabel value="Last Transaction Date"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.lastTransactionDate}"/>
+                            
+                            <p:outputLabel value="Technical File Encl. No."/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.enclNo}"/>
+                            
+                            <p:outputLabel value="Instruction Memo Sender"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.fromIo}"/>
+                            
+                            <p:outputLabel value="Instruction Memo Date"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.memoDate}"/>
+                            
+                            <p:outputLabel value="Amount per Instruction Memo"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.momoAmount}"/>
+                            
+                            <p:outputLabel value="To General Revenue (Date)"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.toGr}"/>
+                            
+                            <p:outputLabel value="RU Process Date"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.processDate}"/>
+                            
+                            <p:outputLabel value="Remarks 1"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.remarks}"/>
+                            
+                            <p:outputLabel value="Remarks 2"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.remarks2}"/>
+                            
+                            <p:outputLabel value="Remarks 3"/>
+                            <p:inputText value="#{historicalCaseListDetailView.histCaseListItem.remarks3}"/>
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['create.btn']}" action="#{historicalCaseListDetailView.saveAccount}" update="editForm:tabView,addForm:msgs"/>
+						<p:commandButton value="#{msgs['cancel.btn']}" styleClass="ui-priority-secondary" oncomplete="PF('addDialog').hide()"  immediate="true" />
+					</div>
+				</h:form>
+			</p:dialog>
+			
+		</div>
+	</ui:define>
+</ui:composition>

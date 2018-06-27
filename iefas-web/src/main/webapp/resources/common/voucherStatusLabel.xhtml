@@ -1,0 +1,55 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:o="http://omnifaces.org/ui">
+
+<composite:interface>
+	<composite:attribute name="status" type="String" default="DRT"/>
+	<composite:attribute name="isEditPage" type="boolean" default="true"/>
+</composite:interface>
+
+<composite:implementation>
+		<h:outputText value="#{msgs['draft.status.label']}"
+			rendered="#{cc.attrs.status eq 'DRT' and !cc.attrs.isEditPage}" class="status-label green" />
+		<h:outputText value="#{msgs['submitted.status.label']}"
+			rendered="#{cc.attrs.status eq 'SUB' and !cc.attrs.isEditPage}" class="status-label green" />
+		<h:outputText value="#{msgs['rejected.status.label']}"
+			rendered="#{cc.attrs.status eq 'REJ' and !cc.attrs.isEditPage}" class="status-label grey" />
+		<h:outputText value="#{msgs['submitted.for.second.status.label']}"
+			rendered="#{cc.attrs.status eq 'SSA' and !cc.attrs.isEditPage}" class="status-label green" />
+		<h:outputText value="#{msgs['approved.status.label']}"
+			rendered="#{cc.attrs.status eq 'APR' and !cc.attrs.isEditPage}" class="status-label green" />
+		<h:outputText value="#{msgs['verified.status.label']}"
+			rendered="#{cc.attrs.status eq 'VER' and !cc.attrs.isEditPage}" class="status-label green" />
+		<h:outputText value="#{msgs['reversed.status.label']}"
+			rendered="#{cc.attrs.status eq 'REV' and !cc.attrs.isEditPage}" class="status-label green" />
+		<h:outputText value="#{msgs['pending.for.payment.status.label']}"
+			rendered="#{cc.attrs.status eq 'PP' and !cc.attrs.isEditPage}" class="status-label green" />
+		<h:outputText value="#{msgs['pending.for.submit.status.label']}"
+			rendered="#{cc.attrs.status eq 'PS' and !cc.attrs.isEditPage}" class="status-label green" />
+			
+		<p:inputText value="#{msgs['draft.status.label']}" disabled="true"
+			rendered="#{cc.attrs.status eq 'DRT' and cc.attrs.isEditPage}"  />
+		<p:inputText value="#{msgs['submitted.status.label']}" disabled="true"
+			rendered="#{cc.attrs.status eq 'SUB' and cc.attrs.isEditPage}"  />
+		<p:inputText value="#{msgs['rejected.status.label']}" disabled="true"
+			rendered="#{cc.attrs.status eq 'REJ' and cc.attrs.isEditPage}" />
+		<p:inputText value="#{msgs['submitted.for.second.status.label']}" disabled="true"
+			rendered="#{cc.attrs.status eq 'SSA' and cc.attrs.isEditPage}"  />
+		<p:inputText value="#{msgs['approved.status.label']}" disabled="true"
+			rendered="#{cc.attrs.status eq 'APR' and cc.attrs.isEditPage}"  />
+		<p:inputText value="#{msgs['verified.status.label']}" disabled="true"
+			rendered="#{cc.attrs.status eq 'VER' and cc.attrs.isEditPage}"  />
+		<p:inputText value="#{msgs['reversed.status.label']}" disabled="true"
+			rendered="#{cc.attrs.status eq 'REV' and cc.attrs.isEditPage}"  />
+		<p:inputText value="#{msgs['pending.for.payment.status.label']}" disabled="true"
+			rendered="#{cc.attrs.status eq 'PP' and cc.attrs.isEditPage}"  />
+		<p:inputText value="#{msgs['pending.for.submit.status.label']}" disabled="true"
+			rendered="#{cc.attrs.status eq 'PS' and cc.attrs.isEditPage}" />
+</composite:implementation>
+
+
+</html>

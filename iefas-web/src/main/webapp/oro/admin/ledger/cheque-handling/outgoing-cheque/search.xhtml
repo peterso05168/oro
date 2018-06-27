@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="./outgoing-cheque.xhtml">
+
+    <ui:define name="main-content">
+        <div>
+            <p:panel id="toggleable" header="#{msgs['cheque.handling.outgoing.cheque.search.title']}"
+                     toggleable="true" toggleSpeed="200" widgetVar="panel">
+                <h:form id="searchForm">
+                    <div>
+                        <p:focus context="toggleable"/>
+                        <p:messages id="msgs" closable="true"/>
+                        <div class="search-advance">
+                            <p:panelGrid columns="4"
+                                         columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                                         layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                                <p:outputLabel for="chequeNumber"
+                                               value="#{msgs['cheque.handling.outgoing.cheque.cheque.number.label']}"/>
+                                <p:inputText id="chequeNumber"
+                                             value="#{outgoingChequeSearchView.searchOutgoingChequeVO.chequeNumber}"/>
+                                <p:outputLabel for="VoucherNumber"
+                                               value="#{msgs['cheque.handling.outgoing.cheque.voucher.number.label']}"/>
+                                <p:inputText id="VoucherNumber"
+                                             value="#{outgoingChequeSearchView.searchOutgoingChequeVO.voucherNumber}"/>
+                                <p:outputLabel for="chequeDate"
+                                               value="#{msgs['cheque.handling.outgoing.cheque.cheque.date.label']}"/>
+                                <p:calendar id="chequeDate" pattern="#{appResourceUtils.dateFormat}"
+                                            value="#{outgoingChequeSearchView.searchOutgoingChequeVO.chequeDate}"
+                                            showOn="button"/>
+                                <p:outputLabel for="payee"
+                                               value="#{msgs['cheque.handling.outgoing.cheque.payee.label']}"/>
+                                <p:inputText id="payee"
+                                             value="#{outgoingChequeSearchView.searchOutgoingChequeVO.payee}"/>
+                                <p:outputLabel for="currency"
+                                               value="#{msgs['cheque.handling.outgoing.cheque.currency.label']}"/>
+                                <p:selectOneMenu id="currency"
+                                                 value="#{outgoingChequeSearchView.searchOutgoingChequeVO.currencyId}">
+                                    <f:selectItem itemLabel="- All -"/>
+                                    <f:selectItems value="#{outgoingChequeSearchView.currencyBasicInfoVOS}"
+                                                   var="current"
+                                                   itemLabel="#{current.curcyName}"
+                                                   itemValue="#{current.curcyId}"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel for="status"
+                                               value="#{msgs['cheque.handling.outgoing.cheque.status.label']}"/>
+                                <p:selectOneMenu id="status"
+                                                 value="#{outgoingChequeSearchView.searchOutgoingChequeVO.status}">
+                                    <f:selectItem itemLabel="- All -"/>
+                                    <f:selectItems value="#{outgoingChequeSearchView.statusVOS}"
+                                                   var="status"
+                                                   itemLabel="#{status.statusName}"
+                                                   itemValue="#{status.statusVal}"/>
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+                        </div>
+                    </div>
+                    <div class="ax-btn-set">
+                        <p:commandButton id="searchBtn" value="#{msgs['search.btn']}"
+                                         icon="ti-search" update="searchForm,outgoingChequeResultTable"
+                                         action="#{outgoingChequeSearchView.search}"/>
+                        <p:commandButton value="#{msgs['reset.btn']}"
+                                         styleClass="ui-priority-secondary" update="@form,outgoingChequeResultTable"
+                                         action="#{outgoingChequeSearchView.reset}"/>
+                    </div>
+                </h:form>
+            </p:panel>
+        </div>
+        <ui:include src="./result.xhtml"/>
+    </ui:define>
+</ui:composition>

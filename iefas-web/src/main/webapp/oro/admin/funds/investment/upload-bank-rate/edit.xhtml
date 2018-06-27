@@ -1,0 +1,328 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui" template="./upload-bank-rate.xhtml">
+
+	<ui:define name="title">
+		<h:outputLink styleClass="ax-back-icon-url" hreflang="search">
+			<i class="ax-icon ti-arrow-left"></i>
+			#{msgs['uploadBankRate.bankRate.title']}
+		</h:outputLink>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm" enctype="multipart/form-data">
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+
+							<p:outputLabel for="investDate"
+								value="#{msgs['uploadBankRate.investmentDate.label']}" />
+							<p:inputText id="investDate" disabled="true"
+								value="#{bankRateEditView.uploadBankRate.investmentDate}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</p:inputText>
+
+							<p:outputLabel for="currency"
+								value="#{msgs['uploadBankRate.currency.label']}" />
+							<p:selectOneMenu id="currency" disabled="true"
+								value="#{bankRateEditView.uploadBankRate.currencyBasicInfo.curcyId}">
+								<f:selectItems value="#{bankRateEditView.currencyTypes}" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+
+					</div>
+				</p:panel>
+
+				<p:tabView id="bankRateTabView"
+					activeIndex="#{bankRateEditView.activeIndex}">
+					<p:tab title="#{msgs['uploadBankRate.bankRate.title']}"
+						id="bankRateDetailTab">
+						<p:dataTable var="dailyBankRateList" id="bankRateTable"
+							value="#{bankRateEditView.uploadBankRate.dailyBankRateLists}"
+							reflow="true" paginator="false">
+							<p:column
+								headerText="#{msgs['uploadBankRate.bank.column.header']}">
+								<p:commandLink href="javascript:void(0)"
+									onmouseup="PF('editDialog').show();"
+									action="#{bankRateEditView.editDailyBankRateListVO(dailyBankRateList)}"
+									update="createForm:pg">
+									<h:outputText value="#{dailyBankRateList.bankBasic.bankName}">
+									</h:outputText>
+								</p:commandLink>
+							</p:column>
+
+							<p:column style="text-align: right;"
+								headerText="#{msgs['uploadBankRate.overnight.column.header']}">
+								<h:outputText
+									value="#{dailyBankRateList.dailyBankRates[0].percentage}">
+									<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column style="text-align: right;"
+								headerText="#{msgs['uploadBankRate.1Week.column.header']}">
+								<h:outputText
+									value="#{dailyBankRateList.dailyBankRates[1].percentage}">
+									<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column style="text-align: right;"
+								headerText="#{msgs['uploadBankRate.2Week.column.header']}">
+								<h:outputText
+									value="#{dailyBankRateList.dailyBankRates[2].percentage}">
+									<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column style="text-align: right;"
+								headerText="#{msgs['uploadBankRate.3Week.column.header']}">
+								<h:outputText
+									value="#{dailyBankRateList.dailyBankRates[3].percentage}">
+									<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column style="text-align: right;"
+								headerText="#{msgs['uploadBankRate.1Month.column.header']}">
+								<h:outputText
+									value="#{dailyBankRateList.dailyBankRates[4].percentage}">
+									<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column style="text-align: right;"
+								headerText="#{msgs['uploadBankRate.2Month.column.header']}">
+								<h:outputText
+									value="#{dailyBankRateList.dailyBankRates[5].percentage}">
+									<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column style="text-align: right;"
+								headerText="#{msgs['uploadBankRate.3Month.column.header']}">
+								<h:outputText
+									value="#{dailyBankRateList.dailyBankRates[6].percentage}">
+									<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column style="text-align: right;"
+								headerText="#{msgs['uploadBankRate.4Month.column.header']}">
+								<h:outputText
+									value="#{dailyBankRateList.dailyBankRates[7].percentage}">
+									<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column style="text-align: right;"
+								headerText="#{msgs['uploadBankRate.6Month.column.header']}">
+								<h:outputText
+									value="#{dailyBankRateList.dailyBankRates[8].percentage}">
+									<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column style="text-align: right;"
+								headerText="#{msgs['uploadBankRate.9Month.column.header']}">
+								<h:outputText
+									value="#{dailyBankRateList.dailyBankRates[9].percentage}">
+									<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column style="text-align: right;"
+								headerText="#{msgs['uploadBankRate.1Year.column.header']}">
+								<h:outputText
+									value="#{dailyBankRateList.dailyBankRates[10].percentage}">
+									<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="#{msgs['action.column.header']}"
+								styleClass="ax-action-w dont-print">
+								<p:menuButton value="#{msgs['action.menuButton.label']}">
+									<p:menuitem value="#{msgs['edit.menuitem.label']}"
+										action="#{bankRateEditView.editDailyBankRateListVO(dailyBankRateList)}"
+										onclick="PF('editDialog').show();" update="createForm:pg"
+										process="@this">
+									</p:menuitem>
+									<p:menuitem value="#{msgs['delete.menuitem.label']}"
+										update="editForm:bankRateTabView"
+										action="#{bankRateEditView.deleteDailyBankRateListVO(dailyBankRateList)}">
+									</p:menuitem>
+								</p:menuButton>
+							</p:column>
+						</p:dataTable>
+						<div class="ax-btn-set aR">
+							<p:commandButton value="#{msgs['add.btn']}"
+								action="#{bankRateEditView.createNewDailyBankRateListVO}"
+								update="createForm:pg" onclick="PF('editDialog').show();"
+								icon="ti-plus" />
+						</div>
+					</p:tab>
+					<p:tab title="#{msgs['uploadBankRate.importBankRate.title']}"
+						id="importBankRateTab">
+
+						<div class="ax-btn-set">
+							<p:outputLabel
+								value="#{msgs['uploadBankRate.uploadByFile.label']}"></p:outputLabel>
+							<p:spacer width="25"></p:spacer>
+							<p:fileUpload value="#{bankRateEditView.uploadedFile}"
+								mode="simple" skinSimple="true" />
+						</div>
+						<div class="ax-btn-set">
+							<p:commandButton value="#{msgs['uploadBankRate.upload.label']}"
+								update="editForm:bankRateTabView" process="@this"
+								action="#{bankRateEditView.uploadBankRateTemplate}" ajax="false" />
+
+							<div class="ax-button type-a">
+								<p:commandButton
+									value="#{msgs['uploadBankRate.downloadTemplate.label']}"
+									ajax="false">
+									<p:fileDownload value="#{fileDownloadView.file}" />
+								</p:commandButton>
+							</div>
+						</div>
+
+					</p:tab>
+				</p:tabView>
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						action="#{bankRateEditView.saveDailyBankRateList}" />
+				</div>
+			</h:form>
+			<h:form id="createForm">
+				<p:dialog id="editDialog"
+					header="#{msgs['uploadBankRate.editBankRate.title']}"
+					widgetVar="editDialog" modal="true" width="800" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:ajax event="close" update="@form,editForm" resetValues="true">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="4"
+							columnClasses="ui-grid-col-4,ui-grid-col-8,ui-grid-col-4,ui-grid-col-8"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+							<p:outputLabel for="bank"
+								value="#{msgs['uploadBankRate.bank.label']}" />
+							<p:selectOneMenu id="bank" required="true"
+								value="#{bankRateEditView.bankInfoId}"
+								disabled="#{bankRateEditView.dailyBankRateListVO.bankBasic != null}">
+								<f:selectItem itemLabel="- Select -" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{bankRateEditView.bankInfos}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel for="investmentDate"
+								value="#{msgs['uploadBankRate.investmentDate.label']}" />
+							<p:calendar id="investmentDate" showOn="button" disabled="true"
+								value="#{bankRateEditView.uploadBankRate.investmentDate}"
+								pattern="#{appResourceUtils.dateFormat}">
+							</p:calendar>
+
+							<p:outputLabel for="deposit0"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[0].bankDepositType.depositName}" />
+							<p:inputNumber required="true" maxlength="16" id="deposit0"
+								minValue="0.000000" inputStyle="text-align: right;" 
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[0].percentage}" />
+
+							<p:outputLabel for="deposit1"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[1].bankDepositType.depositName}" />
+							<p:inputNumber required="true" maxlength="16" id="deposit1"
+								minValue="0.000000" inputStyle="text-align: right;"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[1].percentage}" />
+
+							<p:outputLabel for="deposit2"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[2].bankDepositType.depositName}" />
+							<p:inputNumber required="true" maxlength="16" id="deposit2"
+								minValue="0.000000" inputStyle="text-align: right;"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[2].percentage}" />
+
+							<p:outputLabel for="deposit3"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[3].bankDepositType.depositName}" />
+							<p:inputNumber required="true" maxlength="16" id="deposit3"
+								minValue="0.000000" inputStyle="text-align: right;"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[3].percentage}" />
+
+							<p:outputLabel for="deposit4"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[4].bankDepositType.depositName}" />
+							<p:inputNumber required="true" maxlength="16" id="deposit4"
+								minValue="0.000000" inputStyle="text-align: right;"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[4].percentage}" />
+
+							<p:outputLabel for="deposit5"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[5].bankDepositType.depositName}" />
+							<p:inputNumber required="true" maxlength="16" id="deposit5"
+								minValue="0.000000" inputStyle="text-align: right;"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[5].percentage}" />
+
+							<p:outputLabel for="deposit6"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[6].bankDepositType.depositName}" />
+							<p:inputNumber required="true" maxlength="16" id="deposit6"
+								minValue="0.000000" inputStyle="text-align: right;"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[6].percentage}" />
+
+							<p:outputLabel for="deposit7"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[7].bankDepositType.depositName}" />
+							<p:inputNumber required="true" maxlength="16" id="deposit7"
+								minValue="0.000000" inputStyle="text-align: right;"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[7].percentage}" />
+
+							<p:outputLabel for="deposit8"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[8].bankDepositType.depositName}" />
+							<p:inputNumber required="true" maxlength="16" id="deposit8"
+								minValue="0.000000" inputStyle="text-align: right;"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[8].percentage}" />
+
+							<p:outputLabel for="deposit9"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[9].bankDepositType.depositName}" />
+							<p:inputNumber required="true" maxlength="16" id="deposit9"
+								minValue="0.000000" inputStyle="text-align: right;"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[9].percentage}" />
+
+							<p:outputLabel for="deposit10"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[10].bankDepositType.depositName}" />
+							<p:inputNumber required="true" maxlength="16" id="deposit10"
+								minValue="0.000000" inputStyle="text-align: right;"
+								value="#{bankRateEditView.dailyBankRateListVO.dailyBankRates[10].percentage}" />
+							<p:column></p:column>
+							<p:column></p:column>
+						</p:panelGrid>
+
+					</div>
+
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['save.btn']}"
+							actionListener="#{bankRateEditView.addDailyBankRateListVO}"
+							update="pg,msgs,editForm:bankRateTabView:bankRateTable"
+							validateClient="true">
+						</p:commandButton>
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('editDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+		</div>
+	</ui:define>
+
+</ui:composition>
+
+
+
+

@@ -1,0 +1,28 @@
+package hk.oro.iefas.domain.shroff.vo;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
+
+/**
+ * @version $Revision: 2745 $ $Date: 2018-05-30 20:19:44 +0800 (週三, 30 五月 2018) $
+ * @author $Author: garrett.han $
+ */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@AllArgsConstructor
+public class ReceiveDepositResultVO {
+    private Integer depositId;
+    private String depositNumber;
+    private Date date;
+    private String payerName;
+    private String receiptNumber;
+    private String currency;
+    private Integer amount;
+    private String status;
+    private String caseNumber;
+}

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RDIV0008_GroupTotal" pageWidth="802" pageHeight="200" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="6417055c-2655-4c6e-9bd9-49a48605e40a">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORODCDataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<style name="Style1" isDefault="true" fontName="Courier" fontSize="9" isBold="true"/>
+	<parameter name="ORACLE_REF_CURSOR" class="java.sql.ResultSet" isForPrompting="false"/>
+	<parameter name="PClaimTotal" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="REQUEST_CRITERIA_ID" class="java.lang.Long"/>
+	<parameter name="CASENO" class="java.lang.String">
+		<defaultValueExpression><![CDATA["BB0108900"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="REQUEST_REPORT_ID" class="java.lang.Long" isForPrompting="false">
+		<defaultValueExpression><![CDATA[3L]]></defaultValueExpression>
+	</parameter>
+	<queryString language="plsql">
+		<![CDATA[{call RDIV0008.RDIV0008_SUBTOTAL_PROC($P{ORACLE_REF_CURSOR},$P{CASENO})}]]>
+	</queryString>
+	<field name="CURRENCY" class="java.lang.String"/>
+	<field name="total_claim" class="java.math.BigDecimal"/>
+	<variable name="total_claim" class="java.math.BigDecimal" resetType="Group" resetGroup="currencyGroup" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_claim}==null?BigDecimal.ZERO:$F{total_claim}]]></variableExpression>
+		<initialValueExpression><![CDATA[BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="recordCount" class="java.lang.Integer" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{CURRENCY}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<group name="currencyGroup">
+		<groupExpression><![CDATA[$F{CURRENCY}]]></groupExpression>
+		<groupFooter>
+			<band height="10">
+				<textField>
+					<reportElement x="0" y="0" width="267" height="10" uuid="995db3a1-7147-429e-b00e-a1b50c640676">
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<printWhenExpression><![CDATA[$V{recordCount}==1]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["                                 Total"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="267" y="0" width="30" height="10" uuid="7143975c-544c-457a-b0ae-cf96ddcbbbf8">
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{CURRENCY}==null?"HKD":$F{CURRENCY}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;(#,##0.00#)">
+					<reportElement x="305" y="0" width="110" height="10" uuid="2c3f8e0f-0313-44b2-a55a-7a1bdead8cfe">
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{total_claim}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+</jasperReport>

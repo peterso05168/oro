@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<p:dialog header="#{msgs['holiday.import.header']}" id="importHolidayDialog" widgetVar="holidayImportDialog"
+		closable="false" rendered="true" resizable="false">
+	<h:form id="importHolidayForm"  enctype="multipart/form-data">
+	<p:messages id="uploadMessages" closable="true"/>
+			<p:panelGrid>
+				<p:row>
+					<p:outputLabel value="The csv file size should be no more than 5MB:"/>
+				</p:row>
+				<p:row>
+					<div class="ax-btn-set">
+						<p:fileUpload value="#{holidayMaintenanceView.uploadedFile}"
+							mode="simple" skinSimple="true"/>
+					</div>
+				</p:row>
+			</p:panelGrid>
+			<div class="ax-btn-set" style="margin-bottom: 5px">
+				<p:commandButton value="#{msgs['holiday.import.upload.label']}" update="importHolidayForm"
+					action="#{holidayMaintenanceView.uploadHolidayTemplate}" ajax="false"/>
+	
+				<div class="ax-button type-a">
+					<p:commandButton value="#{msgs['holiday.import.downloadTemplate.label']}" ajax="false">
+						<p:fileDownload value="#{holidayTemplateDownloadView.file}" />
+					</p:commandButton>
+				</div>
+				
+				<p:button value="#{msgs['cancel.btn']}" oncomplete="PF('holidayImportDialog').hide()"/>
+			</div>
+		
+	</h:form>
+	</p:dialog>
+	
+	<p:dialog header="#{msgs['holiday.import.header']}" id="importResultDialog" widgetVar="importResultDialog"
+		closable="false" rendered="true" resizable="false" width="640">
+	<h:form id="importResultForm">
+		<p:dataTable var="holiday" id="uploadedHolidaysTable"
+				value="#{holidayMaintenanceView.uploadResultVo.uploadedHolidayList}"
+				lazy="true" reflow="true" paginator="true" 
+				paginatorPosition="bottom" rows="5"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+				<p:column headerText="#{msgs['holiday.result.date']}" styleClass="ui-grid-col-2">
+					<h:outputText value="#{holiday.holidayDate}" > 
+						<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="#{msgs['holiday.result.desc']}" styleClass="ui-grid-col-9">
+					<h:outputText value="#{holiday.holidayDesc}" />
+				</p:column>
+		</p:dataTable>
+		<div class="ax-btn-set">
+			<p:commandButton value="#{msgs['confirm.btn']}"
+				update="@form,:searchForm" action="#{holidayMaintenanceView.confirmUploadRecord}"/>
+			<div class="ax-button type-a" style="margin-bottom: 5px">
+				<p:commandButton value="#{msgs['cancel.btn']}" action="#{holidayMaintenanceView.cancelUpload}"/>
+			</div>
+		</div>
+	</h:form>
+	</p:dialog>
+	
+</ui:composition>
+
+
+
+

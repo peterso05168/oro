@@ -1,0 +1,519 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	xmlns:i="http://iefas.oro.hk/ui" template="./case-detail-enquiry.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+           #{msgs['case.detail.title']}
+        </h:link>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="300" widgetVar="panel">
+					<p:focus context="toggleable" />
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4" 
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="CaseType"
+								value="#{msgs['case.detail.enquiry.case.type.label']}" />
+							<p:inputText id="CaseType"
+								value="#{caseDetailEnquiryEditView.caseVO.caseType.caseTypeDesc}"
+								disabled="true" />
+
+							<p:outputLabel for="Status" value="#{msgs['status.label']}" />
+							<p:inputText id="Status" disabled="true"
+								value="#{caseDetailEnquiryEditView.caseVO.status eq 'INA' ? msgs['inactive.status.label'] : msgs['active.status.label']} " />
+
+							<p:outputLabel
+								value="#{msgs['case.detail.enquiry.case.number.label']}" />
+							<com:caseNumber
+								caseTypeCodeValue="#{caseDetailEnquiryEditView.caseVO.caseType.caseTypeCode}"
+								caseNoValue="#{caseDetailEnquiryEditView.caseVO.caseNo}"
+								caseYearValue="#{caseDetailEnquiryEditView.caseVO.caseYear}"
+								disabled="true" />
+
+							<p:outputLabel for="CaseName"
+								value="#{msgs['case.detail.enquiry.case.name.label']}" />
+							<p:inputText id="CaseName"
+								value="#{caseDetailEnquiryEditView.caseVO.caseName}"
+								disabled="true" />
+
+							<p:outputLabel for="OutsiderType"
+								value="#{msgs['case.detail.enquiry.outsider.type.label']}" />
+							<p:inputText id="OutsiderType"
+								value="#{caseDetailEnquiryEditView.caseVO.outsider.outsiderType.outsiderTypeName}"
+								disabled="true" />
+
+							<p:outputLabel for="OutsiderName"
+								value="#{msgs['case.detail.enquiry.outsider.name.label']}" />
+							<p:inputText id="OutsiderName"
+								value="#{caseDetailEnquiryEditView.caseVO.outsider.outsiderName}"
+								disabled="true" />
+
+							<p:outputLabel for="HandlingOfficerPost"
+								value="#{msgs['case.detail.enquiry.handling.officer.post.label']}" />
+							<p:inputText id="HandlingOfficerPost"
+								value="#{caseDetailEnquiryEditView.caseVO.post.postTitle}"
+								disabled="true" />
+
+							<p:outputLabel for="HandlingOfficerName"
+								value="#{msgs['case.detail.enquiry.handling.officer.name.label']}" />
+							<p:inputText id="HandlingOfficerName"
+								value="#{caseDetailEnquiryEditView.handlingOfficerName}"
+								disabled="true" />
+
+							<p:outputLabel for="NoOfCreditor"
+								value="#{msgs['case.detail.enquiry.total.number.of.creditor.label']}" />
+							<p:inputText id="NoOfCreditor"
+								value="#{caseDetailEnquiryEditView.caseVO.noOfCreditor}"
+								disabled="true" />
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<p:tabView id="tabView" activeIndex="0">
+					<!-- Case Account tab-->
+					<p:tab title="#{msgs['case.detail.enquiry.tab.account.title']}">
+						<p:dataTable var="account"
+							value="#{caseDetailEnquiryEditView.accountInfoVOs}" reflow="true"
+							paginator="true" rows="5" paginatorPosition="bottom"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.account.account.type.column.header']}"
+								sortBy="#{account.caseAccountType.caseAcTypeName}">
+								<h:outputText value="#{account.caseAccountType.caseAcTypeName}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.account.account.number.column.header']}"
+								sortBy="#{account.caseAcNumber}">
+								<h:outputText value="#{account.caseAcNumber}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.account.currency.column.header']}"
+								sortBy="#{account.currency.curcyName}">
+								<h:outputText value="#{account.currency.curcyName}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.account.amount.column.header']}"
+								sortBy="#{account.liquidCashAmount}">
+								<h:outputText value="#{account.liquidCashAmount}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.account.last.transaction.date.column.header']}"
+								sortBy="#{account.lastTransactionDate}">
+								<h:outputText value="#{account.lastTransactionDate}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{msgs['status.column.header']}"
+								sortBy="#{account.status}" styleClass="ax-status-w-b">
+								<h:outputText value="#{msgs['inactive.status.label']}"
+									rendered="#{account.status eq 'INA'}" class="status-label red" />
+								<h:outputText value="#{msgs['active.status.label']}"
+									rendered="#{account.status eq 'ACT'}"
+									class="status-label green" />
+							</p:column>
+
+							<p:column headerText="#{msgs['action.column.header']}"
+								styleClass="ax-action-w dont-print">
+								<p:menuButton value="Action">
+									<p:menuitem outcome="payment-voucher-edit"
+										value="#{msgs['case.detail.enquiry.tab.account.menu.item.prepare.payment.voucher.label']}">
+										<f:param name="accountId" value="#{account.caseAcId}" />
+									</p:menuitem>
+									<p:menuitem outcome="receipt-voucher-edit"
+										value="#{msgs['case.detail.enquiry.tab.account.menu.item.prepare.receipt.voucher.label']}">
+										<f:param name="accountId" value="#{account.caseAcId}" />
+									</p:menuitem>
+									<p:menuitem value="#{msgs['inactive.status.label']}"
+										rendered="#{account.status eq 'ACT'}" update="@widgetVar(cd)"
+										oncomplete="PF('cd').show()">
+										<f:setPropertyActionListener value="#{account.caseAcId}"
+											target="#{caseDetailEnquiryEditView.caseAccountId}" />
+									</p:menuitem>
+									<p:menuitem value="#{msgs['active.status.label']}"
+										rendered="#{account.status eq 'INA'}" update="@widgetVar(cd)"
+										oncomplete="PF('cd').show()">
+										<f:setPropertyActionListener value="#{account.caseAcId}"
+											target="#{caseDetailEnquiryEditView.caseAccountId}" />
+									</p:menuitem>
+								</p:menuButton>
+							</p:column>
+						</p:dataTable>
+						<div class="ax-btn-set aR">
+							<p:commandButton value="#{msgs['suspense.account.btn.label']}"
+								immediate="true" onclick="PF('caseAccountDialog').show();"
+								icon="ti-plus" />
+						</div>
+					</p:tab>
+					<!-- Case Account tab-->
+					<!-- Dividend tab -->
+					<p:tab title="#{msgs['case.detail.enquiry.tab.dividend.title']}">
+						<p:dataTable var="dividend" reflow="true" paginator="true"
+							rows="5" paginatorPosition="bottom"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.dividend.proof.number.column.header']}">
+							</p:column>
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.dividend.creditor.name.column.header']}">
+							</p:column>
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.dividend.creditor.type.column.header']}">
+							</p:column>
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.dividend.total.distributed.amount.column.header']}">
+							</p:column>
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.dividend.total.distributed.precentage.column.header']}">
+							</p:column>
+
+							<p:column headerText="#{msgs['action.column.header']}"
+								styleClass="ax-action-w dont-print">
+								<p:menuButton value="Action">
+									<p:menuitem
+										value="#{msgs['case.detail.enquiry.tab.dividend.menu.item.detail']}">
+									</p:menuitem>
+								</p:menuButton>
+							</p:column>
+						</p:dataTable>
+						<div class="ax-btn-set aR">
+							<p:commandButton value="#{msgs['report.btn.label']}" />
+							<p:commandButton
+								value="#{msgs['estimation.of.full.payment.btn.label']}" />
+						</div>
+					</p:tab>
+					<!-- Dividend tab -->
+
+					<!-- Investment tab -->
+					<p:tab title="#{msgs['case.detail.enquiry.tab.investment.title']}">
+						<p:dataTable var="dividend" reflow="true" paginator="true"
+							rows="5" paginatorPosition="bottom"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.investment.investment.number.column.header']}">
+							</p:column>
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.investment.investment.date.column.header']}">
+							</p:column>
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.investment.maturity.date.column.header']}">
+							</p:column>
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.investment.deposit.amount.column.header']}">
+							</p:column>
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.investment.rate.column.header']}">
+							</p:column>
+
+							<p:column headerText="#{msgs['action.column.header']}"
+								styleClass="ax-action-w dont-print">
+								<p:menuButton value="Action">
+									<p:menuitem value="#{msgs['edit.menuitem.label']}">
+									</p:menuitem>
+									<p:menuitem value="#{msgs['delete.menuitem.label']}">
+									</p:menuitem>
+								</p:menuButton>
+							</p:column>
+						</p:dataTable>
+						<div class="ax-btn-set aR">
+							<p:commandButton value="#{msgs['investment.btn.label']}" />
+						</div>
+					</p:tab>
+					<!-- Investment tab -->
+
+
+					<p:tab title="#{msgs['case.detail.enquiry.tab.report.title']}">
+						<div class="ax-row">
+							<i class="ti-files ax-icon"></i>Report 1
+						</div>
+						<div class="ax-row">
+							<i class="ti-files ax-icon"></i>Report 2
+						</div>
+					</p:tab>
+
+					<!-- Deposit card tab start-->
+					<p:tab
+						title="#{msgs['case.detail.enquiry.tab.deposit.card.title']}">
+						<p:dataTable var="deposit"
+							value="#{caseDetailEnquiryEditView.depositCardVOs}" reflow="true"
+							paginator="true" rows="5" paginatorPosition="bottom"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.deposit.card.narrative.column.header']}"
+								sortBy="#{deposit.depositCardNarrative}">
+								<h:outputText value="#{deposit.depositCardNarrative}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.deposit.card.name.column.header']}"
+								sortBy="#{deposit.depositCardName}">
+								<h:outputText value="#{deposit.depositCardName}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.deposit.card.effective.start.date.column.header']}"
+								sortBy="#{deposit.effectiveStartDate}">
+								<h:outputText value="#{deposit.effectiveStartDate}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+							</p:column>
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.deposit.card.effective.end.date.column.header']}"
+								sortBy="#{deposit.effectiveEndDate}">
+								<h:outputText value="#{deposit.effectiveEndDate}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+							</p:column>
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.deposit.card.monthly.contribution.column.header']}"
+								sortBy="#{deposit.monthlyContributionAmount}">
+								<h:outputText value="#{deposit.monthlyContributionAmount}" />
+							</p:column>
+							<p:column headerText="#{msgs['status.column.header']}"
+								sortBy="#{deposit.status}" styleClass="ax-status-w-b">
+								<h:outputText value="#{msgs['inactive.status.label']}"
+									rendered="#{deposit.status eq 'INA'}" class="status-label gray" />
+								<h:outputText value="#{msgs['active.status.label']}"
+									rendered="#{deposit.status eq 'ACT'}"
+									class="status-label green" />
+								<h:outputText value="#{msgs['suspend.status.label']}"
+									rendered="#{deposit.status eq 'SSP'}" class="status-label red" />
+							</p:column>
+
+							<p:column headerText="#{msgs['action.column.header']}"
+								styleClass="ax-action-w dont-print">
+								<p:menuButton value="Action">
+									<p:menuitem value="#{msgs['edit.menuitem.label']}"
+										update="depositCardForm:pg"
+										onclick="PF('depositCardDialog').show()" process="@this">
+										<f:setPropertyActionListener value="#{deposit}"
+											target="#{caseDetailEnquiryEditView.depositCardVO}" />
+									</p:menuitem>
+									<p:menuitem value="#{msgs['active.status.label']}"
+										rendered="#{deposit.status eq 'SSP'}" update="@widgetVar(cd)"
+										oncomplete="PF('cd').show()">
+										<f:setPropertyActionListener value="#{deposit.depositCardId}"
+											target="#{caseDetailEnquiryEditView.depositCardId}" />
+									</p:menuitem>
+									<p:menuitem value="#{msgs['suspend.status.label']}"
+										rendered="#{deposit.status eq 'ACT'}" update="@widgetVar(cd)"
+										oncomplete="PF('cd').show()">
+										<f:setPropertyActionListener value="#{deposit.depositCardId}"
+											target="#{caseDetailEnquiryEditView.depositCardId}" />
+									</p:menuitem>
+								</p:menuButton>
+							</p:column>
+						</p:dataTable>
+						<div class="ax-btn-set aR">
+							<p:commandButton value="#{msgs['deposit.card.btn.label']}"
+								immediate="true" onclick="PF('depositCardDialog').show();"
+								icon="ti-plus" />
+						</div>
+					</p:tab>
+					<!-- Deposit card tab end-->
+
+					<!-- Outside Trustee tab start-->
+					<p:tab
+						title="#{msgs['case.detail.enquiry.tab.outside.trustee.title']}">
+						<p:dataTable reflow="true" paginator="true" rows="5"
+							var="outsideTrustee" paginatorPosition="bottom"
+							value="#{caseDetailEnquiryEditView.outsideTrustee}"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.outside.trustee.type.column.header']}">
+								<h:outputText value="#{outsideTrustee.displayName}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['case.detail.enquiry.tab.outside.trustee.result.column.header']}">
+								<h:outputText value="#{outsideTrustee.result}" />
+							</p:column>
+							<p:column headerText="#{msgs['action.column.header']}"
+								styleClass="ax-action-w dont-print">
+								<p:menuButton value="#{msgs['action.menuButton.label']}">
+									<p:menuitem value="#{msgs['calculate.btn.label']}"
+										rendered="#{!outsideTrustee.displayName.contains('Voucher') }">
+									</p:menuitem>
+									<p:menuitem value="#{msgs['view.btn.label']}"
+										rendered="#{outsideTrustee.dataId != null}">
+									</p:menuitem>
+									<p:menuitem value="#{msgs['generate.btn.label']}"
+										rendered="#{outsideTrustee.displayName.contains('Voucher')}">
+									</p:menuitem>
+								</p:menuButton>
+							</p:column>
+						</p:dataTable>
+					</p:tab>
+					<!-- Outside Trustee tab end-->
+				</p:tabView>
+
+				<!-- Confirm Dialog start-->
+				<p:confirmDialog widgetVar="cd" header="Confirm" closable="false">
+					<f:facet name="message">
+						<h:outputText
+							value="Confirm to Active / Inactive the selected record ?"
+							rendered="#{caseDetailEnquiryEditView.caseAccountId != null}" />
+						<h:outputText
+							value="Confirm to Active / Suspend the selected record ?"
+							rendered="#{caseDetailEnquiryEditView.depositCardId != null}" />
+					</f:facet>
+					<div align="center">
+						<p:commandButton value="Yes" update="tabView"
+							rendered="#{caseDetailEnquiryEditView.caseAccountId != null}"
+							action="#{caseDetailEnquiryEditView.changeAccountStatus}" />
+						<p:commandButton value="Yes" update="tabView"
+							rendered="#{caseDetailEnquiryEditView.depositCardId != null}"
+							action="#{caseDetailEnquiryEditView.changeDepositCardStatus}" />
+						<p:commandButton value="No"
+							action="#{caseDetailEnquiryEditView.resetConfirm}"
+							update="tabView" />
+					</div>
+				</p:confirmDialog>
+				<!-- Confirm Dialog end-->
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search" />
+					<p:menuButton value="Action">
+						<p:menuitem
+							value="#{msgs['case.detail.enquiry.action.menu.item.proof.of.debt.index']}"
+							process="@this">
+						</p:menuitem>
+						<p:menuitem
+							value="#{msgs['case.detail.enquiry.action.menu.item.cash.position']}">
+						</p:menuitem>
+						<p:menuitem
+							value="#{msgs['case.detail.enquiry.action.menu.item.detailed.ledger']}">
+						</p:menuitem>
+					</p:menuButton>
+				</div>
+			</h:form>
+
+
+			<!-- dialog to edit case account start-->
+			<h:form id="caseAccountForm">
+				<p:dialog id="caseAccountDialog"
+					header="#{msgs['case.account.dialog.title']}"
+					widgetVar="caseAccountDialog" modal="true" width="520"
+					minHeight="70" resizable="false" dynamic="true"
+					style="position: fixed">
+					<p:ajax event="close" update="@form" resetValues="true"
+						listener="#{caseDetailEnquiryEditView.accountHandleClose}">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="1" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="AccountType"
+								style="text-align:left; width:auto"
+								value="#{msgs['case.account.dialog.account.type.label']}" />
+							<p:selectOneMenu id="AccountType" required="true"
+								value="#{caseDetailEnquiryEditView.caseAccountVO.caseAccountType.caseAcTypeId}">
+								<f:selectItem itemLabel="- Please select -"
+									noSelectionOption="true" />
+								<f:selectItems
+									value="#{caseDetailEnquiryEditView.caseAcTypeVOs}"
+									var="caseAcType" itemLabel="#{caseAcType.caseAcTypeName}"
+									itemValue="#{caseAcType.caseAcTypeId}" />
+							</p:selectOneMenu>
+							<p:outputLabel for="Currency" style="text-align:left; width:auto"
+								value="#{msgs['case.account.dialog.currency.label']}" />
+							<p:selectOneMenu id="Currency" required="true"
+								value="#{caseDetailEnquiryEditView.caseAccountVO.currency.curcyId}">
+								<f:selectItem itemLabel="- Please select -" />
+								<f:selectItems value="#{caseDetailEnquiryEditView.currencyVOs}"
+									var="currency" itemLabel="#{currency.curcyName}"
+									itemValue="#{currency.curcyId}" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set" align="right">
+						<p:commandButton value="#{msgs['save.btn']}"
+							action="#{caseDetailEnquiryEditView.addCaseAccount}"
+							update="pg,msgs,editForm:tabView" validateClient="true">
+						</p:commandButton>
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('caseAccountDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to edit case account end-->
+
+			<!-- dialog to edit deposit card start-->
+			<h:form id="depositCardForm">
+				<p:dialog id="depositCardDialog"
+					header="#{msgs['deposit.card.dialog.title']}"
+					widgetVar="depositCardDialog" modal="true" width="520"
+					minHeight="70" resizable="false" dynamic="true"
+					style="position: fixed">
+					<p:ajax event="close" update="@form" resetValues="true"
+						listener="#{caseDetailEnquiryEditView.depositCardHandleClose}">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="1" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="DepositCardName"
+								value="#{msgs['deposit.card.dialog.name.label']}"
+								style="text-align:left; width:auto" />
+							<p:inputText id="DepositCardName"
+								value="#{caseDetailEnquiryEditView.depositCardVO.depositCardName}"
+								required="true" />
+
+							<p:outputLabel for="from"
+								value="#{msgs['deposit.card.dialog.effective.label']}"
+								style="text-align:left; width:auto" />
+							<p:column>
+								<p:calendar id="from" placeholder="From" showOn="button"
+									required="true"
+									requiredMessage="#{appResourceUtils.getRequiredMessage('FromDate')}"
+									value="#{caseDetailEnquiryEditView.depositCardVO.effectiveStartDate}"
+									pattern="#{appResourceUtils.dateFormat}">
+								</p:calendar>
+								<p:calendar id="to" placeholder="To" showOn="button"
+									required="true"
+									requiredMessage="#{appResourceUtils.getRequiredMessage('ToDate')}"
+									value="#{caseDetailEnquiryEditView.depositCardVO.effectiveEndDate}"
+									pattern="#{appResourceUtils.dateFormat}">
+								</p:calendar>
+							</p:column>
+
+							<p:outputLabel for="MonthlyContribution"
+								value="#{msgs['deposit.card.dialog.monthly.contribution.label']}"
+								style="text-align:left; width:auto" />
+							<p:inputNumber id="MonthlyContribution" required="true"
+								maxlength="16" placeholder="0.00"
+								value="#{caseDetailEnquiryEditView.depositCardVO.monthlyContributionAmount}" />
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set" align="right">
+						<p:commandButton value="#{msgs['save.btn']}"
+							action="#{caseDetailEnquiryEditView.addDepositCard}"
+							update="pg,msgs,editForm:tabView" validateClient="true">
+						</p:commandButton>
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('depositCardDialog').hide()" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to edit deposit card -->
+		</div>
+	</ui:define>
+</ui:composition>

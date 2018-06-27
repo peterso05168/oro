@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="./demo.xhtml">
+
+	<ui:define name="breadcrumb-3">
+		<li><a title="">Search</a><i class="ti-angle-right"></i></li>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable" header="Search User" toggleable="true"
+				closable="true" toggleSpeed="200" closeSpeed="200" widgetVar="panel">
+				<f:facet name="options">
+					<p:menu>
+						<p:submenu label="Settings">
+							<p:menuitem value="Toggle" url="#" icon="ui-icon-newwin"
+								onclick="PF('panel').toggle()" />
+							<p:menuitem value="Remove" url="#" icon="ui-icon-close"
+								onclick="PF('panel').close()" />
+						</p:submenu>
+					</p:menu>
+				</f:facet>
+				<h:form>
+					<div>
+						<input type="checkbox" id="basicAdvance" name="basicAdvance"
+							class="basicAdvance hidden-checkbox" checked="checked" />
+						<div class="search-basic">
+							<p:panelGrid columns="1" layout="grid"
+								columnClasses="ui-grid-col-12"
+								styleClass="ui-panelgrid-blank ui-fluid">
+								<p:inputText />
+								<p:column>
+									<label for="basicAdvance" class="basicAdvanceLabel advance"><i
+										class="ti-search"></i> Advanced Search</label>
+									<div class="note">User ID, Email, Last Name, First Name</div>
+								</p:column>
+							</p:panelGrid>
+						</div>
+						<div class="search-advance">
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+								<p:outputLabel for="UserAccount" value="User ID" />
+								<p:inputText id="UserAccount" />
+
+								<p:outputLabel for="Email" value="Email" />
+								<p:inputText id="Email" />
+
+								<p:outputLabel for="JobTitle" value="Job Title" />
+								<p:inputText id="JobTitle" />
+
+								<p:outputLabel for="FirstName" value="Last Name" />
+								<p:inputText id="FirstName" />
+
+								<p:outputLabel for="LastName" value="First Name" />
+								<p:column>
+									<div class="ax-input-group">
+										<div class="ax-checkbox left"  title="Show at result list" >
+											<p:selectBooleanCheckbox id="dddd" value="usertextvalue" />
+										</div>
+										<div class="ax-fields">
+											<p:inputText id="LastName" />
+										</div>
+									</div>
+								</p:column>
+
+								<p:outputLabel for="Status" value="Status" />
+								<p:column>
+									<div class="ax-input-group">							
+										<div class="ax-checkbox left" title="Show at result list" >
+											<p:selectBooleanCheckbox id="ddddsssasdfasdfsss" 
+												value="usertextvalue" />
+										</div>
+										<div class="ax-fields">
+											<p:selectOneMenu id="Status">
+												<f:selectItem itemLabel="- All -" itemValue="0" />
+												<f:selectItem itemLabel="Active" itemValue="1" />
+												<f:selectItem itemLabel="Inactive" itemValue="2" />
+											</p:selectOneMenu>
+										</div>
+									</div>
+								</p:column>
+
+							</p:panelGrid>
+							<p:panelGrid columns="6" columnClasses="ui-grid-col-12"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:column styleClass="ui-grid-col-12">
+									<label for="basicAdvance" class="basicAdvanceLabel advance"><i
+										class="ti-search"></i>Basic Search</label>
+								</p:column>
+							</p:panelGrid>
+						</div>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="Search" onclick="_ACTION('result')"
+							icon="ti-search" />
+						<p:commandButton value="Reset" styleClass="ui-priority-secondary"
+							onclick="_ACTION('search')" />
+						<p:commandButton value="Create" onclick="_ACTION('create')" />
+					</div>
+				</h:form>
+			</p:panel>
+			<p:dialog header="Create User" widgetVar="createDialog" modal="true"
+				width="500" minHeight="50">
+				<h:form>
+					<div class="ui-fluid">
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+
+							<p:outputLabel for="field1" value="User ID" />
+							<p:inputText id="field1" />
+
+							<p:outputLabel for="field2" value="Email" />
+							<p:inputText id="field2" />
+
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="Create" onclick="_ACTION('create-save')"/>
+						<p:commandButton value="Cancel" styleClass="ui-priority-secondary"
+							onclick="_ACTION('create-cancel')" />
+					</div>
+				</h:form>
+			</p:dialog>
+		</div>
+		<ui:insert name="main-content-2" />
+	</ui:define>
+</ui:composition>

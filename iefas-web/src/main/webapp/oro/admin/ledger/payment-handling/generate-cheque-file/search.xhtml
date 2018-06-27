@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="./generate-cheque.xhtml">
+
+    <ui:define name="main-content">
+        <div>
+            <p:panel id="toggleable" header="#{msgs['payment.handling.generate.cheque.file.search.title']}"
+                     toggleable="true" toggleSpeed="200" widgetVar="panel">
+                <h:form id="searchForm">
+                    <div>
+                        <p:focus context="toggleable"/>
+                        <p:messages id="msgs" closable="true"/>
+                        <div class="search-advance">
+                            <p:panelGrid columns="4"
+                                         columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                                         layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                                <p:outputLabel for="voucherNumber"
+                                               value="#{msgs['payment.handling.generate.cheque.file.voucher.number.label']}"/>
+                                <p:inputText id="voucherNumber"
+                                             value="#{generateChequeFileSearchView.criteria.voucherNumber}"/>
+                                <p:outputLabel for="chequeDate"
+                                               value="#{msgs['payment.handling.generate.cheque.file.cheque.date.label']}"/>
+                                <p:calendar id="chequeDate" pattern="#{appResourceUtils.dateFormat}"
+                                            value="#{generateChequeFileSearchView.criteria.chequeDate}"
+                                            showOn="button"/>
+                                <p:outputLabel for="toAccount"
+                                               value="#{msgs['payment.handling.generate.cheque.file.to.account.label']}"/>
+                                <p:inputText id="toAccount" value="#{generateChequeFileSearchView.criteria.toAccount}"/>
+                                <p:outputLabel for="currency"
+                                               value="#{msgs['payment.handling.generate.cheque.file.currency.label']}"/>
+                                <p:selectOneMenu id="currency"
+                                                 value="#{generateChequeFileSearchView.criteria.currencyId}">
+                                    <f:selectItem itemLabel="- All -" noSelectionOption="true"/>
+                                    <f:selectItems value="#{generateChequeFileSearchView.currencyBasicInfoVOS}"
+                                                   var="currency" itemLabel="#{currency.curcyName}"
+                                                   itemValue="#{currency.curcyId}"/>
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+                        </div>
+                    </div>
+                    <div class="ax-btn-set">
+                        <p:commandButton id="searchBtn" value="#{msgs['search.btn']}"
+                                         icon="ti-search" update="searchForm,chequeFileResultTable"
+                                         action="#{generateChequeFileSearchView.search}"/>
+                        <p:commandButton value="#{msgs['reset.btn']}"
+                                         styleClass="ui-priority-secondary" update="@form,chequeFileResultTable"
+                                         action="#{generateChequeFileSearchView.reset}"/>
+                    </div>
+                </h:form>
+            </p:panel>
+        </div>
+        <ui:include src="./result.xhtml"/>
+    </ui:define>
+</ui:composition>

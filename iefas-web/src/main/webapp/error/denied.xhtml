@@ -1,0 +1,18 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/oro/admin/tp-header-login.xhtml">
+	<ui:define name="main-content">
+		<div style="font-size: 25px; margin-bottom: 20px">
+			<b>Error</b>
+		</div>
+		<div style="text-align: left !important">Sorry, you don't have
+			permission to access this page.</div>
+		<div style="text-align: left !important">
+			<h:outputText value="#{pfExceptionHandler.formattedStackTrace}"
+				escape="false" />
+		</div>
+	</ui:define>
+</ui:composition>

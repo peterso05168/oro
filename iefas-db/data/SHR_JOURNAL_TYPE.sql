@@ -1,0 +1,1 @@
+INSERT INTO "SHR_JOURNAL_TYPE" VALUES (1, 'Test1', 'Test1', 'Test1');

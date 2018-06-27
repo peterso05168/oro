@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	template="./create-bank-transfer-file.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable"
+				header="#{msgs['payment.handling.create.bank.transfer.file.search.title']}"
+				toggleable="true" toggleSpeed="200" widgetVar="panel">
+				<h:form id="searchForm">
+					<div>
+						<p:focus context="toggleable" />
+						<p:messages id="msgs" closable="true" />
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="voucherNumber"
+								value="#{msgs['payment.handling.create.bank.transfer.file.voucher.number.label']}" />
+							<p:inputText id="voucherNumber"
+								value="#{createBankTransferFileSearchView.criteria.voucherNumber}" />
+							<p:outputLabel for="transferDate"
+								value="#{msgs['payment.handling.create.bank.transfer.file.transfer.date.label']}" />
+							<p:calendar id="transferDate"
+								pattern="#{appResourceUtils.dateFormat}"
+								value="#{createBankTransferFileSearchView.criteria.transferDate}"
+								showOn="button" />
+							<p:outputLabel for="fromAccount"
+								value="#{msgs['payment.handling.create.bank.transfer.file.from.account.label']}" />
+							<p:inputText id="fromAccount"
+								value="#{createBankTransferFileSearchView.criteria.fromAccount}" />
+							<p:outputLabel for="toAccount"
+								value="#{msgs['payment.handling.create.bank.transfer.file.to.account.label']}" />
+							<p:inputText id="toAccount"
+								value="#{createBankTransferFileSearchView.criteria.toAccount}" />
+							<p:outputLabel for="currency"
+								value="#{msgs['payment.handling.create.bank.transfer.file.currency.label']}" />
+							<p:selectOneMenu id="currency"
+								value="#{createBankTransferFileSearchView.criteria.currencyCode}">
+								<f:selectItem itemLabel="- All -" noSelectionOption="true" />
+								<f:selectItems
+									value="#{createBankTransferFileSearchView.currencyBasicInfoVOs}"
+									var="currency" itemLabel="#{currency.curcyName}"
+									itemValue="#{currency.curcyCode}" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton id="searchBtn" value="#{msgs['search.btn']}"
+							icon="ti-search"
+							action="#{createBankTransferFileSearchView.search}"
+							update="resultForm" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary"
+							action="#{createBankTransferFileSearchView.reset}"
+							process="@this" update="@form,resultForm" />
+					</div>
+				</h:form>
+			</p:panel>
+		</div>
+		<ui:include src="./result.xhtml" />
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<h:form id="resultTable">
+		<p:dataTable var="dividendCheque"
+			value="#{dividendChequeSearchView.lazyDataModel}"
+			rowKey="#{dividendCheque.dividendChequeId}" lazy="true" reflow="true"
+			paginator="true" paginatorPosition="bottom" rows="9"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15"
+			rendered="#{dividendChequeSearchView.lazyDataModel != null}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+			<p:columnGroup type="header">
+				<p:row>
+					<p:column colspan="8"
+						headerText="#{msgs['dividend.interest.cheque.case.name.label']} : #{dividendChequeSearchView.caseName}" />
+				</p:row>
+				<p:row>
+					<p:column colspan="1"
+						headerText="#{msgs['dividend.interest.cheque.proof.number.header']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['dividend.interest.cheque.creditor.name.header']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['dividend.interest.cheque.payee.name.header']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['dividend.interest.cheque.payment.date.header']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['dividend.interest.cheque.number.header']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['dividend.interest.cheque.distributed.amount.header']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['dividend.interest.cheque.remarks.header']}" />
+					<p:column colspan="1" headerText="#{msgs['status.label']}" />
+				</p:row>
+			</p:columnGroup>
+			<p:column>
+				<p:commandLink href="javascript:void(0)" action="edit" ajax="false">
+					<h:outputText
+						value="#{dividendCheque.dividendScheduleItem.creditor.proofNo}" />
+					<f:param name="dividendChequeId"
+						value="#{dividendCheque.dividendChequeId}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column>
+				<h:outputText
+					value="#{dividendCheque.dividendScheduleItem.creditor.creditorNameEng}" />
+			</p:column>
+
+			<p:column>
+				<h:outputText
+					value="#{dividendCheque.dividendScheduleItem.creditor.payeeName}" />
+			</p:column>
+
+			<p:column>
+				<h:outputText
+					value="#{dividendCheque.dividendScheduleItem.paymentEffectiveDate}" />
+			</p:column>
+
+			<p:column>
+				<h:outputText value="#{dividendCheque.cheque.chequeNo}" />
+			</p:column>
+
+			<p:column>
+				<h:outputText
+					value="#{dividendCheque.dividendScheduleItem.distributionAmount}">
+					<f:convertNumber type="number"
+						pattern="#{appResourceUtils.moneyFormat}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column>
+				<h:outputText value="#{dividendCheque.reissuesReason}" />
+			</p:column>
+
+			<p:column>
+				<h:outputText
+					value="#{dividendChequeSearchView.statusMap.get(dividendCheque.status)}"
+					class="status-label green" />
+			</p:column>
+
+		</p:dataTable>
+
+	</h:form>
+</ui:composition>
+
+
+
+

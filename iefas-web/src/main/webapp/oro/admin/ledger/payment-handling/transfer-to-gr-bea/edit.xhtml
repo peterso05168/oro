@@ -1,0 +1,104 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="./transfer-to-gr-bea.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left" />
+            #{msgs['transfer.to.gr.bea.title']}
+        </h:link>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="300" widgetVar="panel">
+					<p:focus context="toggleable" />
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="transferNo"
+								value="#{msgs['transfer.to.gr.bea.transfer.no.label']}" />
+							<p:inputText id="transferNo" disabled="true"
+								value="#{transferToGrOrBeaEditView.transferVO.transferNo}" />
+
+							<p:outputLabel for="transferType"
+								value="#{msgs['transfer.to.gr.bea.transfer.type.label']}" />
+							<p:inputText id="transferType" disabled="true"
+								value="#{transferToGrOrBeaEditView.transferVO.transferType.txfAmountTypeName}" />
+
+							<p:outputLabel for="processDate"
+								value="#{msgs['transfer.to.gr.bea.process.date.label']}" />
+							<p:inputText id="processDate" disabled="true"
+								value="#{transferToGrOrBeaEditView.transferVO.processDate}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</p:inputText>
+
+							<p:outputLabel for="paymentVoucherNumber"
+								value="#{msgs['transfer.to.gr.bea.payment.voucher.number.label']}" />
+							<p:inputText id="paymentVoucherNumber" disabled="true"
+								value="#{transferToGrOrBeaEditView.transferVO.voucher.voucherNo}" />
+
+							<p:outputLabel for="totalAmount"
+								value="#{msgs['transfer.to.gr.bea.total.amount.label']}" />
+							<p:inputText id="totalAmount" disabled="true"
+								value="#{transferToGrOrBeaEditView.transferVO.totalAmount}" />
+
+							<p:outputLabel for="cutOffDate"
+								value="#{msgs['transfer.to.gr.bea.cut.off.date.label']}" />
+							<p:inputText id="cutOffDate" disabled="true"
+								value="#{transferToGrOrBeaEditView.transferVO.cutOffDate}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</p:inputText>
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<p:tabView id="tabView" activeIndex="0">
+					<p:tab title="#{msgs['transfer.to.gr.bea.account.tab.title']}" disabled="#{transferToGrOrBeaEditView.transferVO.transferId != null}">
+						<p:dataTable reflow="true" paginator="true" rowKey="#{item.caseAcId}"
+							value="#{transferToGrOrBeaEditView.accountList}"
+							paginatorPosition="bottom" rows="5" var="item"
+							disabledSelection="#{transferToGrOrBeaEditView.transferId != null}"
+							selection="#{transferToGrOrBeaEditView.selectAccountList}"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15" draggableColumns="true"
+							rendered="#{transferToGrOrBeaEditView.accountList != null}">
+							<f:facet name="header">#{msgs['result.title']}</f:facet>
+
+							<p:column selectionMode="multiple" class="ax-checkbox-w"/>
+								
+							<p:column
+								headerText="#{msgs['transfer.to.gr.bea.account.tab.account.number.column.header']}">
+								<h:outputText value="#{item.caseAcNumber}" />
+							</p:column>
+
+							<p:column
+								headerText="#{msgs['transfer.to.gr.bea.account.tab.account.type.column.header']}">
+								<h:outputText value="#{item.caseAccountType.caseAcTypeName}" />
+							</p:column>
+
+							<p:column
+								headerText="#{msgs['transfer.to.gr.bea.account.tab.amount.column.header']}">
+								<h:outputText value="#{item.liquidCashAmount}" />
+							</p:column>
+							
+						</p:dataTable>
+					</p:tab>
+				</p:tabView>
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left" outcome="search" />
+					<p:commandButton id="confirmBtn" value="#{msgs['confirm.btn']}"
+						rendered="#{transferToGrOrBeaEditView.transferId == null}" process="@this, @form"
+						action="#{transferToGrOrBeaEditView.confirm}" update="@form"/>
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

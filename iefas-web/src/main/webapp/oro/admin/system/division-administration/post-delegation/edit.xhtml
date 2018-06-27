@@ -1,0 +1,203 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui" template="./post-delegation.xhtml">
+
+	<ui:define name="title">
+		<h:outputLink styleClass="ax-back-icon-url" hreflang="search">
+			<i class="ax-icon ti-arrow-left"></i>
+           #{msgs['post.delegation.title']}
+        </h:outputLink>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable" header="#{msgs['post.basic.info.title']}"
+					toggleable="true" toggleSpeed="300" widgetVar="panel">
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="Division"
+								value="#{msgs['post.delegation.division.label']}" />
+							<p:inputText id="Division"
+								value="#{postDelegationEditView.postVO.division.divisionName}"
+								disabled="true" />
+
+							<p:outputLabel for="PostTitle"
+								value="#{msgs['post.delegation.postTitle.label']}" />
+							<p:inputText id="PostTitle"
+								value="#{postDelegationEditView.postVO.postTitle}"
+								disabled="true" />
+
+							<p:outputLabel for="UserName"
+								value="#{msgs['post.delegation.user.name.label']}" />
+							<p:inputText id="UserName"
+								value="#{postDelegationEditView.userName}" disabled="true" />
+
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<p:tabView id="tabView" activeIndex="0">
+					<p:tab title="#{msgs['post.delegation.user.delegation.title']}">
+						<p:dataTable id="delegation" var="delegation"
+							value="#{postDelegationEditView.delegations}" paginator="false"
+							rows="5"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column headerText="#{msgs['profile.effv.from.column.header']}"
+								sortBy="#{delegation.effectiveStartDate}">
+								<h:outputText value="#{delegation.effectiveStartDate}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{msgs['profile.effv.to.column.header']}"
+								sortBy="#{delegation.effectiveEndDate}">
+								<h:outputText value="#{delegation.effectiveEndDate}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="#{msgs['profile.division.column.header']}"
+								sortBy="#{delegation.divisionName}">
+								<h:outputText
+									value="#{delegation.delegateTo.division.divisionName}" />
+							</p:column>
+							<p:column headerText="#{msgs['profile.post.column.header']}"
+								sortBy="#{delegation.postTitle}">
+								<h:outputText value="#{delegation.delegateTo.postTitle}" />
+							</p:column>
+							<p:column headerText="#{msgs['profile.user.name.column.header']}"
+								sortBy="#{delegation.engName}">
+								<h:outputText value="#{delegation.engName}" />
+							</p:column>
+							<p:column headerText="#{msgs['status.column.header']}"
+								sortBy="#{delegation.status}" styleClass="ax-status-w-b">
+								<h:outputText value="#{msgs['inactive.status.label']}"
+									rendered="#{delegation.status eq 'INA'}"
+									class="status-label red" />
+								<h:outputText value="#{msgs['active.status.label']}"
+									rendered="#{delegation.status eq 'ACT'}"
+									class="status-label green" />
+							</p:column>
+							<p:column headerText="#{msgs['profile.action.column.header']}"
+								styleClass="ax-action-w dont-print">
+								<p:menuButton value="#{msgs['action.menuButton.label']}"
+									rendered="#{delegation.status eq 'ACT'}">
+									<p:menuitem value="
+								#{msgs['edit.menuitem.label']}"
+										action="#{postDelegationEditView.initDelegationDialog}"
+										oncomplete="PF('delegationDialog').show();"
+										update="delegationCreateForm:pg" process="@this">
+										<f:setPropertyActionListener value="#{delegation}"
+											target="#{postDelegationEditView.delegation}" />
+									</p:menuitem>
+									<p:menuitem value="#{msgs['delete.menuitem.label']}"
+										action="#{postDelegationEditView.deleteDelegation}"
+										process="@this"
+										update="delegation,:editForm:tabView,:editForm:msgs">
+										<f:setPropertyActionListener value="#{delegation}"
+											target="#{postDelegationEditView.delegation}" />
+									</p:menuitem>
+								</p:menuButton>
+							</p:column>
+						</p:dataTable>
+						<div class="ax-btn-set aR">
+							<p:commandButton value="#{msgs['add.btn']}"
+								actionListener="#{postDelegationEditView.initDelegationDialog}"
+								update=":delegationCreateForm"
+								oncomplete="PF('delegationDialog').show();" icon="ti-plus" />
+						</div>
+					</p:tab>
+				</p:tabView>
+
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search" />
+					<p:commandButton value="#{msgs['save.btn']}"
+						action="#{postDelegationEditView.save}" update="@form" />
+				</div>
+			</h:form>
+
+			<h:form id="delegationCreateForm">
+				<p:dialog id="delegationDialog"
+					header="#{msgs['profile.delegation.dialog.header']}"
+					widgetVar="delegationDialog" modal="true" width="500"
+					minHeight="50" resizable="false" dynamic="true"
+					style="position: fixed">
+					<p:messages id="msgs" closable="true" />
+					<p:ajax event="close" update="@form" resetValues="true"
+						listener="#{postDelegationEditView.handleDialogClose}">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="2"
+							columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="from"
+								value="#{msgs['profile.delegation.dialog.period.label']}" />
+							<p:calendar id="from" placeholder="#{msgs['from.label']}"
+								showOn="button" pattern="#{appResourceUtils.dateFormat}"
+								value="#{postDelegationEditView.delegation.effectiveStartDate}"
+								required="true">
+							</p:calendar>
+							<p:outputLabel />
+							<p:calendar id="to" placeholder="#{msgs['to.label']}"
+								showOn="button" pattern="#{appResourceUtils.dateFormat}"
+								value="#{postDelegationEditView.delegation.effectiveEndDate}"
+								required="true">
+							</p:calendar>
+							<p:outputLabel for="division"
+								value="#{msgs['profile.delegation.dialog.division.label']}" />
+							<p:selectOneMenu id="division"
+								value="#{postDelegationEditView.selectedDivisionId}"
+								required="true">
+								<p:ajax update="post" event="change" process="@this"
+									listener="#{postDelegationEditView.initPostList}" />
+								<f:selectItem itemLabel="- Select -" />
+								<f:selectItems value="#{postDelegationEditView.divisionVOs}"
+									var="division" itemLabel="#{division.divisionName}"
+									itemValue="#{division.divisionId}" />
+							</p:selectOneMenu>
+							<p:outputLabel for="post"
+								value="#{msgs['profile.delegation.dialog.post.label']}" />
+							<p:selectOneMenu id="post"
+								value="#{postDelegationEditView.delegateToId}" required="true">
+								<p:ajax update="username" event="change" process="@this"
+									listener="#{postDelegationEditView.initUserName}" />
+								<f:selectItem itemLabel="- Select -" />
+								<f:selectItems value="#{postDelegationEditView.postVOs}"
+									var="post" itemLabel="#{post.postTitle}"
+									itemValue="#{post.postId}" />
+							</p:selectOneMenu>
+							<p:outputLabel for="username"
+								value="#{msgs['profile.delegation.dialog.username.label']}" />
+							<p:inputText id="username"
+								value="#{postDelegationEditView.dialogUserName}" disabled="true" />
+							<p:outputLabel for="remark"
+								value="#{msgs['profile.delegation.dialog.remark.label']}" />
+							<p:inputTextarea id="remark"
+								value="#{postDelegationEditView.delegation.remark}"
+								required="true" />
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['save.btn']}"
+							action="#{postDelegationEditView.saveDelegation}"
+							update=":editForm:tabView">
+						</p:commandButton>
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary" process="@none"
+							onclick="PF('delegationDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+
+		</div>
+	</ui:define>
+</ui:composition>

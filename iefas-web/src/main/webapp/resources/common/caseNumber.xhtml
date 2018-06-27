@@ -1,0 +1,65 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:o="http://omnifaces.org/ui">
+
+<composite:interface>
+	<composite:attribute name="caseTypeCodeValue" type="String" />
+	<composite:attribute name="caseNoValue" type="String" />
+	<composite:attribute name="caseYearValue" type="String" />
+	<composite:attribute name="disabled" type="boolean" />
+	<composite:attribute name="allMandatory" type="boolean" default="false" />
+	<composite:attribute name="autoSearchEnabled" type="boolean"
+		default="false" />
+	<composite:attribute name="autoSearchUpdate" type="String"></composite:attribute>
+	<composite:attribute name="autoSearchListener"
+		method-signature="void searchCaseInfo()" />
+</composite:interface>
+
+<composite:implementation>
+	<h:panelGrid id="caseNumber" columns="9">
+		<o:validateAllOrNone components="caseTypeCode caseNo caseYear"
+			message="#{appResourceUtils.getRequiredMessage('CaseNumber')}" />
+		<o:validateAll components="caseTypeCode caseNo caseYear"
+			message="#{appResourceUtils.getRequiredMessage('CaseNumber')}"
+			disabled="#{!cc.attrs.allMandatory}" />
+		<p:inputText id="caseTypeCode" maxlength="1" size="3"
+			onkeyup="this.value=this.value.replace(/[^A-Za-z]/g,'')"
+			onchange="this.value=this.value.toUpperCase()"
+			style="text-transform:uppercase;" disabled="#{cc.attrs.disabled}"
+			value="#{cc.attrs.caseTypeCodeValue}">
+			<p:ajax event="change" disabled="#{!cc.attrs.autoSearchEnabled}"
+				update="#{cc.attrs.autoSearchUpdate}, caseNumber"
+				listener="#{cc.attrs.autoSearchListener}"></p:ajax>
+		</p:inputText>
+		<p:outputLabel class="ax-slash" style="font-size:22px;font-weight:520">-</p:outputLabel>
+
+		<composite:insertChildren />
+
+		<p:inputText id="caseNo" maxlength="5" size="14"
+			onkeyup="this.value=this.value.replace(/\D/g,'')"
+			value="#{cc.attrs.caseNoValue}" disabled="#{cc.attrs.disabled}">
+			<p:ajax event="change" disabled="#{!cc.attrs.autoSearchEnabled}"
+				update="#{cc.attrs.autoSearchUpdate}, caseNumber"
+				listener="#{cc.attrs.autoSearchListener}"></p:ajax>
+			<f:converter converterId="caseSeqNoConverter"></f:converter>
+		</p:inputText>
+		<span class="ax-slash">/</span>
+
+		<p:inputText id="caseYear"
+			onkeyup="this.value=this.value.replace(/\D/g,'')" maxlength="4"
+			value="#{cc.attrs.caseYearValue}" size="8"
+			disabled="#{cc.attrs.disabled}">
+			<f:converter converterId="yearConverter"></f:converter>
+			<p:ajax event="change" disabled="#{!cc.attrs.autoSearchEnabled}"
+				update="#{cc.attrs.autoSearchUpdate}, caseNumber"
+				listener="#{cc.attrs.autoSearchListener}"></p:ajax>
+		</p:inputText>
+	</h:panelGrid>
+</composite:implementation>
+
+
+</html>

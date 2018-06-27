@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<h:form id="postResultTable">
+		<p:dataTable var="post"
+			value="#{postDelegationSearchView.postResultDataModel}"
+			rowKey="#{post.postId}" lazy="true" reflow="true" paginator="true"
+			paginatorPosition="bottom" rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true"
+			rendered="#{postDelegationSearchView.postResultDataModel != null}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+
+			<p:column headerText="#{msgs['post.delegation.division.column.header']}"
+				sortBy="#{post.divisionName}">
+				<h:outputText value="#{post.divisionName}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['post.delegation.postTitle.column.header']}"
+				sortBy="#{post.postTitle}">
+				<p:commandLink action="edit" ajax="false">
+					<h:outputText value="#{post.postTitle}" />
+					<f:param name="postId" value="#{post.postId}" />
+				</p:commandLink>
+			</p:column>
+
+
+			<p:column headerText="#{msgs['post.delegation.user.name.column.header']}"
+				sortBy="#{post.userName}">
+				<h:outputText value="#{post.userName}" />
+			</p:column>
+
+		</p:dataTable>
+	</h:form>
+</ui:composition>
+
+
+
+

@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="../tp-container.xhtml">
+
+	<ui:define name="title">
+        #{msgs['dashboard.title']}
+	</ui:define>
+
+	<ui:define name="breadcrumb">
+		<li><a title="">#{msgs['dashboard.title']}</a><i
+			class="ti-angle-right"></i></li>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div class="ax-tab-01">
+			<h:form id="formB">
+				<div class="ax-dashboard-circle">
+					<ul>
+						<ui:repeat var="dashboardInfo"
+							value="#{dashboardView.dashboardInfos}">
+							<li><h:panelGroup rendered="#{dashboardInfo.updated}">
+									<i class="purple">Updated</i>
+								</h:panelGroup> <p:commandLink action="#{dashboardView.redirect}"
+									process="@this">
+									<f:param name="url"
+										value="#{dashboardInfo.dashboardType.forwardToUrl}" />
+									<div>
+										<div class="rows">
+											<div class="row-01">
+												#{dashboardInfo.dashboardType.dashboardTypeDesc}</div>
+											<div class="row-02">#{dashboardInfo.dashboardCount}</div>
+										</div>
+									</div>
+								</p:commandLink></li>
+						</ui:repeat>
+					</ul>
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

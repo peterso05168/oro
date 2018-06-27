@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<h:form id="resultTable">
+		<p:dataTable var="interestTrial"
+			value="#{interestTrialSearchView.lazyDataModel}"
+			rowKey="#{interestTrial.intTrAdjId}" lazy="true" reflow="true"
+			paginator="true" paginatorPosition="bottom" rows="4"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true"
+			rendered="#{interestTrialSearchView.lazyDataModel !=null}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+			<p:columnGroup type="header">
+				<p:row>
+					<p:column colspan="6"
+						headerText="#{msgs['interest.trial.adjudication.resulttable.title']} : #{interestTrialSearchView.caseName}" />
+				</p:row>
+				<p:row>
+					<p:column colspan="1"
+						headerText="#{msgs['interest.trial.adjudication.table.proof.number.column']}" />
+					<p:column colspan="2"
+						headerText="#{msgs['interest.trial.adjudication.table.creditor.name.column']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['interest.trial.adjudication.table.interest.column']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['interest.trial.adjudication.table.status.column']}" />
+					<p:column
+						headerText="#{msgs['interest.trial.adjudication.table.action.column']}" />
+				</p:row>
+			</p:columnGroup>
+			<p:column>
+				<p:commandLink href="javascript:void(0)" action="edit" ajax="false">
+					<h:outputText value="#{interestTrial.creditor.proofNo}" />
+					<f:param name="intTrAdjId" value="#{interestTrial.intTrAdjId}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column colspan="2">
+				<h:outputText value="#{interestTrial.creditor.creditorNameEng}" />
+			</p:column>
+
+			<p:column>
+				<h:outputText value="#{interestTrial.totalIntAmount}" />
+				<h:outputText />
+			</p:column>
+
+			<p:column headerText="#{msgs['status.column.header']}"
+				styleClass="ax-status-w-b">
+
+				<h:outputText
+					value="#{interestTrialSearchView.statusMap.get(interestTrial.status)}"
+					class="status-label green" />
+			</p:column>
+
+			<p:column styleClass="ax-action-w dont-print">
+				<p:menuButton value="#{msgs['action.menuButton.label']}">
+					<p:menuitem
+						value="#{msgs['interest.trial.adjudication.table.edit.btn']}"
+						action="edit" ajax="false">
+						<f:param name="intTrAdjId" value="#{interestTrial.intTrAdjId}" />
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+
+	</h:form>
+</ui:composition>
+
+<!-- 					<p:menuitem
+						value="#{msgs['interest.trial.adjudication.table.delete.btn']}"
+						action="#{interestTrialSearchView.deleteInterestTrial}"
+						update="resultTable">
+						<p:confirm header="#{msgs['delete.dialog.header']}"
+							message="#{msgs['delete.dialog.msg']}" icon="ui-icon-alert" />
+						<f:setPropertyActionListener value="#{interestTrial.intTrAdjId}"
+							target="#{interestTrialSearchView.intTrAdjId}" />
+					</p:menuitem>
+ -->
+
+
+
+
+

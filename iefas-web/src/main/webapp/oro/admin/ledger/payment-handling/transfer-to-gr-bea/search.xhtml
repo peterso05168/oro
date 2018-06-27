@@ -1,0 +1,155 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	template="./transfer-to-gr-bea.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable"
+				header="#{msgs['transfer.to.gr.bea.search.transfer.record.title']}"
+				toggleable="true" toggleSpeed="200" widgetVar="panel">
+				<h:form id="searchForm">
+					<div>
+						<p:focus context="toggleable" />
+						<p:messages id="msgs" closable="true" />
+						<input type="checkbox" id="basicAdvance" name="basicAdvance"
+							class="basicAdvance hidden-checkbox" checked="checked" />
+						<div class="search-basic">
+							<p:panelGrid columns="1" layout="grid"
+								columnClasses="ui-grid-col-12"
+								styleClass="ui-panelgrid-blank ui-fluid">
+								<p:inputText />
+								<p:column>
+									<label for="basicAdvance" class="basicAdvanceLabel advance"><i
+										class="ti-search" /> Advanced Search</label>
+									<div class="note">Transfer ID, Transfer Type, Account
+										Type, Process Date, Voucher Number, Cut-off Date</div>
+								</p:column>
+							</p:panelGrid>
+						</div>
+						<div class="search-advance">
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel for="transferNo"
+									value="#{msgs['transfer.to.gr.bea.transfer.no.label']}" />
+								<p:inputText id="transferNo"
+									value="#{transferToGrOrBeaSearchView.criteria.transferNo}" />
+								<p:outputLabel for="transferType"
+									value="#{msgs['transfer.to.gr.bea.transfer.type.label']}" />
+								<p:selectOneMenu id="transferType"
+									value="#{transferToGrOrBeaSearchView.criteria.transferTypeId}">
+									<f:selectItem itemLabel="- All -" noSelectionOption="true" />
+									<f:selectItems
+										value="#{transferToGrOrBeaSearchView.transferTypeVOs}"
+										var="type" itemLabel="#{type.txfAmountTypeName}"
+										itemValue="#{type.txfAmountTypeId}" />
+								</p:selectOneMenu>
+								<p:outputLabel for="accountType"
+									value="#{msgs['transfer.to.gr.bea.account.type.label']}" />
+								<p:selectOneMenu id="accountType"
+									value="#{transferToGrOrBeaSearchView.criteria.accountTypeId}">
+									<f:selectItem itemLabel="- All -" noSelectionOption="true" />
+									<f:selectItems
+										value="#{transferToGrOrBeaSearchView.accountTypeVOs}"
+										var="type" itemLabel="#{type.caseAcTypeName}"
+										itemValue="#{type.caseAcTypeId}" />
+								</p:selectOneMenu>
+								<p:outputLabel for="processDate"
+									value="#{msgs['transfer.to.gr.bea.process.date.label']}" />
+								<p:calendar id="processDate"
+									pattern="#{appResourceUtils.dateFormat}"
+									value="#{transferToGrOrBeaSearchView.criteria.processDate}"
+									showOn="button" />
+								<p:outputLabel for="voucherNumber"
+									value="#{msgs['transfer.to.gr.bea.voucher.number.label']}" />
+								<p:inputText id="voucherNumber"
+									value="#{transferToGrOrBeaSearchView.criteria.voucherNumber}" />
+								<p:outputLabel for="cutOffDate"
+									value="#{msgs['transfer.to.gr.bea.cut.off.date.label']}" />
+								<p:calendar id="cutOffDate"
+									pattern="#{appResourceUtils.dateFormat}"
+									value="#{transferToGrOrBeaSearchView.criteria.cutOffDate}"
+									showOn="button" />
+							</p:panelGrid>
+						</div>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton id="searchBtn" value="#{msgs['search.btn']}"
+							icon="ti-search" update="searchForm,transferResultTable"
+							action="#{transferToGrOrBeaSearchView.search}" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary" update="searchForm"
+							action="#{transferToGrOrBeaSearchView.reset}" />
+						<p:commandButton id="generateBtn" immediate="true"
+							value="#{msgs['generate.btn.label']}" update="generateForm:pg" process="@this"
+							action="#{transferToGrOrBeaSearchView.dialogOpen}" />
+					</div>
+				</h:form>
+
+				<h:form id="generateForm">
+					<p:dialog id="generateDialog"
+						header="#{msgs['transfer.to.gr.bea.generate.dialog.title']}"
+						widgetVar="generateDialog" modal="true" width="530" minHeight="85"
+						resizable="false" dynamic="true" style="position: fixed">
+						<p:ajax event="close" update="@form" resetValues="true"
+							listener="#{transferToGrOrBeaSearchView.dialogClose}">
+							<p:resetInput target="@form" />
+						</p:ajax>
+						<p:messages id="msgs" closable="true" />
+						<div class="ui-fluid">
+							<p:panelGrid id="pg" columns="1" layout="grid"
+								styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel for="dialogAccountType"
+									style="text-align:left; width:auto"
+									value="#{msgs['case.account.dialog.account.type.label']}" />
+								<p:selectOneMenu id="dialogAccountType" required="true"
+									value="#{transferToGrOrBeaSearchView.accountTypeId}">
+									<f:selectItem itemLabel="- Please select -"
+										noSelectionOption="true" />
+									<f:selectItems
+										value="#{transferToGrOrBeaSearchView.accountTypeVOs}"
+										var="caseAcType" itemLabel="#{caseAcType.caseAcTypeName}"
+										itemValue="#{caseAcType.caseAcTypeId}" />
+								</p:selectOneMenu>
+								<p:outputLabel for="dialogTransferType"
+									style="text-align:left; width:auto"
+									value="#{msgs['transfer.to.gr.bea.transfer.type.label']}" />
+								<p:selectOneMenu id="dialogTransferType" required="true"
+									value="#{transferToGrOrBeaSearchView.newTransferVO.transferType.txfAmountTypeId}">
+									<f:selectItem itemLabel="- Please select -"
+										noSelectionOption="true" />
+									<f:selectItems
+										value="#{transferToGrOrBeaSearchView.transferTypeVOs}"
+										var="type" itemLabel="#{type.txfAmountTypeName}"
+										itemValue="#{type.txfAmountTypeId}" />
+									<p:ajax event="itemSelect"
+										listener="#{transferToGrOrBeaSearchView.selectTransferType}" />
+								</p:selectOneMenu>
+								<p:outputLabel for="dialogCutOffDate"
+									style="text-align:left; width:auto"
+									value="#{msgs['transfer.to.gr.bea.cut.off.date.label']}" />
+								<p:calendar id="dialogCutOffDate" required="true"
+									pattern="#{appResourceUtils.dateFormat}"
+									value="#{transferToGrOrBeaSearchView.newTransferVO.cutOffDate}"
+									showOn="button" />
+							</p:panelGrid>
+						</div>
+						<div class="ax-btn-set" align="left">
+							<p:commandButton id="saveBtn" value="#{msgs['save.btn']}"
+								update="pg,msgs"
+								action="#{transferToGrOrBeaSearchView.generateTransfer}"
+								validateClient="true"/>
+							<p:commandButton value="#{msgs['cancel.btn']}"
+								styleClass="ui-priority-secondary"
+								onclick="PF('generateDialog').hide()" />
+						</div>
+					</p:dialog>
+				</h:form>
+			</p:panel>
+		</div>
+		<ui:include src="./result.xhtml" />
+	</ui:define>
+</ui:composition>

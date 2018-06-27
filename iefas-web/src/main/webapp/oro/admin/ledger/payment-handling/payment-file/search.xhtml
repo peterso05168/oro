@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="./payment-file.xhtml">
+
+    <ui:define name="main-content">
+        <div>
+            <p:panel id="toggleable" header="#{msgs['payment.handling.payment.file.search.title']}"
+                     toggleable="true" toggleSpeed="200" widgetVar="panel">
+                <h:form id="searchForm">
+                    <div>
+                        <p:focus context="toggleable"/>
+                        <p:messages id="msgs" closable="true"/>
+                        <input type="checkbox" id="basicAdvance" name="basicAdvance"
+                               class="basicAdvance hidden-checkbox" checked="checked"/>
+                        <div class="search-basic">
+                            <p:panelGrid columns="1" layout="grid"
+                                         columnClasses="ui-grid-col-12"
+                                         styleClass="ui-panelgrid-blank ui-fluid">
+                                <p:inputText/>
+                                <p:column>
+                                    <label for="basicAdvance" class="basicAdvanceLabel advance"><i
+                                            class="ti-search"/> Advanced Search</label>
+                                    <div class="note">Case Number, Case Name, Case Types</div>
+                                </p:column>
+                            </p:panelGrid>
+                        </div>
+                        <div class="search-advance">
+                            <p:panelGrid columns="4"
+                                         columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                                         layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                                <p:outputLabel for="paymentType"
+                                               value="#{msgs['payment.handling.payment.file.payment.type.label']}"/>
+                                <p:selectOneMenu id="paymentType"
+                                                 value="#{paymentFileSearchView.criteria.paymentFileTypeId}">
+                                    <f:selectItem itemLabel="- All -" noSelectionOption="true"/>
+                                    <f:selectItems value="#{paymentFileSearchView.paymentFileTypeVOS}"
+                                                   var="payementFileType"
+                                                   itemLabel="#{payementFileType.paymentFileTypeName}"
+                                                   itemValue="#{payementFileType.paymentFileTypeId}"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel for="paymentFileId"
+                                               value="#{msgs['payment.handling.payment.file.payment.file.id.label']}"/>
+                                <p:inputText id="paymentFileId"
+                                             value="#{paymentFileSearchView.criteria.paymentFileId}"/>
+                                <p:outputLabel for="currency"
+                                               value="#{msgs['payment.handling.payment.file.currency.label']}"/>
+                                <p:selectOneMenu id="currency"
+                                                 value="#{paymentFileSearchView.criteria.currencyId}">
+                                    <f:selectItem itemLabel="- All -" noSelectionOption="true"/>
+                                    <f:selectItems value="#{paymentFileSearchView.currencyBasicInfoVOS}"
+                                                   var="currency" itemLabel="#{currency.curcyName}"
+                                                   itemValue="#{currency.curcyId}"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel for="processDate"
+                                               value="#{msgs['payment.handling.payment.file.process.date.label']}"/>
+                                <p:calendar id="processDate" pattern="#{appResourceUtils.dateFormat}"
+                                            value="#{paymentFileSearchView.criteria.processDate}" showOn="button"/>
+                                <p:outputLabel for="status"
+                                               value="#{msgs['payment.handling.payment.file.status.label']}"/>
+                                <p:selectOneMenu id="status"
+                                                 value="#{paymentFileSearchView.criteria.status}">
+                                    <f:selectItem itemLabel="- All -" noSelectionOption="true"/>
+                                    <f:selectItems value="#{paymentFileSearchView.statusVOS}"
+                                                   var="status" itemLabel="#{status.statusName}"
+                                                   itemValue="#{status.statusVal}"/>
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+                        </div>
+                    </div>
+                    <div class="ax-btn-set">
+                        <p:commandButton id="searchBtn" value="#{msgs['search.btn']}"
+                                         icon="ti-search" update="searchForm,paymentFileResultTable"
+                                         action="#{paymentFileSearchView.search}"/>
+                        <p:commandButton value="#{msgs['reset.btn']}"
+                                         styleClass="ui-priority-secondary" update="@form,paymentFileResultTable"
+                                         action="#{paymentFileSearchView.reset}"/>
+                    </div>
+                </h:form>
+            </p:panel>
+        </div>
+        <ui:include src="./result.xhtml"/>
+    </ui:define>
+</ui:composition>

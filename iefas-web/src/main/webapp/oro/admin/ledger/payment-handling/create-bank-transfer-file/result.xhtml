@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="resultForm">
+		<h:panelGroup
+			rendered="#{createBankTransferFileSearchView.lazyDataModel != null}">
+			<p:messages id="msgs" closable="true" />
+			<p:dataTable id="bankTransferFileResultTable" var="bankTransferFile"
+				value="#{createBankTransferFileSearchView.lazyDataModel}"
+				lazy="true" reflow="true" paginator="true"
+				paginatorPosition="bottom" rows="5"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" draggableColumns="true"
+				rowKey="#{bankTransferFile}"
+				selection="#{createBankTransferFileSearchView.selectedItems}"
+				rendered="#{createBankTransferFileSearchView.lazyDataModel != null}">
+				<f:facet name="header">#{msgs['result.title']}</f:facet>
+
+				<p:column selectionMode="multiple" class="ax-checkbox-w" />
+
+				<p:column
+					headerText="#{msgs['payment.handling.create.bank.transfer.file.item.number.column.head']}">
+					<h:outputText value="#{bankTransferFile.itemNumber}" />
+				</p:column>
+
+				<p:column
+					headerText="#{msgs['payment.handling.create.bank.transfer.file.transfer.date.column.head']}">
+					<h:outputText value="#{bankTransferFile.transferDate}" />
+				</p:column>
+
+				<p:column
+					headerText="#{msgs['payment.handling.create.bank.transfer.file.voucher.number.column.head']}">
+					<h:outputText value="#{bankTransferFile.voucherNumber}" />
+				</p:column>
+				<p:column
+					headerText="#{msgs['payment.handling.create.bank.transfer.file.from.account.column.head']}">
+					<h:outputText value="#{bankTransferFile.fromAccount}" />
+				</p:column>
+				<p:column
+					headerText="#{msgs['payment.handling.create.bank.transfer.file.to.account.column.head']}">
+					<h:outputText value="#{bankTransferFile.toAccount}" />
+				</p:column>
+				<p:column
+					headerText="#{msgs['payment.handling.create.bank.transfer.file.currency.column.head']}">
+					<h:outputText value="#{bankTransferFile.currency}" />
+				</p:column>
+				<p:column
+					headerText="#{msgs['payment.handling.create.bank.transfer.file.amount.column.head']}">
+					<h:outputText value="#{bankTransferFile.amount}" />
+				</p:column>
+			</p:dataTable>
+			<div class="ax-btn-set">
+				<p:commandButton id="createBtn" value="#{msgs['create.btn']}"
+					action="#{createBankTransferFileSearchView.create}" process="@this"
+					update="@form" />
+			</div>
+		</h:panelGroup>
+	</h:form>
+</ui:composition>
+
+
+
+

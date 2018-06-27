@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/oro/admin/tp-header-login.xhtml">
+	<ui:define name="main-content">
+		<div class="error-page">
+			<div class="error-title">Errors</div>
+			<div class="error-content">
+				<div id="errors-text" class="error-text">
+					A unexpected error occured! Message: #{pfExceptionHandler.message}
+					<h:outputText value="#{pfExceptionHandler.formattedStackTrace}"
+						escape="false" />
+				</div>
+				<div class="ax-btn-set">
+					<p:commandButton value="Back" styleClass="ui-priority-secondary"
+						icon="ti-arrow-left" onclick="window.history.back()" />
+					<p:commandButton value="Copy to Clipboard"
+						onclick="_copyToClipboard('errors-text')" />
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

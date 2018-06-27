@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+	<h:form id="formC">
+		<p:dataTable var="item" value="#{placingDepositsSearchView.dataModel}"
+			rowKey="#{item.calculationOfFundsAvailableId}" lazy="true"
+			reflow="true" paginator="true" paginatorPosition="bottom" rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true"
+			rendered="#{1>0}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+
+			<p:column headerText="#{msgs['daily.investment.result.investment.date.column']}">
+				<p:commandLink href="javascript:void(0)" action="edit" ajax="false">
+					<h:outputText value="#{item.investmentDate}">
+						<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+					</h:outputText>
+					<f:param name="calculationOfFundsAvailableId"
+						value="#{item.calculationOfFundsAvailableId}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column headerText="#{msgs['daily.investment.result.currency.column']}">
+				<h:outputText value="HKD" />
+			</p:column>
+
+			<p:column headerText="#{msgs['daily.investment.result.source.of.funds.column']}">
+				<h:outputText value="#{item.approvedBy}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['daily.investment.result.number.of.case.column']}">
+				<h:outputText value="#{item.approvedBy}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['status.column.header']}"
+				styleClass="ax-status-w-b">
+				<h:outputText value="#{msgs['available.status.saved.label']}"
+					rendered="#{empty item.submittedBy and empty item.approvedBy}"
+					class="status-label green" />
+				<h:outputText value="#{msgs['available.status.submitted.label']}"
+					rendered="#{!empty item.submittedBy and empty item.approvedBy}"
+					class="status-label green" />
+				<h:outputText value="#{msgs['available.status.approved.label']}"
+					rendered="#{!empty item.submittedBy and !empty item.approvedBy}"
+					class="status-label green" />
+			</p:column>
+
+			<p:column headerText="#{msgs['action.column.header']}"
+				styleClass="ax-action-w dont-print">
+				<p:menuButton value="#{msgs['action.menuButton.label']}">
+					<p:menuitem value="#{msgs['edit.menuitem.label']}" action="edit"
+						ajax="false">
+						<f:param name="calculationOfFundsAvailableId"
+							value="#{item.calculationOfFundsAvailableId}" />
+					</p:menuitem>
+					<p:menuitem value="#{msgs['delete.menuitem.label']}"
+						action="#{placingDepositsSearchView.changeStatus}" update="formC">
+						<f:setPropertyActionListener
+							value="#{item.calculationOfFundsAvailableId}"
+							target="#{placingDepositsSearchView.calculationOfFundsAvailableId}" />
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+</ui:composition>

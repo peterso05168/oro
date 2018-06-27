@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+	<p:dataTable id="historyTable" var="history" reflow="true"
+		paginator="false"
+		value="#{feeComputationEditView.dividendCalculationVO.approveHistories}">
+		<p:column
+			headerText="#{msgs['orsFeesComputation.history.workflow.type.column.header']}">
+			<h:outputText value="Approval" />
+		</p:column>
+		<p:column
+			headerText="#{msgs['orsFeesComputation.history.action.column.header']}">
+			<h:outputText value="#{history.action}" />
+		</p:column>
+		<p:column
+			headerText="#{msgs['orsFeesComputation.history.action.by.column.header']}">
+			<h:outputText value="#{history.actionByPerson}" />
+		</p:column>
+		<p:column
+			headerText="#{msgs['orsFeesComputation.history.datetime.column.header']}">
+			<h:outputText value="#{history.actionDate}">
+				<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+			</h:outputText>
+		</p:column>
+		<p:column
+			headerText="#{msgs['orsFeesComputation.history.remark.reason.column.header']}">
+			<h:outputText value="#{history.remark}" />
+		</p:column>
+	</p:dataTable>
+</ui:composition>

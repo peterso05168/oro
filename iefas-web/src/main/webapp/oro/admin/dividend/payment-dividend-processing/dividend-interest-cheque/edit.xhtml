@@ -1,0 +1,185 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	xmlns:i="http://iefas.oro.hk/ui"
+	template="./dividend-interest-cheque.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+	        #{msgs['dividend.interest.cheque.title']}
+		</h:link>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<!-- basic information start -->
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:focus context="toggleable" />
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.case.number.label']}" />
+							<com:caseNumber
+								caseTypeCodeValue="#{dividendChequeEditView.caseInfo.caseType.caseTypeCode}"
+								caseNoValue="#{dividendChequeEditView.caseInfo.caseNo}"
+								caseYearValue="#{dividendChequeEditView.caseInfo.caseYear}"
+								disabled="true" />
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.case.name.label']}" />
+							<p:inputText value="#{dividendChequeEditView.caseInfo.caseName}"
+								disabled="true" />
+
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.payment.date.label']}" />
+							<p:inputText disabled="true"
+								value="#{dividendChequeEditView.dividendScheduleItem.paymentEffectiveDate}" />
+							<p:outputLabel value="#{msgs['status.label']}" />
+							<p:inputText disabled="true"
+								value="#{dividendChequeEditView.status}" />
+
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.creditor.name.label']}" />
+							<p:inputText disabled="true"
+								value="#{dividendChequeEditView.dividendScheduleItem.creditor.creditorNameEng}" />
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.creditor.type.label']}" />
+							<p:inputText disabled="true"
+								value="#{dividendChequeEditView.dividendScheduleItem.adjResult.creditorType.creditorTypeName}" />
+
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.proof.number.label']}" />
+							<p:inputText disabled="true"
+								value="#{dividendChequeEditView.dividendScheduleItem.creditor.proofNo}" />
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.payee.name.label']}" />
+							<p:inputText disabled="true"
+								value="#{dividendChequeEditView.dividendScheduleItem.creditor.payeeName}" />
+
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.preferential.label']}" />
+							<p:inputText disabled="true"
+								value="#{dividendChequeEditView.dividendScheduleItem.adjResult.preAdmitted}" />
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.ordinary.label']}" />
+							<p:inputText disabled="true"
+								value="#{dividendChequeEditView.dividendScheduleItem.adjResult.ordAdmitted}" />
+
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.defferred.preferential.label']}" />
+							<p:inputText disabled="true"
+								value="#{dividendChequeEditView.dividendScheduleItem.adjResult.defPreAdmitted}" />
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.defferred.ordinary.label']}" />
+							<p:inputText disabled="true"
+								value="#{dividendChequeEditView.dividendScheduleItem.adjResult.defOrdAdmitted}" />
+
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.withheld.cheque.label']}" />
+							<p:inputText disabled="true" value="??" />
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.withheld.amout.label']}" />
+							<p:inputText disabled="true"
+								value="#{dividendChequeEditView.dividendScheduleItem.withheldAmount}" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.withheld.reasons.label']}" />
+							<p:inputText disabled="true"
+								value="#{dividendChequeEditView.dividendScheduleItem.withheldReason.withheldReasonDescription}" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.cheque.number.label']}" />
+							<p:inputText disabled="true"
+								value="#{dividendChequeEditView.dividendChequeVO.cheque.chequeNo}" />
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.cheque.amount.label']}" />
+							<p:inputText disabled="true"
+								value="#{dividendChequeEditView.dividendChequeVO.cheque.chequeAmount}" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.reissues.reason.label']}" />
+							<p:inputTextarea disabled="true"
+								value="#{dividendChequeEditView.dividendChequeVO.reissuesReason}"
+								maxlength="300" />
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<!-- basic information end -->
+
+				<!-- button below -->
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton
+						value="#{msgs['dividend.interest.cheque.reissues.btn']}"
+						update="@form" onclick="PF('reissuesDialog').show();"
+						rendered="#{dividendChequeEditView.reissuesable}" />
+					<p:commandButton value="#{msgs['cancel.btn']}"
+						action="#{dividendChequeEditView.cancel}"
+						rendered="#{dividendChequeEditView.deletable}">
+						<p:confirm header="#{msgs['delete.dialog.header']}"
+							message="#{msgs['delete.dialog.msg']}" icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="#{msgs['delete.yes.btn']}" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="#{msgs['delete.no.btn']}" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</div>
+				<!-- button below -->
+			</h:form>
+
+			<!-- dialog to reissues -->
+			<h:form id="reissuesForm">
+				<p:dialog id="reissuesDialog"
+					header="#{msgs['dividend.interest.cheque.reissues.title']}"
+					widgetVar="reissuesDialog" modal="true" width="400" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid columns="2" id="pd"
+							columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel
+								value="#{msgs['dividend.interest.cheque.reason.label']}" />
+							<p:inputTextarea required="true"
+								value="#{dividendChequeEditView.dividendChequeVO.reissuesReason}" />
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['save.btn']}"
+							action="#{dividendChequeEditView.reissues}"
+							update="pd,msgs,editForm" validateClient="true" />
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('reissuesDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to reissues -->
+		</div>
+	</ui:define>
+</ui:composition>

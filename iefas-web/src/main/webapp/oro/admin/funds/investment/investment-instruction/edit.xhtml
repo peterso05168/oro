@@ -1,0 +1,378 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui"
+	template="./investment-instruction.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+			#{msgs['instruction.detail.title']}
+		</h:link>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+
+				<!-- basic information start -->
+				<p:panel id="toggleable"
+					header="#{msgs['bank.account.basic.info.title']}" toggleable="true"
+					toggleSpeed="200" widgetVar="panel">
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="DepositNumber"
+								value="#{msgs['instruction.deposit.number.label']}" />
+							<p:inputText id="DepositNumber"
+								value="#{investmentInstructionDetailView.detailVO.accountInvestmentItem.investmentNumber}"
+								maxlength="100" required="true" disabled="true" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="CaseNumber"
+								value="#{msgs['instruction.case.number.label']}" />
+							<p:panelGrid columns="4" id="CaseNumber"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:inputText
+									value="#{bankAccountDetailView.bankInfoVO.bankName}"
+									maxlength="100" required="true"
+									validator="#{bankAccountValidator.bankNameValidate}" />
+								<p:inputText
+									value="#{bankAccountDetailView.bankInfoVO.bankName}"
+									maxlength="100" required="true"
+									validator="#{bankAccountValidator.bankNameValidate}" />
+								<p:outputLabel value="/" />
+								<p:inputText
+									value="#{bankAccountDetailView.bankInfoVO.bankName}"
+									maxlength="100" required="true"
+									validator="#{bankAccountValidator.bankNameValidate}" />
+							</p:panelGrid>
+							<p:outputLabel for="CaseName"
+								value="#{msgs['instruction.case.name.label']}" />
+							<p:inputText id="CaseName"
+								value="#{bankAccountDetailView.bankInfoVO.bankName}"
+								maxlength="100" required="true" disabled="true"
+								validator="#{bankAccountValidator.bankNameValidate}" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="InvestmentType"
+								value="#{msgs['instruction.investment.type.label']}" />
+							<p:selectOneMenu id="InvestmentType"
+								value="#{investmentInstructionDetailView.invType}">
+								<f:selectItem itemLabel="-Select-" />
+								<f:selectItem itemLabel="Fixed" itemValue="F" />
+								<f:selectItem itemLabel="Pool" itemValue="P" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="InvestmentPeriodCode"
+								value="#{msgs['instruction.investment.period.code.label']}" />
+							<p:selectOneMenu id="InvestmentPeriodCode"
+								value="#{bankAccountDetailView.bankInfoVO.bankOfChinaGroup}">
+								<f:selectItem itemLabel="-Select-" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+
+						<p:panel id="fixed" visible="#{investmentInstructionDetailView.invType == 'F'}">
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel for="BankCode"
+									value="#{msgs['instruction.bank.code.label']}" />
+								<p:inputText id="BankCode"
+									value="#{investmentInstructionDetailView.detailVO.accountInvestmentItem.bankBasic.bankName}"
+									maxlength="20" required="true" disabled="true"
+									validator="#{bankAccountValidator.bankShortNameValidate}" />
+								<p:outputLabel for="BankName"
+									value="#{msgs['instruction.bank.name.label']}" />
+								<p:inputText id="BankName"
+									value="#{bankAccountDetailView.bankInfoVO.bankShortName}"
+									maxlength="20" required="true" disabled="true"
+									validator="#{bankAccountValidator.bankShortNameValidate}" />
+							</p:panelGrid>
+
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel for="effective"
+									value="#{msgs['instruction.effective.date.label']}" />
+								<p:calendar id="effective" placeholder="#{msgs['from.label']}"
+									showOn="button"
+									value="#{investmentInstructionDetailView.detailVO.accountInvestmentItem.investmentDate}"
+									pattern="#{appResourceUtils.dateFormat}"
+									validator="#{currencyRateValidator.setFromDateValue}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</p:calendar>
+								<p:outputLabel for="maturity"
+									value="#{msgs['instruction.maturity.date.label']}" />
+								<p:calendar id="maturity" placeholder="#{msgs['from.label']}"
+									showOn="button"
+									value="#{investmentInstructionDetailView.detailVO.accountInvestmentItem.maturityDate}"
+									pattern="#{appResourceUtils.dateFormat}"
+									validator="#{currencyRateValidator.setFromDateValue}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</p:calendar>
+							</p:panelGrid>
+
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel for="InterestRate"
+									value="#{msgs['instruction.interest.rate.label']}" />
+								<p:inputText id="InterestRate"
+									value="#{investmentInstructionDetailView.detailVO.accountInvestmentItem.interestRate}"
+									maxlength="100" required="true"
+									validator="#{bankAccountValidator.bankNameValidate}" />
+								<p:outputLabel for="AutoRollover"
+									value="#{msgs['instruction.auto.rollover.label']}" />
+								<p:selectOneRadio id="AutoRollover" required="true"
+									value="#{investmentInstructionDetailView.detailVO.accountInvestmentItem.rollOverOption}">
+									<f:selectItem itemLabel="Yes" itemValue="" />
+									<f:selectItem itemLabel="No" itemValue="" />
+								</p:selectOneRadio>
+							</p:panelGrid>
+						</p:panel>
+
+						<p:panel id="pool" visible="#{investmentInstructionDetailView.invType == 'p'}">
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel for="InvestmentBalance"
+									value="#{msgs['instruction.estate.pool.investment.balance.label']}" />
+								<p:inputText id="InvestmentBalance"
+									value="#{investmentInstructionDetailView.detailVO.estatePoolInvestmentBalance}"
+									maxlength="20" required="true" disabled="true"
+									validator="#{bankAccountValidator.bankShortNameValidate}" />
+								<p:outputLabel for="PostingDate"
+									value="#{msgs['instruction.posting.date.label']}" />
+								<p:calendar id="PostingDate" placeholder="#{msgs['from.label']}"
+									showOn="button"
+									value="#{currencyRateEditView.currencyRateVO.effectiveFrom}"
+									pattern="#{appResourceUtils.dateFormat}"
+									validator="#{currencyRateValidator.setFromDateValue}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</p:calendar>
+							</p:panelGrid>
+
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel for="Balance"
+									value="#{msgs['instruction.balance.label']}" />
+								<p:inputText id="Balance"
+									value="#{investmentInstructionDetailView.detailVO.accountBalance}"
+									maxlength="100" required="true" disabled="true"
+									validator="#{bankAccountValidator.bankNameValidate}" />
+								<p:outputLabel for="Withdraw"
+									value="#{msgs['instruction.withdraw.label']}" />
+								<p:selectOneRadio id="Withdraw" required="true"
+									value="#{investmentInstructionDetailView.detailVO.accountInvestmentItem.joinPoolOption}">
+									<f:selectItem itemLabel="#{msgs['instruction.join.label']}" />
+									<f:selectItem itemLabel="#{msgs['instruction.withdraw.label']}" />
+								</p:selectOneRadio>
+							</p:panelGrid>
+						</p:panel>
+
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="InvestmentAmount"
+								value="#{msgs['instruction.investment.amount.label']}" />
+							<p:inputText id="InvestmentAmount"
+								value="#{investmentInstructionDetailView.detailVO.accountInvestmentItem.accountInvestmentAmount}"
+								maxlength="100" required="true"
+								validator="#{bankAccountValidator.bankNameValidate}" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="Remark"
+								value="#{msgs['instruction.remark.label']}" />
+							<p:inputTextarea id="Remark" cols="8"
+								value="#{investmentInstructionDetailView.detailVO.accountInvestmentItem.remark}"
+								maxlength="200" required="true"
+								validator="#{bankAccountValidator.bankNameValidate}" />
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<!-- basic information end -->
+
+				<!-- Estimated Result start -->
+				<p:panel id="result"
+					header="#{msgs['instruction.estimated.result.label']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="Interest"
+								value="#{msgs['instruction.interest.label']}" />
+							<p:inputText id="Interest"
+								value="#{bankAccountDetailView.bankInfoVO.bankName}"
+								maxlength="100" required="true" disabled="true"
+								validator="#{bankAccountValidator.bankNameValidate}" />
+							<p:outputLabel for="EstimatedTotalAmount"
+								value="#{msgs['instruction.estimated.total.amount.label']}" />
+							<p:inputText id="EstimatedTotalAmount"
+								value="#{bankAccountDetailView.bankInfoVO.bankName}"
+								maxlength="100" required="true" disabled="true"
+								validator="#{bankAccountValidator.bankNameValidate}" />
+						</p:panelGrid>
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="LiquidCash"
+								value="#{msgs['instruction.liquid.cash.label']}" />
+							<p:inputText id="LiquidCash"
+								value="#{bankAccountDetailView.bankInfoVO.bankName}"
+								maxlength="100" required="true" disabled="true"
+								validator="#{bankAccountValidator.bankNameValidate}" />
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<!-- Estimated Result end -->
+
+				<!-- button below -->
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						action="#{bankAccountDetailView.save}" />
+					<p:commandButton value="#{msgs['instruction.renew.btn']}"
+						update="@form" action="#{bankAccountDetailView.save}" />
+					<p:commandButton value="#{msgs['instruction.rollover.btn']}"
+						update="@form" action="#{bankAccountDetailView.save}" />
+					<p:commandButton value="#{msgs['instruction.uplift.btn']}"
+						update="@form" action="#{bankAccountDetailView.save}" />
+					<p:commandButton value="#{msgs['instruction.revert.btn']}"
+						update="@form" action="#{bankAccountDetailView.save}" />
+				</div>
+				<!-- button below -->
+			</h:form>
+
+			<!-- dialog to edit uplift -->
+			<h:form id="upliftForm">
+				<p:dialog id="upliftDialog"
+					header="#{msgs['instruction.uplift.dialog.title']}"
+					widgetVar="upliftDialog" modal="true" width="500" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:ajax event="close" update="@form" resetValues="true"
+						listener="#{bankAccountDetailView.calculationHandleClose}">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="1"
+							columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="MaturityDate"
+								value="#{msgs['instruction.maturity.date.label']}" />
+							<p:calendar id="MaturityDate" showOn="button"
+								value="#{currencyRateEditView.currencyRateVO.effectiveFrom}"
+								pattern="#{appResourceUtils.dateFormat}"
+								validator="#{currencyRateValidator.setFromDateValue}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</p:calendar>
+							<p:outputLabel for="toEstate"
+								value="#{msgs['instruction.uplift.to.estate.label']}" />
+							<p:inputNumber id="toEstate" required="true" maxlength="15"
+								value="#{bankAccountDetailView.leapYearParameterVO.numDaysInLeapYear}">
+								<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+							</p:inputNumber>
+							<p:outputLabel for="toGr"
+								value="#{msgs['instruction.uplift.to.gr.label']}" />
+							<p:inputNumber id="toGr" required="true" maxlength="15"
+								value="#{bankAccountDetailView.leapYearParameterVO.numDaysInNonLeapYear}">
+								<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+							</p:inputNumber>
+							<p:outputLabel for="Total"
+								value="#{msgs['instruction.uplift.total.label']}" />
+							<p:inputNumber id="Total" required="true" maxlength="15"
+								value="#{bankAccountDetailView.leapYearParameterVO.numDaysInNonLeapYear}">
+								<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+							</p:inputNumber>
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['save.btn']}"
+							action="#{bankAccountDetailView.addCalculation}"
+							update="pg,msgs,editForm:tabView" validateClient="true">
+						</p:commandButton>
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('calculationDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to edit calculation -->
+
+			<!-- dialog to edit bank transfer -->
+			<h:form id="bankForm">
+				<p:dialog id="bankDialog"
+					header="#{msgs['bank.transfer.dialog.title']}"
+					widgetVar="bankDialog" modal="true" width="500" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:ajax event="close" update="@form" resetValues="true"
+						listener="#{bankAccountDetailView.bankTransferHandleClose}">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="2"
+							columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="Bank" value="#{msgs['bank.name.label']}" />
+							<p:selectOneMenu id="Bank"
+								value="#{bankAccountDetailView.transferBankId}">
+								<f:selectItem itemLabel="- Select -" />
+								<f:selectItems value="#{bankAccountDetailView.bankBasics}" />
+								<p:ajax event="change"
+									listener="#{bankAccountDetailView.changeBank}"
+									update="ShortName,Code" />
+							</p:selectOneMenu>
+							<p:outputLabel for="ShortName"
+								value="#{msgs['bank.short.name.label']}" />
+							<p:inputText id="ShortName" required="true" disabled="true"
+								value="#{bankAccountDetailView.freeBankTransferVO.bankInfo.bankShortName}" />
+							<p:outputLabel for="Code" value="#{msgs['bank.code.label']}" />
+							<p:inputText id="Code" required="true" disabled="true"
+								value="#{bankAccountDetailView.freeBankTransferVO.bankInfo.bankCode}" />
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['save.btn']}"
+							action="#{bankAccountDetailView.addBankTransfer}"
+							update="pg,msgs,editForm:tabView" validateClient="true">
+						</p:commandButton>
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('bankDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to edit bank transfer -->
+		</div>
+	</ui:define>
+
+</ui:composition>
+
+
+
+

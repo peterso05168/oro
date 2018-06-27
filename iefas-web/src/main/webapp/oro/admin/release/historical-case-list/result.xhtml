@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="breadcrumb-3">
+		<li><a title="">Search Result</a><i class="ti-angle-right"></i></li>
+	</ui:define>
+
+	<h:form id="historicalcaselistResultTableForm">
+		<p:dataTable var="histcaselist" id="historicalcaselistResultTable"
+			value="#{historicalCaseListMaintenanceView.historicalCaseListResultDataModel}"
+			rowKey="#{histcaselist.histCaseListId}" lazy="true" reflow="true" paginator="true" sortBy="#{histcaselist.histCaseListDate}"
+			paginatorPosition="bottom" rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15"
+			rendered="#{historicalCaseListMaintenanceView.historicalCaseListResultDataModel != null}">
+			<f:facet name="header">Search Result</f:facet>
+			<p:column headerText="List Date" sortBy="#{histcaselist.histCaseListDate}" styleClass="ui-grid-col-2">
+				<p:link outcome="edit">
+					<h:outputText value="#{histcaselist.histCaseListDate}" > 
+					     <f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+					</h:outputText>
+					<f:param name="historicalCaseListId" value="#{histcaselist.histCaseListId}" />
+				</p:link>
+			</p:column>h
+			<p:column headerText="#{msgs['status.column.header']}"
+                      styleClass="ax-status-w-b">
+                <h:outputText value="#{msgs['inactive.status.label']}"
+                              rendered="false" class="status-label red"/>
+                <h:outputText value="#{msgs['active.status.label']}"
+                              rendered="true" class="status-label green"/>
+            </p:column>
+			<p:column headerText="#{msgs['action.menuButton.label']}" styleClass="ax-action-w dont-print">
+				<p:menuButton value="#{msgs['action.column.header']}" rendered="true">
+					<p:menuitem value="Generate Report"
+						outcome="edit">
+						<f:param name="historicalCaseListId" value="#{histcaselist.histCaseListId}" />
+					</p:menuitem>
+						<p:menuitem value="View"
+						outcome="edit">
+						<f:param name="historicalCaseListId" value="#{histcaselist.histCaseListId}" />
+						<!-- <f:setPropertyActionListener target="#{holidayMaintenanceView.holidayId}" value="#{histcaselist.histCaseListId}"></f:setPropertyActionListener> -->
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+		<p:confirmDialog widgetVar="cd" header="Confirmation" >
+			<f:facet name="message">
+				<h:outputText value="Confirm to delete the selected record?" />
+			</f:facet>
+			<p:commandButton value="#{msgs['action.menuButton.label']}"
+				action="#{holidayMaintenanceView.deleteHoliday}"
+				update="@form,:searchForm" oncomplete="PF('cd').hide()" >
+			</p:commandButton>
+			<p:commandButton value="No" onclick="PF('cd').hide();"
+				type="button" />
+		</p:confirmDialog>
+	</h:form>
+</ui:composition>
+
+
+
+

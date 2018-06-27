@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RACC0001" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="4d5f2403-f6ff-4012-b683-f1975b7d3462">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORODCDataAdapter.xml"/>
+	<style name="Style1" isDefault="true" fontName="Courier" fontSize="9" isBold="true"/>
+	<parameter name="ORACLE_REF_CURSOR" class="java.sql.ResultSet" isForPrompting="false"/>
+	<parameter name="CASE_NO_START" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["BB0322812"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CASE_NO_END" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["BB0322812"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RPT_ENV" class="java.lang.String">
+		<defaultValueExpression><![CDATA["DEV"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="REQUEST_REPORT_ID" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[5L]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CRI_NAME" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["CASE_NO"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RPT_CONT_PATH" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CRI_VALUE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["BB0024292"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="plsql">
+		<![CDATA[{call RACC0001.RACC0001_MAIN_PROC($P{ORACLE_REF_CURSOR},$P{REQUEST_REPORT_ID},$P{CRI_NAME},$P{CRI_VALUE})}]]>
+	</queryString>
+	<field name="account_no" class="java.lang.String"/>
+	<field name="case_name" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="Remark1" class="java.lang.String"/>
+	<field name="Remark2" class="java.lang.String"/>
+	<field name="Remark3" class="java.lang.String"/>
+	<field name="account_no_display" class="java.lang.String"/>
+	<group name="Group1" isStartNewPage="true" isReprintHeaderOnEachPage="true" keepTogether="true">
+		<groupExpression><![CDATA[$F{account_no}]]></groupExpression>
+		<groupHeader>
+			<band height="70">
+				<textField>
+					<reportElement x="0" y="5" width="70" height="12" uuid="4ab09521-00e9-405e-83b9-d1390db5c633">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Case No. : "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="70" y="5" width="80" height="12" uuid="ef1cd9bf-8512-469c-ab14-c4b4218384ef">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{account_no_display}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="17" width="70" height="10" uuid="e5a39445-c204-4c62-832e-3aa82a34bd12">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Remarks  : "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="70" y="17" width="660" height="10" uuid="854051b0-81aa-47a3-816d-45c25d7c3d85">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{Remark1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="70" y="27" width="660" height="10" uuid="da0f7027-2a27-43f7-ad13-900184dcc842">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{Remark2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="70" y="37" width="660" height="10" uuid="088e3fca-7ce5-4df6-ad1b-ec6490eaa61d">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{Remark3}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="27" width="70" height="10" uuid="ac9f54ce-72d2-4ca0-8d40-6698d8ccd99f">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["         : "]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="37" width="70" height="10" uuid="f7f4e8d0-a608-4879-a673-ed00ba29358a">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["         : "]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="120" y="52" width="49" height="13" uuid="fe5cc226-ffbb-4880-a362-d3b09eb5baeb">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
+					<box>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Receipts"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="540" y="52" width="49" height="13" uuid="fffa8e2e-eba6-40ca-9575-1e4dbc103925">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
+					<box>
+						<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Payments"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="650" y="7" width="50" height="10" uuid="e17cd491-d1c6-4631-8e60-d4ebd01d13dd">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["Status : "]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="700" y="7" width="100" height="10" uuid="c8b1669a-e42a-41df-b58b-3adc1c24724d">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="150" y="5" width="500" height="12" uuid="aa6726f0-6946-44ff-8651-ee896c82beee">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="MingLiU_HKSCS"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{case_name}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="65">
+				<subreport>
+					<reportElement x="-20" y="0" width="842" height="65" uuid="0f6d19fe-894c-41fb-a5a0-b8dc8c33e6de"/>
+					<subreportParameter name="RPT_CONT_PATH">
+						<subreportParameterExpression><![CDATA[$P{RPT_CONT_PATH}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="account_no">
+						<subreportParameterExpression><![CDATA[$F{account_no}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[($P{RPT_CONT_PATH}==null?"":$P{RPT_CONT_PATH} + "RACC0001/")+"RACC0001_ColumnFooter.jrxml"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="60" splitType="Stretch">
+			<subreport>
+				<reportElement x="-20" y="0" width="842" height="25" uuid="5fe5a65a-0763-4bab-ace3-0994377b250d"/>
+				<subreportParameter name="pageNumber">
+					<subreportParameterExpression><![CDATA[$V{PAGE_NUMBER}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="RPT_CONT_PATH">
+					<subreportParameterExpression><![CDATA[$P{RPT_CONT_PATH}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REQUEST_REPORT_ID">
+					<subreportParameterExpression><![CDATA[$P{REQUEST_REPORT_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[($P{RPT_CONT_PATH}==null?"":$P{RPT_CONT_PATH})+"Common/Header/A4L_Header.jrxml"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="240" y="30" width="280" height="10" uuid="f10b6812-bf67-41ab-a16a-c49c7fba9bcb"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA["CASE NUMBERS RANGE    : "+ $P{CRI_VALUE} +" - " + $P{CRI_VALUE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="400" y="40" width="70" height="10" uuid="02725376-2644-46df-81b5-716cf7c2f3a4">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="240" y="40" width="155" height="10" uuid="4076577c-5e42-47c6-97b5-d2b081d1d47d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["CASH POSITION REPORT AS OF "]]></textFieldExpression>
+			</textField>
+			<line direction="BottomUp">
+				<reportElement x="0" y="59" width="802" height="1" uuid="78e48bd6-6d27-4ae8-8d6f-64f035f072cd">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="401" height="10" uuid="4781be9d-d006-41ae-80c1-2ccdb723a2e6"/>
+				<subreportParameter name="account_no">
+					<subreportParameterExpression><![CDATA[$F{account_no}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="RPT_CONT_PATH">
+					<subreportParameterExpression><![CDATA[$P{RPT_CONT_PATH}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[($P{RPT_CONT_PATH}==null?"":$P{RPT_CONT_PATH} + "RACC0001/")+"RACC0001_CONTENT1.jrxml"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="401" y="0" width="401" height="10" uuid="b0da2ce5-67e7-481a-bae9-9ca0098bc6e7"/>
+				<subreportParameter name="account_no">
+					<subreportParameterExpression><![CDATA[$F{account_no}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="RPT_CONT_PATH">
+					<subreportParameterExpression><![CDATA[$P{RPT_CONT_PATH}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[($P{RPT_CONT_PATH}==null?"":$P{RPT_CONT_PATH} + "RACC0001/")+"RACC0001_CONTENT2.jrxml"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="15" splitType="Stretch">
+			<subreport>
+				<reportElement x="-20" y="0" width="842" height="15" uuid="0884a05a-83ca-40f5-bfd2-c029dd3c2c7c"/>
+				<subreportParameter name="RPT_ENV">
+					<subreportParameterExpression><![CDATA[$P{RPT_ENV}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="RPT_CONT_PATH">
+					<subreportParameterExpression><![CDATA[$P{RPT_CONT_PATH}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[($P{RPT_CONT_PATH}==null?"":$P{RPT_CONT_PATH})+"Common/Footer/A4L_PageFooter.jrxml"]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="315" y="20" width="140" height="10" uuid="60f938d0-40f1-4906-a2e3-04f6b6a3a0d1">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["--- END OF REPORT ---"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,534 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	template="./journal-voucher.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+            #{msgs['journal.voucher.title']}
+        </h:link>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<o:importConstants type="hk.oro.iefas.core.constant.GroupCodeEnum" />
+		<h:form id="infoForm">
+			<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+				toggleable="true" toggleSpeed="200" widgetVar="panel">
+				<p:messages id="msgs" closable="true" />
+				<div>
+					<p:panelGrid>
+						<p:row>
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel for="journalType"
+									value="#{msgs['journal.voucher.joucher.type.label']}" />
+								<p:selectOneMenu id="journalType"
+									value="#{journalVoucherEditView.journalVoucherBasicInformation.journalType}"
+									converter="omnifaces.SelectItemsConverter" required="true"
+									requiredMessage="#{appResourceUtils.getRequiredMessage('JournalType')}"
+									disabled="#{journalVoucherEditView.isSubmitted ||journalVoucherEditView.isApproved}">
+									<f:selectItem itemLabel="- Select -" noSelectionOption="true" />
+									<f:selectItems value="#{journalVoucherEditView.journalTypes}"
+										var="journalType" itemLabel="#{journalType.journalTypeName}"
+										itemValue="#{journalType}" />
+								</p:selectOneMenu>
+							</p:panelGrid>
+						</p:row>
+						<p:row>
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel for="groupCode"
+									value="#{msgs['journal.voucher.group.code.label']}" />
+								<p:selectOneMenu id="groupCode"
+									value="#{journalVoucherEditView.journalVoucherBasicInformation.groupCode}"
+									disabled="#{journalVoucherEditView.isSubmitted ||journalVoucherEditView.isApproved}">
+									<f:selectItem itemLabel="- Select -" noSelectionOption="true" />
+									<f:selectItems value="#{GroupCodeEnum.entrySet().toArray()}"
+										var="gc" itemLabel="#{gc.value.desc}" itemValue="#{gc.value}" />
+								</p:selectOneMenu>
+
+								<p:outputLabel
+									value=" #{msgs['journal.voucher.submission.date.label']}" />
+								<p:inputText
+									value="#{journalVoucherEditView.journalVoucherBasicInformation.submissionDate}"
+									disabled="true">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</p:inputText>
+							</p:panelGrid>
+						</p:row>
+						<p:row>
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel
+									value="#{msgs['journal.voucher.voucher.number.label']}" />
+								<p:inputText
+									value="#{journalVoucherEditView.journalVoucherBasicInformation.voucherNo}"
+									disabled="true" />
+
+								<p:outputLabel for="voucherDate"
+									value="#{msgs['journal.voucher.voucher.date.label']}" />
+								<p:calendar id="voucherDate" showOn="button"
+									value="#{journalVoucherEditView.journalVoucherBasicInformation.voucherDate}"
+									pattern="#{appResourceUtils.dateFormat}" 
+									disabled="#{journalVoucherEditView.isApproved}" />
+							</p:panelGrid>
+						</p:row>
+						<p:row>
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel value="#{msgs['journal.voucher.approver.label']}" />
+								<p:selectOneMenu
+									value="#{journalVoucherEditView.journalVoucherBasicInformation.firstApproverId}"
+									disabled="#{journalVoucherEditView.isSubmitted ||journalVoucherEditView.isApproved}">
+									<f:selectItem itemLabel="- Select -" noSelectionOption="true" />
+									<f:selectItems value="#{journalVoucherEditView.approvers}"
+										var="approver" itemLabel="#{approver.postName}"
+										itemValue="#{approver.postId}" />
+								</p:selectOneMenu>
+
+								<p:outputLabel value="#{msgs['status.label']}" />
+								<com:voucherStatusLabel
+									status="#{journalVoucherEditView.journalVoucherBasicInformation.status}" />
+							</p:panelGrid>
+						</p:row>
+						<p:row>
+							<p:panelGrid columns="2"
+								columnClasses="ui-grid-col-2,ui-grid-col-10,ui-grid-col-2,ui-grid-col-10"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel value="#{msgs['journal.voucher.remark.label']}" />
+								<p:inputTextarea
+									value="#{journalVoucherEditView.journalVoucherBasicInformation.remark}"
+									disabled="#{journalVoucherEditView.isApproved}" />
+							</p:panelGrid>
+						</p:row>
+						<p:row>
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel value="#{msgs['journal.voucher.with.hardcopy']}" />
+								<p:selectBooleanCheckbox style="padding-top: 5px"
+									value="#{journalVoucherEditView.journalVoucherBasicInformation.isHardCopy}"
+									disabled="#{journalVoucherEditView.isSubmitted || journalVoucherEditView.isApproved}" />
+							</p:panelGrid>
+						</p:row>
+					</p:panelGrid>
+				</div>
+			</p:panel>
+		</h:form>
+		<p:tabView id="tabView"
+			activeIndex="#{journalVoucherEditView.activeIndex}">
+			<p:tab id="accountTab" title="#{msgs['journal.voucher.tab.title1']}">
+				<h:form id="accountForm">
+					<div class="ui-fluid">
+						<p:panelGrid columns="4" layout="grid"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4">
+							<p:outputLabel for="currency"
+								value="#{msgs['journal.voucher.tab.account.currency.label']}" />
+							<p:selectOneMenu id="currency"
+								value="#{journalVoucherEditView.journalVoucherBasicInformation.currencyId}"
+								disabled="#{journalVoucherEditView.isSubmitted ||journalVoucherEditView.isApproved}">
+								<p:ajax event="change"
+									update="tabView:accountForm:addAccountBtn" process="@this" />
+								<f:selectItem itemLabel="- Select -" noSelectionOption="true" />
+								<f:selectItems
+									value="#{journalVoucherEditView.currencyBasicInfos}"
+									var="currency" itemLabel="#{currency.curcyName}"
+									itemValue="#{currency.curcyId}" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+					</div>
+					<p:dataTable id="accountTable" reflow="true" paginator="true"
+						paginatorPosition="bottom" rows="5"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15"
+						value="#{journalVoucherEditView.journalVoucherAccountItemList}"
+						var="item" sortBy="#{item.voucherItemNo}">
+						<p:columnGroup type="header">
+							<p:row>
+								<p:column
+									headerText="#{msgs['journal.voucher.tab.account.no.column.header']}" />
+								<p:column
+									headerText="#{msgs['journal.voucher.tab.account.number.column.header']}" />
+								<p:column
+									headerText="#{msgs['journal.voucher.tab.account.name.column.header']}" />
+								<p:column
+									headerText="#{msgs['journal.voucher.tab.account.analysis.code.column.header']}" />
+								<p:column
+									headerText="#{msgs['journal.voucher.tab.account.particulars.column.header']}" />
+								<p:column
+									headerText="#{msgs['journal.voucher.tab.account.dr.amount.column.header']}" />
+								<p:column
+									headerText="#{msgs['journal.voucher.tab.account.cr.amount.column.header']}" />
+								<p:column headerText="#{msgs['action.column.header']}" />
+							</p:row>
+						</p:columnGroup>
+
+						<p:column>
+							<h:outputText value="#{item.voucherItemNo}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{item.account.caseAcNumber}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{item.caseName}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{item.analysisCode}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{item.particulars}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{item.amountDr}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{item.amountCr}" />
+						</p:column>
+						<p:column styleClass="ax-action-w dont-print">
+							<p:menuButton value="#{msgs['action.menuButton.label']}"
+								rendered="#{!journalVoucherEditView.isSubmitted}">
+								<p:menuitem value="#{msgs['edit.menuitem.label']}"
+									action="#{journalVoucherEditView.prepareAccount}"
+									oncomplete="PF('accountDialog').show();"
+									update="accountCreateForm:pg" process="@this">
+									<f:setPropertyActionListener value="#{item}"
+										target="#{journalVoucherEditView.journalVoucherAccountItem}" />
+								</p:menuitem>
+								<p:menuitem value="#{msgs['delete.menuitem.label']}"
+									update="tabView:accountForm:accountTable"
+									action="#{journalVoucherEditView.deleteAccount}">
+									<f:setPropertyActionListener value="#{item}"
+										target="#{journalVoucherEditView.journalVoucherAccountItem}" />
+								</p:menuitem>
+							</p:menuButton>
+						</p:column>
+						<p:columnGroup type="footer">
+							<p:row>
+								<p:column colspan="5"
+									style="border:none;background-color:#ffffff;text-align:right"
+									footerText="#{msgs['journal.voucher.tab.account.total.footer']}" />
+								<p:column
+									style="border:none;background-color:#ffffff;text-align:left"
+									footerText="#{journalVoucherEditView.totalAmountDr}" />
+								<p:column
+									style="border:none;background-color:#ffffff;text-align:left"
+									footerText="#{journalVoucherEditView.totalAmountCr}" />
+								<p:column
+									style="border:none;background-color:#ffffff;text-align:left" />
+							</p:row>
+						</p:columnGroup>
+					</p:dataTable>
+					<div class="ax-btn-set aR">
+						<p:commandButton id="addAccountBtn" icon="ti-plus"
+							value="#{msgs['add.btn']}" onclick="PF('accountDialog').show()"
+							immediate="true" process="@none" update="accountCreateForm:pg"
+							disabled="#{journalVoucherEditView.journalVoucherBasicInformation.currencyId == null || journalVoucherEditView.isSubmitted ||journalVoucherEditView.isApproved}" />
+					</div>
+				</h:form>
+			</p:tab>
+			<p:tab title="#{msgs['journal.voucher.tab.title2']}">
+				<h:form id="importAccountForm" enctype="multipart/form-data">
+					<p:messages id="msgs" closable="true" />
+					<h:panelGroup rendered="#{!journalVoucherEditView.isUploaded}">
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-7,ui-grid-col-2,ui-grid-col-7"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel
+								value="#{msgs['payment.voucher.tab.import.account.upload.label']}" />
+							<p:fileUpload mode="simple" skinSimple="true"
+								disabled="#{journalVoucherEditView.isSubmitted}"
+								value="#{journalVoucherEditView.accountFile}"
+								allowTypes=" /(\.|\/)(csv|CSV)$/" accept=".csv" />
+						</p:panelGrid>
+						<div class="ax-btn-set">
+							<p:commandButton rendered="#{!journalVoucherEditView.isUploaded}"
+								update="tabView:importAccountForm"
+								process="@this,tabView:importAccountForm" ajax="false"
+								disabled="#{journalVoucherEditView.isSubmitted}"
+								value="#{msgs['payment.voucher.tab.import.account.upload.btn.label']}"
+								action="#{journalVoucherEditView.uploadAccountFile(journalVoucherEditView.getVoucherTypeCode())}" />
+							<div class="ax-button type-a">
+								<p:commandButton
+									rendered="#{!journalVoucherEditView.isUploaded}"
+									value="#{msgs['payment.voucher.tab.import.account.download.template.btn.label']}"
+									action="#{journalVoucherEditView.downloadTemplate(journalVoucherEditView.getVoucherTypeCode())}"
+									update="tabView:importAccountForm" partialSubmit="true"
+									disabled="#{journalVoucherEditView.isSubmitted}"
+									process="@this" ajax="false">
+									<p:fileDownload value="#{journalVoucherEditView.downloadFile}" />
+								</p:commandButton>
+							</div>
+						</div>
+					</h:panelGroup>
+					<h:panelGroup rendered="#{journalVoucherEditView.isUploaded}">
+						<p:dataTable id="importItemTable" reflow="true" var="item"
+							rendered="#{journalVoucherEditView.isUploaded}"
+							value="#{journalVoucherEditView.importJournalItemList}">
+							<p:column
+								headerText="#{msgs['journal.voucher.tab.import.account.account.number.column.header']}">
+								<h:outputLabel value="#{item.account.caseAcNumber}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['journal.voucher.tab.import.account.case.name.column.header']}">
+								<h:outputLabel value="#{item.account.caseInfo.caseName}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['journal.voucher.tab.import.account.analysis.code.column.header']}">
+								<h:outputLabel value="#{item.analysisCode}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['journal.voucher.tab.import.account.particulars.column.header']}">
+								<h:outputLabel value="#{item.particulars}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['journal.voucher.tab.import.account.amount.dr.column.header']}">
+								<h:outputLabel value="#{item.amountDr}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['journal.voucher.tab.import.account.amount.cr.column.header']}">
+								<h:outputLabel value="#{item.amountCr}" />
+							</p:column>
+						</p:dataTable>
+						<div class="ax-btn-set">
+							<p:commandButton value="#{msgs['confirm.btn']}"
+								rendered="#{journalVoucherEditView.isUploaded}" process="@this"
+								update="tabView"
+								disabled="#{journalVoucherEditView.isSubmitted}"
+								action="#{journalVoucherEditView.confirmImportAccount}" />
+							<p:commandButton value="#{msgs['cancel.btn']}"
+								styleClass="ui-priority-secondary"
+								rendered="#{journalVoucherEditView.isUploaded}"
+								update="tabView:importAccountForm"
+								disabled="#{journalVoucherEditView.isSubmitted}"
+								action="#{journalVoucherEditView.cancelImport}" />
+						</div>
+					</h:panelGroup>
+				</h:form>
+			</p:tab>
+			<p:tab title="#{msgs['journal.voucher.tab.title3']}">
+				<h:form id="supportDocForm" enctype="multipart/form-data">
+					<p:dataTable id="supDocTable" reflow="true" paginator="true"
+						paginatorPosition="bottom" rows="5" var="doc"
+						value="#{journalVoucherEditView.attachmentList}"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<p:column
+							headerText="#{msgs['journal.voucher.tab.sup.doc.file.name.column.header']}">
+							<p:commandLink
+								action="#{dialogBean.openUploadDocDialog(journalVoucherEditView.voucherId, doc.voucherAttachmentId)}">
+								<p:ajax event="dialogReturn"
+									listener="#{journalVoucherEditView.refreshDocForm}"
+									update="tabView:supportDocForm" />
+								<h:outputText value="#{doc.fileName}" />
+							</p:commandLink>
+						</p:column>
+						<p:column
+							headerText="#{msgs['journal.voucher.tab.sup.doc.remarks.column.header']}">
+							<h:outputLabel value="#{doc.remark}" />
+						</p:column>
+						<p:column headerText="#{msgs['status.column.header']}">
+							<h:outputText value="#{msgs['inactive.status.label']}"
+								rendered="#{doc.status eq 'INA'}" class="status-label red" />
+							<h:outputText value="#{msgs['active.status.label']}"
+								rendered="#{doc.status eq 'ACT'}" class="status-label green" />
+						</p:column>
+						<p:column headerText="#{msgs['action.column.header']}"
+							styleClass="ax-action-w dont-print">
+							<p:menuButton value="#{msgs['action.menuButton.label']}"
+								disabled="#{journalVoucherEditView.isSubmitted}">
+								<p:menuitem value="#{msgs['download.menuitem.label']}"
+									action="#{journalVoucherEditView.downloadDoc}" process="@this"
+									ajax="false">
+									<f:setPropertyActionListener value="#{doc}"
+										target="#{journalVoucherEditView.attachment}" />
+									<p:fileDownload value="#{journalVoucherEditView.downloadFile}" />
+								</p:menuitem>
+								<p:menuitem value="#{msgs['delete.menuitem.label']}"
+									update="tabView:supportDocForm" oncomplete="PF('cd').show()">
+									<f:setPropertyActionListener value="#{doc}"
+										target="#{journalVoucherEditView.attachment}" />
+								</p:menuitem>
+							</p:menuButton>
+						</p:column>
+					</p:dataTable>
+					<p:confirmDialog widgetVar="cd" header="Confirm" showEffect="fade">
+						<f:facet name="message">
+							<h:outputText value="Confirm to Delete the selected record ?" />
+						</f:facet>
+						<div align="center">
+							<p:commandButton value="Yes"
+								action="#{journalVoucherEditView.deleteDoc}"
+								update="tabView:supportDocForm" process="@this"
+								oncomplete="PF('cd').hide()" />
+							<p:commandButton value="No" onclick="PF('cd').hide();"
+								type="button" />
+						</div>
+					</p:confirmDialog>
+					<div class="ax-btn-set aR">
+						<p:commandButton icon="ti-plus" value="#{msgs['document.btn']}"
+							update="tabView:supportDocForm"
+							action="#{dialogBean.openUploadDocDialog(journalVoucherEditView.voucherId, null)}"
+							disabled="#{journalVoucherEditView.isSubmitted}" process="@this">
+							<p:ajax event="dialogReturn"
+								listener="#{journalVoucherEditView.refreshDocForm}"
+								update="tabView:supportDocForm" />
+						</p:commandButton>
+					</div>
+				</h:form>
+			</p:tab>
+			<p:tab title="#{msgs['journal.voucher.tab.title4']}">
+				<p:dataTable id="historyTable" paginator="true"
+					paginatorPosition="bottom" rows="5"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15"
+					value="#{journalVoucherEditView.approveHistories}"
+					var="approveHistory" reflow="true">
+					<p:column
+						headerText="#{msgs['journal.voucher.tab.history.wf.type.column.header']}">
+						<h:outputText value="Approval" />
+					</p:column>
+					<p:column
+						headerText="#{msgs['journal.voucher.tab.history.action.column.header']}">
+						<h:outputText value="#{approveHistory.action}" />
+					</p:column>
+					<p:column
+						headerText="#{msgs['journal.voucher.tab.history.action.by.column.header']}">
+						<h:outputText value="#{approveHistory.actionByPerson}" />
+					</p:column>
+					<p:column
+						headerText="#{msgs['journal.voucher.tab.history.date.time.column.header']}">
+						<h:outputText value="#{approveHistory.actionDate}">
+							<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column
+						headerText="#{msgs['journal.voucher.tab.history.remark.reason.column.header']}">
+						<h:outputText value="#{approveHistory.remark}" />
+					</p:column>
+				</p:dataTable>
+			</p:tab>
+		</p:tabView>
+
+		<h:form id="btnForm">
+			<div class="ax-btn-set">
+				<p:button value="#{msgs['back.btn']}"
+					styleClass="ui-priority-secondary" icon="ti-arrow-left"
+					outcome="search"></p:button>
+				<p:commandButton value="#{msgs['save.btn']}"
+					action="#{journalVoucherEditView.save}" partialSubmit="true"
+					process="@this,infoForm,tabView:accountForm"
+					update="infoForm,btnForm,tabView"
+					rendered="#{journalVoucherEditView.action.saveable}" />
+				<p:menuButton value="#{msgs['action.menuButton.label']}">
+					<p:menuitem value="#{msgs['submit.menuitem.label']}"
+						rendered="#{journalVoucherEditView.action.submitable}"
+						action="#{journalVoucherEditView.submit}" partialSubmit="true"
+						process="@this,infoForm,tabView:accountForm"
+						update="infoForm,btnForm,tabView" />
+					<p:menuitem value="#{msgs['approve.menuitem.label']}"
+						rendered="#{journalVoucherEditView.action.approvable}"
+						action="#{journalVoucherEditView.approve}" partialSubmit="true"
+						process="@this,infoForm,tabView:accountForm"
+						update="infoForm,btnForm,tabView" />
+					<p:menuitem value="#{msgs['reject.menuitem.label']}"
+						rendered="#{journalVoucherEditView.action.rejectable}"
+						action="#{journalVoucherEditView.reject}" partialSubmit="true"
+						process="@this,infoForm,tabView:accountForm"
+						update="infoForm,btnForm,tabView" />
+					<p:menuitem value="#{msgs['delete.menuitem.label']}"
+						rendered="#{journalVoucherEditView.action.deletable}"
+						action="#{journalVoucherEditView.delete}" partialSubmit="true"
+						process="@this,infoForm,tabView:accountForm"
+						update="infoForm,btnForm,tabView" />
+					<p:menuitem value="#{msgs['verify.menuitem.label']}"
+						rendered="#{journalVoucherEditView.action.verifiable}"
+						action="#{journalVoucherEditView.verify}" partialSubmit="true"
+						process="@this,infoForm,tabView:accountForm"
+						update="infoForm,btnForm,tabView" />
+					<p:menuitem value="#{msgs['reverse.menuitem.label']}"
+						rendered="#{journalVoucherEditView.action.reversible}"
+						action="#{journalVoucherEditView.reverse}" partialSubmit="true"
+						process="@this,infoForm,tabView:accountForm"
+						update="infoForm,btnForm,tabView" />
+				</p:menuButton>
+			</div>
+		</h:form>
+
+		<h:form id="accountCreateForm">
+			<p:dialog id="accountDialog"
+				header="#{msgs['journal.voucher.account.dialog.header']}"
+				widgetVar="accountDialog" modal="true" width="920" minHeight="50"
+				resizable="false" dynamic="true" style="position: fixed">
+				<p:messages id="msgs" closable="true" />
+				<p:ajax event="close" resetValues="true"
+					listener="#{journalVoucherEditView.handleAccountCreateDialogClose}"
+					update="@form">
+					<p:resetInput target="@form" />
+				</p:ajax>
+				<o:validateOne id="one" components="amountDr amountCr"
+					message="#{appResourceUtils.getMessage('SHR0001')}" />
+				<p:panelGrid id="pg" columns="4"
+					columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:outputLabel for="accountNumber"
+						value="#{msgs['journal.voucher.account.dialog.account.number.label']}" />
+					<com:accountNumber id="accountNumber"
+						caseTypeCodeValue="#{journalVoucherEditView.journalVoucherAccountItem.caseTypeCodeValue}"
+						caseNoValue="#{journalVoucherEditView.journalVoucherAccountItem.caseNoValue}"
+						caseYearValue="#{journalVoucherEditView.journalVoucherAccountItem.caseYearValue}"
+						accountTypeCodeValue="#{journalVoucherEditView.journalVoucherAccountItem.accountTypeCodeValue}"
+						disabled="false" allMandatory="true" autoSearchEnabled="true"
+						autoSearchListener="#{journalVoucherEditView.searchCaseInfo}"
+						autoSearchUpdate="accountCreateForm:caseName" />
+					<p:outputLabel
+						value="#{msgs['journal.voucher.account.dialog.account.name.label']}" />
+					<p:inputText id="caseName"
+						value="#{journalVoucherEditView.journalVoucherAccountItem.caseName}"
+						disabled="true" />
+					<p:outputLabel for="analysisCode"
+						value="#{msgs['journal.voucher.account.dialog.analysis.code.label']}" />
+					<p:autoComplete id="analysisCode"
+						value="#{journalVoucherEditView.selectedAnalysisCode}"
+						completeMethod="#{journalVoucherEditView.completeAnalysisCode}"
+						var="analysisCode" itemLabel="#{analysisCode.analysisCode}"
+						itemValue="#{analysisCode}" converter="analysisCodeConverter"
+						cache="true" cacheTimeout="30000" minQueryLength="3"
+						forceSelection="true" required="true"
+						requiredMessage="#{appResourceUtils.getRequiredMessage('AnalysisCode')}">
+						<p:ajax event="itemSelect"
+							listener="#{journalVoucherEditView.onAnalysisCodeSelect}" />
+					</p:autoComplete>
+					<p:outputLabel
+						value="#{msgs['journal.voucher.account.dialog.particulars.label']}" />
+					<p:inputText
+						value="#{journalVoucherEditView.journalVoucherAccountItem.particulars}" />
+					<p:outputLabel for="amountDr"
+						value="#{msgs['journal.voucher.account.dialog.dr.amount.label']}" />
+					<p:inputNumber id="amountDr"
+						value="#{journalVoucherEditView.journalVoucherAccountItem.amountDr}" />
+					<p:outputLabel for="amountCr"
+						value="#{msgs['journal.voucher.account.dialog.cr.amount.label']}" />
+					<p:inputNumber id="amountCr"
+						value="#{journalVoucherEditView.journalVoucherAccountItem.amountCr}" />
+				</p:panelGrid>
+				<div class="ax-btn-set">
+					<p:commandButton value="#{msgs['save.btn']}"
+						action="#{journalVoucherEditView.saveAccount}"
+						update="tabView:accountForm:accountTable,msgs" />
+					<p:commandButton value="#{msgs['cancel.btn']}"
+						styleClass="ui-priority-secondary"
+						onclick="PF('accountDialog').hide();" immediate="true" />
+				</div>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="./holiday.xhtml">
+
+	<ui:define name="breadcrumb-3">
+		<li><a title="">#{msgs['holiday.main.title']}</a><i class="ti-angle-right"></i></li>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<h:form id="searchForm">
+			<p:messages id="msgs" closable="true" />
+			<p:panel id="toggleable" header="#{msgs['holiday.search.title']}" toggleable="true"
+			 toggleSpeed="200" widgetVar="panel">
+				<div>
+					<p:panelGrid columns="2"
+					columnClasses="ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="inputYear" value="#{msgs['holiday.search.year']}"/>
+						<p:inputNumber maxValue="9999" id="inputYear" thousandSeparator="" decimalPlaces="0" converter="javax.faces.Integer" maxlength="100" value="#{holidayMaintenanceView.criteria.year}" >
+						</p:inputNumber>
+					</p:panelGrid>
+				</div>
+				<div class="ax-btn-set">
+					<p:commandButton value="#{msgs['search.btn']}" action="#{holidayMaintenanceView.searchHoliday}"
+						icon="ti-search" update="searchForm,holidayResultTableForm" />
+					<p:commandButton value="#{msgs['reset.btn']}" styleClass="ui-priority-secondary" immediate="true"
+						action="#{holidayMaintenanceView.reset}" update="searchForm,holidayResultTableForm"/>
+					<p:commandButton value="#{msgs['add.btn']}" action="#{holidayMaintenanceView.createHolidayVo}" oncomplete="PF('addDialog').show()" update=":addForm">
+						<p:resetInput target=":addForm"></p:resetInput>
+					</p:commandButton>
+					<p:commandButton value="#{msgs['import.btn']}" action="#{holidayMaintenanceView.initUpload}"
+					 oncomplete="PF('holidayImportDialog').show()" update=":importHolidayForm"/>
+				</div>
+			</p:panel>
+		</h:form>
+		<ui:include src="./result.xhtml"></ui:include>
+		<ui:include src="./import.xhtml"></ui:include>
+		
+		<p:dialog header="#{msgs['holiday.add.dialog.title']}" widgetVar="addDialog"
+				width="600" minHeight="50" resizable="false">
+			<h:form id="addForm">
+				<div class="ui-fluid">
+				<p:messages id="addDialogMsgs" closable="true" />
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-2,ui-grid-col-8"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="holidayDate" value="#{msgs['holiday.result.date']}" />
+						<p:calendar id="holidayDate" required="true" showOn="button" mindate="#{holidayMaintenanceView.today}"
+							value="#{holidayMaintenanceView.addHolidayVO.holidayDate}" pattern="#{holidayMaintenanceView.dateFormat}" 
+							requiredMessage="Please input Date"/>
+						<p:outputLabel for="holidayDesc" value="#{msgs['holiday.result.desc']}" />
+						<p:inputText id="holidayDesc" value="#{holidayMaintenanceView.addHolidayVO.holidayDesc}" required="true"
+						requiredMessage="Please input Date Description"/>
+					</p:panelGrid>
+				</div>
+				<div class="ax-btn-set">
+					<p:commandButton value="#{msgs['create.btn']}" action="#{holidayMaintenanceView.createHoliday}" update="@form"/>
+					<p:commandButton value="#{msgs['cancel.btn']}" styleClass="ui-priority-secondary" oncomplete="PF('addDialog').hide()" />
+				</div>
+			</h:form>
+		</p:dialog>
+		
+	</ui:define>
+</ui:composition>

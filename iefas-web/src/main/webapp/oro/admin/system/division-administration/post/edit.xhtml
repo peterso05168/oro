@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui" template="./post.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+           #{msgs['post.title']}
+        </h:link>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable" header="#{msgs['post.basic.info.title']}"
+					toggleable="true" toggleSpeed="300" widgetVar="panel">
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="PostTitle"
+								value="#{msgs['post.title.label']}" />
+							<p:inputText id="PostTitle"
+								value="#{postEditView.postVO.postTitle}" required="true"
+								validator="#{postValidator.validatePostTitle}" />
+							<p:outputLabel for="Status" value="#{msgs['status.label']}" />
+							<p:inputText id="Status" disabled="true"
+								value="#{postEditView.postVO.status eq 'INA' ? msgs['inactive.status.label'] : msgs['active.status.label']}" />
+							<p:outputLabel for="Division"
+								value="#{msgs['post.division.label']}" />
+							<p:selectOneMenu id="Division"
+								disabled="#{postEditView.postId != null}"
+								value="#{postEditView.postVO.division.divisionId}"
+								required="true">
+								<f:selectItem itemLabel="- Please select -"
+									noSelectionOption="true" />
+								<f:selectItems value="#{postEditView.divisionVOs}"
+									var="division" itemLabel="#{division.divisionName}"
+									itemValue="#{division.divisionId}" />
+								<p:ajax update="tabView" event="itemSelect"
+									listener="#{postEditView.getRoleListByDivision}" />
+							</p:selectOneMenu>
+							<p:outputLabel for="Rank" value="#{msgs['post.rank.label']}" />
+							<p:selectOneMenu id="Rank"
+								value="#{postEditView.postVO.rank.rankId}" required="true">
+								<f:selectItem itemLabel="- Please select -"
+									noSelectionOption="true" />
+								<f:selectItems value="#{postEditView.rankVOs}" var="rank"
+									itemLabel="#{rank.rankName}" itemValue="#{rank.rankId}" />
+								<p:ajax update="VoucherLimit,PaymentLimit" event="itemSelect"
+									listener="#{postEditView.getRankApprovalLimit}" />
+							</p:selectOneMenu>
+							<p:outputLabel for="AssignedUserName"
+								value="#{msgs['post.assigned.user.name.label']}" />
+							<p:inputText id="AssignedUserName"
+								value="#{postEditView.userName}" disabled="true" />
+
+							<p:outputLabel for="VoucherLimit"
+								value="#{msgs['post.voucher.limit.label']}" />
+							<p:inputText id="VoucherLimit"
+								value="#{postEditView.voucherLimit}" disabled="true" />
+
+							<p:outputLabel for="PostDesc" value="#{msgs['post.desc.label']}" />
+							<p:inputTextarea id="PostDesc"
+								value="#{postEditView.postVO.postDesc}" />
+
+							<p:outputLabel for="PaymentLimit"
+								value="#{msgs['post.payment.limit.label']}" />
+							<p:inputText id="PaymentLimit"
+								value="#{postEditView.paymentLimit}" disabled="true" />
+
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<p:tabView id="tabView" activeIndex="0">
+					<p:tab title="#{msgs['post.role.title']}">
+						<p:dataTable var="role" value="#{postEditView.originalRoleList}"
+							reflow="true" rowKey="#{role.roleId}"
+							selection="#{postEditView.selectedRoleList}"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rendered="#{postEditView.originalRoleList != null}">
+							<p:column selectionMode="multiple" class="ax-checkbox-w" />
+							<p:column headerText="#{msgs['post.role.name.label']}"
+								sortBy="#{role.roleName}">
+								<p:commandLink
+									action="#{dialogBean.openPrivilegeDialog(role.roleId)}">
+									<h:outputText value="#{role.roleName}" />
+								</p:commandLink>
+							</p:column>
+							<p:column headerText="#{msgs['post.role.desc.label']}"
+								sortBy="#{role.roleDesc}">
+								<h:outputText value="#{role.roleDesc}" />
+							</p:column>
+						</p:dataTable>
+					</p:tab>
+				</p:tabView>
+
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search" />
+					<p:commandButton value="#{msgs['save.btn']}" validateClient="true"
+						action="#{postEditView.save}" update="@form" />
+				</div>
+			</h:form>
+		</div>
+		<ui:include src="./privilege-dialog.xhtml"></ui:include>
+		<ui:insert name="main-content-2" />
+	</ui:define>
+</ui:composition>

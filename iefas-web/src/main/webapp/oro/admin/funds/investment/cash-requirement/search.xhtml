@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	template="./cash-requirement.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable"
+				header="Search Funds" toggleable="true"
+				toggleSpeed="200" widgetVar="panel">
+				<p:focus context="toggleable"/>
+				<h:form id="searchForm">
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="InvestmentType"
+							value="#{msgs['cash.requirement.investment.type.label']}" />
+						<p:selectOneMenu id="InvestmentType"
+							value="#{cashRequirementSearchView.criteriaVO.investmentTypeId}">
+							<f:selectItem itemLabel="- Select -" />
+							<f:selectItems value="#{cashRequirementSearchView.investmentTypes}"
+								var="invType" itemLabel="#{invType.investmentTypeDesc}"
+								itemValue="#{invType.investmentTypeId}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="FromDate"
+							value="#{msgs['cash.requirement.from.date.label']}" />
+						<p:calendar id="FromDate" showOn="button"
+							value="#{cashRequirementSearchView.criteriaVO.fromDate}"
+							pattern="#{appResourceUtils.dateFormat}">
+							<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+						</p:calendar>
+						<p:outputLabel for="ToDate"
+							value="#{msgs['cash.requirement.to.date.label']}" />
+						<p:calendar id="ToDate" showOn="button"
+							value="#{cashRequirementSearchView.criteriaVO.toDate}"
+							pattern="#{appResourceUtils.dateFormat}">
+							<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+						</p:calendar>
+					</p:panelGrid>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['search.btn']}"
+							icon="ti-search" action="#{cashRequirementSearchView.search}" update="formC" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary"
+							action="#{cashRequirementSearchView.reset}" update="searchForm,formC" />
+					</div>
+				</h:form>
+			</p:panel>
+		</div>
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<h:form id="proofOfDebtResultTable">
+		<p:dataTable var="debt" lazy="true" reflow="true" paginator="true"
+			rowKey="#{debt.proofOfDebtId}" paginatorPosition="bottom" rows="5"
+			value="#{proofOfDebtEnquirySearchView.lazyDataModel}"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true"
+			rendered="#{proofOfDebtEnquirySearchView.lazyDataModel != null}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+
+			<p:column
+				headerText="#{msgs['proof.of.debt.enquiry.proof.number.column.header']}"
+				sortBy="#{debt.proofNo}">
+				<p:commandLink action="proof-of-debt-form" ajax="false">
+					<h:outputText value="#{debt.proofNumber}" />
+					<f:param name="proofOfDebtId" value="#{debt.proofOfDebtId}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['proof.of.debt.enquiry.case.number.column.header']}"
+				sortBy="#{debt.caseInfo.wholeCaseNo}">
+				<h:outputText value="#{debt.caseNumber}" />
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['proof.of.debt.enquiry.case.name.column.header']}"
+				sortBy="#{debt.caseInfo.caseName}">
+				<h:outputText value="#{debt.caseName}" />
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['proof.of.debt.enquiry.creditor.name.column.header']}"
+				sortBy="#{debt.commonCreditorName}">
+				<h:outputText value="#{debt.commonCreditorName}" />
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['proof.of.debt.enquiry.section.name.column.header']}"
+				sortBy="#{debt.sectionName}">
+				<h:outputText value="#{debt.sectionName}" />
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['proof.of.debt.enquiry.date.of.receipt.column.header']}"
+				sortBy="#{debt.receiptDate}">
+				<h:outputText value="#{debt.dateOfReceipt}">
+					<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="#{msgs['action.column.header']}"
+				styleClass="ax-action-w dont-print">
+				<p:menuButton value="#{msgs['action.menuButton.label']}">
+					<p:menuitem value="#{msgs['edit.menuitem.label']}">
+						<f:param name="proofOfDebtId" value="#{debt.proofOfDebtId}" />
+					</p:menuitem>
+					<p:menuitem value="#{msgs['delete.menuitem.label']}"
+						rendered="#{debt.status eq 'ACT'}" oncomplete="PF('cd').show()">
+						<f:setPropertyActionListener value="#{debt.proofOfDebtId}"
+							target="#{proofOfDebtEnquirySearchView.proofOfDebtId}" />
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+		<p:confirmDialog widgetVar="cd" header="Confirm" showEffect="fade">
+			<f:facet name="message">
+				<h:outputText value="Confirm to Delete the selected record ?" />
+			</f:facet>
+			<div align="center">
+				<p:commandButton value="Yes"
+					action="#{proofOfDebtEnquirySearchView.deleteProofOfDebt}"
+					update="proofOfDebtResultTable,searchForm"
+					oncomplete="PF('cd').hide()" />
+				<p:commandButton value="No" onclick="PF('cd').hide();" type="button" />
+			</div>
+		</p:confirmDialog>
+	</h:form>
+</ui:composition>
+
+
+
+

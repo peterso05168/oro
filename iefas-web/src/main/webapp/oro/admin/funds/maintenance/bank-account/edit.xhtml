@@ -1,0 +1,310 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui" template="./bank-account.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+			#{msgs['bank.account.title']}
+		</h:link>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+
+				<!-- basic information start -->
+				<p:panel id="toggleable"
+					header="#{msgs['bank.account.basic.info.title']}" toggleable="true"
+					toggleSpeed="200" widgetVar="panel">
+					<p:focus context="toggleable"/>
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+							<p:outputLabel for="BankName" value="#{msgs['bank.name.label']}" />
+							<p:inputText id="BankName"
+								value="#{bankAccountDetailView.bankInfoVO.bankName}"
+								maxlength="100" required="true" />
+
+							<p:outputLabel for="BankShortName"
+								value="#{msgs['bank.short.name.label']}" />
+							<p:inputText id="BankShortName"
+								value="#{bankAccountDetailView.bankInfoVO.bankShortName}"
+								maxlength="20" required="true" />
+
+							<p:outputLabel for="BankCode" value="#{msgs['bank.code.label']}" />
+							<p:inputText id="BankCode" style="text-transform:uppercase;"
+								value="#{bankAccountDetailView.bankInfoVO.bankCode}"
+								maxlength="10" required="true"
+								converter="omnifaces.ToUpperCaseConverter" />
+
+							<p:outputLabel for="DepositLimit"
+								value="#{msgs['bank.deposit.limit.label']}" />
+							<p:inputNumber id="DepositLimit" required="true" maxlength="16"
+								value="#{bankAccountDetailView.bankInfoVO.bankDepositlimit}">
+								<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+								<p:ajax event="keyup"
+									listener="#{bankAccountDetailView.changeAvailableRoom}"
+									update="AvailableRoom" />
+							</p:inputNumber>
+
+							<p:outputLabel for="AvailableRoom"
+								value="#{msgs['bank.available.room.label']}" />
+							<p:inputText id="AvailableRoom"
+								value="#{bankAccountDetailView.bankInfoVO.avaiableRoom}"
+								disabled="true" />
+
+							<p:outputLabel for="RoundingDecimal"
+								value="#{msgs['bank.rounding.decimal.label']}" />
+							<p:inputNumber id="RoundingDecimal" required="true"
+								maxlength="15"
+								value="#{bankAccountDetailView.bankInfoVO.decimalRounding}">
+								<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+							</p:inputNumber>
+
+							<p:outputLabel for="DepositAllowed"
+								value="#{msgs['bank.deposit.allowed.label']}" />
+							<p:selectOneMenu id="DepositAllowed"
+								value="#{bankAccountDetailView.bankInfoVO.specialDepositAllowed}">
+								<f:selectItem itemLabel="Allowed" itemValue="A" />
+								<f:selectItem itemLabel="Not Allowed" itemValue="N" />
+							</p:selectOneMenu>
+
+							<p:outputLabel for="ChinaGroup"
+								value="#{msgs['bank.china.group.label']}" />
+							<p:selectOneMenu id="ChinaGroup"
+								value="#{bankAccountDetailView.bankInfoVO.bankOfChinaGroup}">
+								<f:selectItem itemLabel="Yes" itemValue="Y" />
+								<f:selectItem itemLabel="No" itemValue="N" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<!-- basic information end -->
+
+				<!-- tab start -->
+				<p:tabView id="tabView" activeIndex="0">
+					<p:tab title="#{msgs['bank.interest.calculation.title']}">
+						<p:dataTable var="leapYearParam"
+							value="#{bankAccountDetailView.filteredLeapYearParameters}"
+							reflow="true" paginator="false" rows="5"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column
+								headerText="#{msgs['bank.interest.calculation.currency.column.header']}"
+								sortBy="#{leapYearParam.currency.curcyName}">
+								<h:outputText value="#{leapYearParam.currency.curcyName}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['bank.interest.calculation.leap.year.day.num.column.header']}"
+								sortBy="#{leapYearParam.numDaysInLeapYear}">
+								<h:outputText value="#{leapYearParam.numDaysInLeapYear}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['bank.interest.calculation.non.leap.year.day.num.column.header']}"
+								sortBy="#{leapYearParam.numDaysInNonLeapYear}">
+								<h:outputText value="#{leapYearParam.numDaysInNonLeapYear}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['bank.interest.calculation.action.column.header']}"
+								styleClass="ax-action-w dont-print">
+								<p:menuButton value="Action">
+									<p:menuitem value="Edit"
+										onclick="PF('calculationDialog').show();"
+										update="calculationForm:pg" process="@this">
+										<f:setPropertyActionListener value="#{leapYearParam}"
+											target="#{bankAccountDetailView.leapYearParameterVO}" />
+										<f:setPropertyActionListener
+											value="#{leapYearParam.currency.curcyId}"
+											target="#{bankAccountDetailView.curyId}" />
+									</p:menuitem>
+									<p:menuitem value="Delete"
+										action="#{bankAccountDetailView.deleteCalculation}"
+										update="editForm:tabView">
+										<f:setPropertyActionListener value="#{leapYearParam}"
+											target="#{bankAccountDetailView.leapYearParameterVO}" />
+									</p:menuitem>
+								</p:menuButton>
+							</p:column>
+						</p:dataTable>
+						<div class="ax-btn-set aR">
+							<p:commandButton value="#{msgs['bank.calculation.btn']}" immediate="true"
+								onclick="PF('calculationDialog').show();" icon="ti-plus" />
+						</div>
+					</p:tab>
+
+					<p:tab title="#{msgs['bank.transfer.title']}">
+						<p:dataTable var="bankTrans"
+							value="#{bankAccountDetailView.filteredFreeBankTransfers}"
+							reflow="true" paginator="false" rows="5"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column
+								headerText="#{msgs['bank.name.column.header']}"
+								sortBy="#{bankTrans.bankInfo.bankName}">
+								<h:outputText value="#{bankTrans.bankInfo.bankName}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['bank.short.name.column.header']}"
+								sortBy="#{bankTrans.bankInfo.bankShortName}">
+								<h:outputText value="#{bankTrans.bankInfo.bankShortName}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['bank.code.column.header']}"
+								sortBy="#{bankTrans.bankInfo.bankCode}">
+								<h:outputText value="#{bankTrans.bankInfo.bankCode}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['action.column.header']}"
+								styleClass="ax-action-w dont-print">
+								<p:menuButton value="#{msgs['action.menuButton.label']}">
+									<p:menuitem value="#{msgs['edit.menuitem.label']}" onclick="PF('bankDialog').show();"
+										update="bankForm:pg" process="@this">
+										<f:setPropertyActionListener value="#{bankTrans}"
+											target="#{bankAccountDetailView.freeBankTransferVO}" />
+										<f:setPropertyActionListener
+											value="#{bankTrans.bankInfo.bankInfoId}"
+											target="#{bankAccountDetailView.transferBankId}" />
+									</p:menuitem>
+									<p:menuitem value="#{msgs['delete.menuitem.label']}"
+										action="#{bankAccountDetailView.deleteBankTransfer}"
+										update="editForm:tabView">
+										<f:setPropertyActionListener value="#{bankTrans}"
+											target="#{bankAccountDetailView.freeBankTransferVO}" />
+									</p:menuitem>
+								</p:menuButton>
+							</p:column>
+						</p:dataTable>
+						<div class="ax-btn-set aR">
+							<p:commandButton value="#{msgs['bank.transfer.btn']}" immediate="true"
+								onclick="PF('bankDialog').show();" icon="ti-plus" />
+						</div>
+					</p:tab>
+
+				</p:tabView>
+				<!-- tab end -->
+
+				<!-- button below -->
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton value="#{msgs['save.btn']}"
+						update="@form" action="#{bankAccountDetailView.save}" />
+				</div>
+				<!-- button below -->
+			</h:form>
+
+			<!-- dialog to edit calculation -->
+			<h:form id="calculationForm">
+				<p:dialog id="calculationDialog"
+					header="#{msgs['bank.calculation.dialog.title']}"
+					widgetVar="calculationDialog" modal="true" width="500"
+					minHeight="50" resizable="false" dynamic="true"
+					style="position: fixed">
+					<p:ajax event="close" update="@form" resetValues="true"
+						listener="#{bankAccountDetailView.calculationHandleClose}">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="2"
+							columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="Currency"
+								value="#{msgs['bank.calculation.dialog.currency.title']}" />
+							<p:selectOneMenu id="Currency" required="true"
+								value="#{bankAccountDetailView.curyId}">
+								<f:selectItem itemLabel="- Select -" />
+								<f:selectItems
+									value="#{bankAccountDetailView.currencyBasicInfos}" />
+							</p:selectOneMenu>
+							<p:outputLabel for="leapYear"
+								value="#{msgs['bank.calculation.dialog.leap.year.day.num.title']}" />
+							<p:inputNumber id="leapYear" required="true" maxlength="15"
+								value="#{bankAccountDetailView.leapYearParameterVO.numDaysInLeapYear}">
+								<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+							</p:inputNumber>
+							<p:outputLabel for="nonLeapYear"
+								value="#{msgs['bank.calculation.dialog.non.leap.year.day.num.title']}" />
+							<p:inputNumber id="nonLeapYear" required="true" maxlength="15"
+								value="#{bankAccountDetailView.leapYearParameterVO.numDaysInNonLeapYear}">
+								<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+							</p:inputNumber>
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['save.btn']}"
+							action="#{bankAccountDetailView.addCalculation}"
+							update="pg,msgs,editForm:tabView" validateClient="true">
+						</p:commandButton>
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('calculationDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to edit calculation -->
+
+			<!-- dialog to edit bank transfer -->
+			<h:form id="bankForm">
+				<p:dialog id="bankDialog"
+					header="#{msgs['bank.transfer.dialog.title']}"
+					widgetVar="bankDialog" modal="true" width="500" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:ajax event="close" update="@form" resetValues="true"
+						listener="#{bankAccountDetailView.bankTransferHandleClose}">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="2"
+							columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="Bank"
+								value="#{msgs['bank.name.label']}" />
+							<p:selectOneMenu id="Bank"
+								value="#{bankAccountDetailView.transferBankId}">
+								<f:selectItem itemLabel="- Select -" />
+								<f:selectItems value="#{bankAccountDetailView.bankBasics}" />
+								<p:ajax event="change"
+									listener="#{bankAccountDetailView.changeBank}"
+									update="ShortName,Code" />
+							</p:selectOneMenu>
+							<p:outputLabel for="ShortName"
+								value="#{msgs['bank.short.name.label']}" />
+							<p:inputText id="ShortName" required="true" disabled="true"
+								value="#{bankAccountDetailView.freeBankTransferVO.bankInfo.bankShortName}" />
+							<p:outputLabel for="Code"
+								value="#{msgs['bank.code.label']}" />
+							<p:inputText id="Code" required="true" disabled="true"
+								value="#{bankAccountDetailView.freeBankTransferVO.bankInfo.bankCode}" />
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['save.btn']}"
+							action="#{bankAccountDetailView.addBankTransfer}"
+							update="pg,msgs,editForm:tabView" validateClient="true">
+						</p:commandButton>
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('bankDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to edit bank transfer -->
+		</div>
+	</ui:define>
+
+</ui:composition>
+
+
+
+

@@ -1,0 +1,103 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	template="./payment-voucher.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable"
+				header="#{msgs['payment.voucher.search.title']}" toggleable="true"
+				toggleSpeed="200" widgetVar="panel">
+				<h:form id="searchForm">
+					<div>
+						<p:focus context="toggleable" />
+						<p:messages id="msgs" closable="true" />
+						<input type="checkbox" id="basicAdvance" name="basicAdvance"
+							class="basicAdvance hidden-checkbox" checked="checked" />
+						<div class="search-basic">
+							<p:panelGrid columns="1" layout="grid"
+								columnClasses="ui-grid-col-12"
+								styleClass="ui-panelgrid-blank ui-fluid">
+								<p:inputText />
+								<p:column>
+									<label for="basicAdvance" class="basicAdvanceLabel advance"><i
+										class="ti-search"></i> Advanced Search</label>
+									<div class="note">Voucher Number, Payment Date, Account
+										Number, Analysis Code, Status</div>
+								</p:column>
+							</p:panelGrid>
+						</div>
+						<div class="search-advance">
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel id="VoucherNumber"
+									value="#{msgs['payment.voucher.voucher.number.label']}" />
+								<p:inputText for="VoucherNumber"
+									value="#{paymentVoucherSearchView.criteria.voucherNumber}" />
+
+								<p:outputLabel for="PaymentDate"
+									value="#{msgs['payment.voucher.payment.date.label']}" />
+								<p:calendar id="PaymentDate" showOn="button"
+									pattern="#{appResourceUtils.dateFormat}"
+									value="#{paymentVoucherSearchView.criteria.paymentDate}">
+								</p:calendar>
+
+								<p:outputLabel id="AccountNumber"
+									value="#{msgs['payment.voucher.account.number.label']}" />
+								<com:accountNumber
+									caseTypeCodeValue="#{paymentVoucherSearchView.criteria.caseType}"
+									accountTypeCodeValue="#{paymentVoucherSearchView.criteria.accountType}"
+									caseNoValue="#{paymentVoucherSearchView.criteria.caseSeqNo}"
+									caseYearValue="#{paymentVoucherSearchView.criteria.caseYear}" />
+
+								<p:outputLabel for="AnalysisCode"
+									value="#{msgs['payment.voucher.analysis.code.label']}" />
+								<p:autoComplete id="AnalysisCode"
+									completeMethod="#{paymentVoucherEditView.completeAnalysisCode}"
+									var="analysisCode" itemLabel="#{analysisCode.analysisCode}"
+									itemValue="#{analysisCode}" converter="analysisCodeConverter"
+									cache="true" cacheTimeout="30000" minQueryLength="3"
+									forceSelection="true">
+									<p:ajax event="itemSelect"
+										listener="#{paymentVoucherEditView.onAnalysisCodeSelect}" />
+								</p:autoComplete>
+
+								<p:outputLabel for="Status" value="#{msgs['status.label']}" />
+								<p:selectOneMenu id="Status"
+									value="#{paymentVoucherSearchView.criteria.status}">
+									<f:selectItem itemLabel="- All -" noSelectionOption="true" />
+									<f:selectItems value="#{paymentVoucherSearchView.statusVOs}"
+										var="status" itemLabel="#{status.codeDesc}"
+										itemValue="#{status.codeValue}" />
+								</p:selectOneMenu>
+
+							</p:panelGrid>
+							<p:panelGrid columns="6" columnClasses="ui-grid-col-12"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:column styleClass="ui-grid-col-12">
+									<label for="basicAdvance" class="basicAdvanceLabel advance"><i
+										class="ti-search"></i>Basic Search</label>
+								</p:column>
+							</p:panelGrid>
+						</div>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton id="searchBtn" value="#{msgs['search.btn']}"
+							icon="ti-search" action="#{paymentVoucherSearchView.search}"
+							update="searchForm, paymentVoucherResultTable" />
+						<p:commandButton value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary"
+							action="#{paymentVoucherSearchView.reset}" update="searchForm" />
+						<p:button value="#{msgs['create.btn']}" outcome="edit" />
+					</div>
+				</h:form>
+			</p:panel>
+		</div>
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

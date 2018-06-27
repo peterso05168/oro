@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	template="/oro/admin/common/common-head.xhtml">
+
+	<ui:define name="head-title">
+        #{msgs['privilege.dialog.header']}
+    </ui:define>
+	<ui:define name="page-content-body">
+		<h:form>
+			<p:dataTable value="#{privilegeDialogView.searchPrivilegeResults}"
+				var="result">
+				<p:column
+					headerText="#{msgs['privilege.dialog.privilege.id.column.header']}"
+					sortBy="#{result.privilege.privilegeName}">
+					<h:outputText value="#{result.privilege.privilegeName}" />
+				</p:column>
+				<p:column
+					headerText="#{msgs['privilege.dialog.type.column.header']}"
+					sortBy="#{result.privilege.privilegeType}">
+					<h:outputText value="#{result.privilege.privilegeType}" />
+				</p:column>
+				<p:column
+					headerText="#{msgs['privilege.dialog.function.column.header']}"
+					sortBy="#{result.privilege.privilegeDesc}">
+					<h:outputText value="#{result.privilege.privilegeDesc}" />
+				</p:column>
+				<p:column
+					headerText="#{msgs['privilege.dialog.report.column.header']}"
+					sortBy="#{result.reportName}">
+					<h:outputText value="#{result.reportName}" />
+				</p:column>
+				<p:column
+					headerText="#{msgs['privilege.dialog.menu.column.header']}"
+					sortBy="#{result.menuName}">
+					<h:outputText value="#{result.menuName}" />
+				</p:column>
+			</p:dataTable>
+			<div class="ax-btn-set">
+				<p:commandButton value="#{msgs['close.btn']}"
+					styleClass="ui-priority-secondary"
+					action="#{privilegeDialogView.closeDialog}" />
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+
+
+

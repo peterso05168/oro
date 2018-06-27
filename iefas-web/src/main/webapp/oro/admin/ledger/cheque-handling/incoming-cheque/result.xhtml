@@ -1,0 +1,166 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <h:form id="incomingChequeResultTable">
+        <p:dataTable var="incomingCheque"
+                     value="#{incomingChequeSearchView.lazyDataModel}"
+                     rowKey="#{incomingCheque.chequeId}" lazy="true" reflow="true"
+                     paginator="true" paginatorPosition="bottom" rows="5"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rowsPerPageTemplate="5,10,15" draggableColumns="true"
+                     rendered="#{incomingChequeSearchView.lazyDataModel != null}">
+            <f:facet name="header">#{msgs['result.title']}</f:facet>
+
+            <p:column
+                    headerText="#{msgs['cheque.handling.incoming.cheque.result.name.of.payer.column']}">
+                <p:link outcome="edit" ajax="false">
+                    <h:outputText value="#{incomingCheque.nameOfPayer}"/>
+                    <f:param name="chequeId" value="#{incomingCheque.chequeId}"/>
+                </p:link>
+            </p:column>
+            <p:column
+                    headerText="#{msgs['cheque.handling.incoming.cheque.result.cheque.number.column']}">
+                <h:outputText value="#{incomingCheque.chequeNumber}"/>
+            </p:column>
+
+            <p:column
+                    headerText="#{msgs['cheque.handling.incoming.cheque.result.bank.code.column']}">
+                <h:outputText value="#{incomingCheque.bankCode}"/>
+            </p:column>
+
+            <p:column
+                    headerText="#{msgs['cheque.handling.incoming.cheque.result.amount.column']}">
+                <h:outputText value="#{incomingCheque.amount}"/>
+            </p:column>
+            <p:column
+                    headerText="#{msgs['cheque.handling.incoming.cheque.result.currency.column']}">
+                <h:outputText value="#{incomingCheque.currencyName}"/>
+            </p:column>
+            <p:column
+                    headerText="#{msgs['cheque.handling.incoming.cheque.result.case.officer.column']}">
+                <h:outputText value="#{incomingCheque.caseOfficer}"/>
+            </p:column>
+            <p:column
+                    headerText="#{msgs['cheque.handling.incoming.cheque.result.receive.date.column']}">
+                <h:outputText value="#{incomingCheque.receiveDate}">
+                    <f:convertDateTime pattern="#{appResourceUtils.dateFormat}"/>
+                </h:outputText>
+            </p:column>
+            <p:column
+                    headerText="#{msgs['cheque.handling.incoming.cheque.result.status.column']}"
+                    styleClass="ax-status-w-b">
+                <h:outputText value="#{msgs['inactive.status.label']}"
+                              rendered="#{incomingCheque.status eq 'INA'}" class="status-label red"/>
+                <h:outputText value="#{msgs['active.status.label']}"
+                              rendered="#{incomingCheque.status eq 'ACT'}" class="status-label green"/>
+                <h:outputText value="#{msgs['cheque.handling.incoming.cheque.pending.status.label']}"
+                              rendered="#{incomingCheque.status eq 'PD'}" class="status-label green"/>
+                <h:outputText value="#{msgs['cheque.handling.incoming.cheque.received.status.label']}"
+                              rendered="#{incomingCheque.status eq 'RCD'}" class="status-label green"/>
+                <h:outputText value="#{msgs['cheque.handling.incoming.cheque.rejected.status.label']}"
+                              rendered="#{incomingCheque.status eq 'REJ'}" class="status-label red"/>
+                <h:outputText value="#{msgs['cheque.handling.incoming.cheque.onhold.status.label']}"
+                              rendered="#{incomingCheque.status eq 'OHD'}" class="status-label green"/>
+                <h:outputText value="#{msgs['cheque.handling.incoming.cheque.deleted.status.label']}"
+                              rendered="#{incomingCheque.status eq 'DEL'}" class="status-label red"/>
+            </p:column>
+            <p:column headerText="#{msgs['action.column.header']}"
+                      styleClass="ax-action-w dont-print">
+                <p:menuButton value="#{msgs['action.menuButton.label']}">
+                    <p:menuitem value="#{msgs['edit.menuitem.label']}" ajax="false"
+                                outcome="edit">
+                        <f:param name="chequeId" value="#{incomingCheque.chequeId}"/>
+                    </p:menuitem>
+                    <p:menuitem value="#{msgs['cheque.handling.incoming.cheque.menuitem.create.receipt.voucher']}"
+                                outcome="/oro/admin/ledger/voucher-handling/receipt-voucher/edit">
+                        <f:param name="incomingChequeId" value="#{incomingCheque.chequeId}"/>
+                    </p:menuitem>
+                    <p:menuitem value="#{msgs['cheque.handling.incoming.cheque.menuitem.onhold.with.reason']}"
+                                onclick="PF('cdo').show()">
+                        <f:setPropertyActionListener value="#{incomingCheque.chequeId}"
+                                                     target="#{incomingChequeSearchView.chequeId}"/>
+                    </p:menuitem>
+                    <p:menuitem value="#{msgs['cheque.handling.incoming.cheque.menuitem.reject']}"
+                                onclick="PF('cdj').show()">
+                        <f:setPropertyActionListener value="#{incomingCheque.chequeId}"
+                                                     target="#{incomingChequeSearchView.chequeId}"/>
+                    </p:menuitem>
+                    <p:menuitem value="#{msgs['cheque.handling.incoming.cheque.menuitem.receive.by.officer']}"
+                                onclick="PF('cdr').show()">
+                        <f:setPropertyActionListener value="#{incomingCheque.chequeId}"
+                                                     target="#{incomingChequeSearchView.chequeId}"/>
+                    </p:menuitem>
+                    <p:menuitem value="#{msgs['delete.menuitem.label']}"
+                                onclick="PF('cdd').show()">
+                        <f:setPropertyActionListener value="#{incomingCheque.chequeId}"
+                                                     target="#{incomingChequeSearchView.chequeId}"/>
+                    </p:menuitem>
+                </p:menuButton>
+                <div>
+                    <p:confirmDialog widgetVar="cdo" header="Confirm" showEffect="fade">
+                        <f:facet name="message">
+                            <h:outputText
+                                    value="Confirm to Onhold the selected record ?"/>
+                        </f:facet>
+                        <div align="center">
+                            <p:commandButton value="Yes"
+                                             action="#{incomingChequeSearchView.onhold}"
+                                             update="incomingChequeResultTable"
+                                             oncomplete="PF('cdo').hide()"/>
+                            <p:commandButton value="No" onclick="PF('cdo').hide();"
+                                             type="button"/>
+                        </div>
+                    </p:confirmDialog>
+                    <p:confirmDialog widgetVar="cdj" header="Confirm" showEffect="fade">
+                        <f:facet name="message">
+                            <h:outputText
+                                    value="Confirm to Reject the selected record ?"/>
+                        </f:facet>
+                        <div align="center">
+                            <p:commandButton value="Yes"
+                                             action="#{incomingChequeSearchView.reject}"
+                                             update="incomingChequeResultTable"
+                                             oncomplete="PF('cdj').hide()"/>
+                            <p:commandButton value="No" onclick="PF('cdj').hide();"
+                                             type="button"/>
+                        </div>
+                    </p:confirmDialog>
+                    <p:confirmDialog widgetVar="cdr" header="Confirm" showEffect="fade">
+                        <f:facet name="message">
+                            <h:outputText
+                                    value="Confirm to Receive the selected record ?"/>
+                        </f:facet>
+                        <div align="center">
+                            <p:commandButton value="Yes"
+                                             action="#{incomingChequeSearchView.received}"
+                                             update="incomingChequeResultTable"
+                                             oncomplete="PF('cdr').hide()"/>
+                            <p:commandButton value="No" onclick="PF('cdr').hide();"
+                                             type="button"/>
+                        </div>
+                    </p:confirmDialog>
+                    <p:confirmDialog widgetVar="cdd" header="Confirm" showEffect="fade">
+                        <f:facet name="message">
+                            <h:outputText
+                                    value="Confirm to Delete the selected record ?"/>
+                        </f:facet>
+                        <div align="center">
+                            <p:commandButton value="Yes"
+                                             action="#{incomingChequeSearchView.delete}"
+                                             update="incomingChequeResultTable"
+                                             oncomplete="PF('cdd').hide()"/>
+                            <p:commandButton value="No" onclick="PF('cdd').hide();"
+                                             type="button"/>
+                        </div>
+                    </p:confirmDialog>
+                </div>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+</ui:composition>
+
+
+
+

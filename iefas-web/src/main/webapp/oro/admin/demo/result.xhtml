@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="./search.xhtml">
+
+	<ui:define name="breadcrumb-3">
+		<li><a title="">Search Result</a><i class="ti-angle-right"></i></li>
+	</ui:define>
+
+	<ui:define name="main-content-2">
+		<h:form id="formC"> 
+			<p:dataTable id="cars" var="car" value="#{dtSelectionView.cars6}"
+				rowKey="#{car.id}" selection="#{dtSelectionView.selectedCars}"
+				reflow="true" paginator="true" paginatorPosition="bottom" 
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" 
+				draggableColumns="true" >
+				<f:facet name="header">
+					Search Result
+				    <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+				    <p:columnToggler datasource="cars" trigger="toggler" />
+				</f:facet>
+				
+				<p:column selectionMode="multiple" class="ax-checkbox-w" />
+
+				<p:column headerText="User ID" sortBy="#{car.brand}">
+					<p:commandLink href="javascript:void(0)" onclick="_ACTION('edit')">
+						<h:outputText value="#{car.brand}" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column headerText="Last Name" sortBy="#{car.id}">
+					<h:outputText value="#{car.id}" />
+				</p:column>
+
+				<p:column headerText="First Name" sortBy="#{car.year}">
+					<h:outputText value="#{car.year}" />
+				</p:column>				
+				
+				<p:column headerText="Email" sortBy="#{car.color}">
+					<h:outputText value="#{car.color}" />
+				</p:column>
+				
+				<p:column headerText="分數" sortBy="#{car.id}">
+					<h:outputText value="#{car.id}" />
+				</p:column>
+				
+				<p:column headerText="Status" sortBy="#{car.color}" styleClass="ax-status-w-b" >					
+					<span class="status-label red">Inactive</span>
+				</p:column>
+				
+				<p:column headerText="Action" styleClass="ax-action-w dont-print">
+					<p:menuButton value="Action">
+						<p:menuitem value="Edit" onclick="_ACTION('edit')" />
+						<p:menuitem value="Delete" onclick="_ACTION('delete')" />
+					</p:menuButton>
+				</p:column>
+				 
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+
+
+

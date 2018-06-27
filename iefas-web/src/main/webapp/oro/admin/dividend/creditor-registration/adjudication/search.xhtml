@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	template="./adjudication.xhtml">
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable"
+				header="#{msgs['common.creditor.search.title']}" toggleable="true"
+				toggleSpeed="200" widgetVar="panel">
+				<p:focus context="toggleable" />
+				<h:form id="searchForm">
+					<p:messages id="msgs" closable="true" />
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel value="#{msgs['adjudication.case.number.label']}" />
+						<com:caseNumber
+							caseTypeCodeValue="#{adjudicationSearchView.criteriaVO.caseNumber.caseType}"
+							caseNoValue="#{adjudicationSearchView.criteriaVO.caseNumber.caseSequence}"
+							caseYearValue="#{adjudicationSearchView.criteriaVO.caseNumber.caseYear}"
+							disabled="false" allMandatory="true" />
+						<p:outputLabel for="Status" value="#{msgs['status.label']}" />
+						<p:selectOneMenu id="Status"
+							value="#{adjudicationSearchView.criteriaVO.status}">
+							<f:selectItem itemLabel="- All -" itemValue=""
+								noSelectionOption="true" />
+							<f:selectItems value="#{adjudicationSearchView.statusVOs}"
+								var="s" itemLabel="#{s.statusName}" itemValue="#{s.statusVal}" />
+						</p:selectOneMenu>
+					</p:panelGrid>
+
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['search.btn']}" icon="ti-search"
+							action="#{adjudicationSearchView.searchAdjudicationList}"
+							update="formC,searchForm" />
+						<p:button value="#{msgs['reset.btn']}"
+							styleClass="ui-priority-secondary"
+							action="#{adjudicationSearchView.reset}"
+							update="searchForm,formC" />
+						<p:commandButton value="#{msgs['create.btn']}" immediate="true"
+							action="#{adjudicationSearchView.popUpAdjudication}"
+							update="createForm:pg" process="@this" />
+					</div>
+				</h:form>
+			</p:panel>
+
+
+			<!-- dialog to create -->
+			<h:form id="createForm">
+				<p:dialog id="createDialog"
+					header="#{msgs['adjudication.create.dialog.title']}"
+					widgetVar="createDialog" modal="true" width="500" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:ajax event="close" update="@form" resetValues="true"
+						listener="#{adjudicationSearchView.createHandleClose}">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="2"
+							columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel value="#{msgs['adjudication.case.number.label']}" />
+							<com:caseNumber
+								caseTypeCodeValue="#{adjudicationSearchView.caseNumberVO.caseType}"
+								caseNoValue="#{adjudicationSearchView.caseNumberVO.caseSequence}"
+								caseYearValue="#{adjudicationSearchView.caseNumberVO.caseYear}"
+								disabled="false" allMandatory="true" />
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['create.btn']}"
+							action="#{adjudicationSearchView.createAdjudication}"
+							update="pg,msgs" validateClient="true">
+						</p:commandButton>
+
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('createDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to create -->
+
+			<!-- dialog to show delete message -->
+			<p:dialog widgetVar="msgDialog" modal="true" closable="false">
+				<h:form id="formMsg">
+					<div class="ui-fluid">
+						<h:outputText value="#{adjudicationSearchView.deleteMsg}"
+							style="font-size:16px;font-weight:bold;" />
+					</div>
+					<div style="margin: 30px 0px 0px 280px;">
+						<p:commandButton value="OK" styleClass="ui-confirmdialog-yes"
+							onclick="PF('msgDialog').hide();" />
+					</div>
+				</h:form>
+			</p:dialog>
+			<!-- dialog to show delete message -->
+		</div>
+		<ui:include src="./result.xhtml"></ui:include>
+	</ui:define>
+</ui:composition>

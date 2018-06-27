@@ -1,0 +1,170 @@
+<!DOCTYPE html [
+    <!ENTITY bull "&#8226;">
+]>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../system-administration.xhtml">
+
+	<ui:define name="head">
+		<script>
+			function _ACTION(_type) {
+				switch (_type) {
+				case 'result1':
+					_popup('popup.html#/cp-cert-create', {
+						size : 22,
+						title : 'Create Certificate',
+						iframe : 'true'
+					});
+					break;
+				case 'create':
+					PF('createCourse').show();
+					break;
+				case 'edit':
+					PF('documentDialog').show();
+					break;
+				case 'save':
+					window.location = 'config.xhtml';
+					break;
+                    case 'create-save':
+					window.location = 'course-info.xhtml';
+					break;
+				case 'search':
+					window.location = "search.xhtml";
+					break;
+				case 'result':
+					window.location = "result.xhtml";
+					break;
+				default:
+					console.log('default cp-breadcrumb.html');
+				}
+			}
+		</script>
+	</ui:define>
+	<ui:define name="breadcrumb-2">
+		<li><a title="">#{msgs['system.setting.title']}</a><i
+			class="ti-angle-right"></i></li>
+		<!-- 		<li><a title="">Edit</a><i class="ti-angle-right"></i></li> -->
+	</ui:define>
+	<ui:define name="title">
+        #{msgs['system.setting.title']}
+	</ui:define>
+	<ui:define name="main-content">
+		<p:tabView activeIndex="0" id="settingTabView">
+			<p:tab title="#{msgs['system.setting.parameters.tab.name']}">
+				<h:form id="formSystemParams">
+					<p:messages id="msgSystemParams" closable="true"></p:messages>
+					<ui:repeat var="sysPar"
+						value="#{systemSettingView.systemSettingPageVO.systemParameterList}">
+						<p:panelGrid columns="2"
+							columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid"
+							rendered="#{sysPar.visiable}">
+							<p:outputLabel for="sysParVal" value="#{sysPar.parameterDesc}" />
+							<p:inputText required="true" id="sysParVal"
+								value="#{sysPar.parameterValue}" />
+						</p:panelGrid>
+					</ui:repeat>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['save.btn']}"
+							action="#{systemSettingView.saveSystemSettingParameter}"
+							update="@form" oncomplete="window.scrollTo(0,0);" />
+					</div>
+				</h:form>
+			</p:tab>
+			<p:tab title="#{msgs['system.setting.oroInfo.tab.name']}">
+				<h:form id="formOroInfo" enctype="multipart/form-data">
+					<p:messages id="msgOroInfo" closable="true"></p:messages>
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-3,ui-grid-col-3,ui-grid-col-3,ui-grid-col-3"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="NameInCharge"
+							value="#{msgs['system.setting.oroInfo.content.column1']}" />
+						<p:inputText id="NameInCharge"
+							value="#{systemSettingView.systemSettingPageVO.oroInfo.nameOfInCharge}" />
+						<p:outputLabel for="TitleInCharge"
+							value="#{msgs['system.setting.oroInfo.content.column2']}" />
+						<p:inputText id="TitleInCharge"
+							value="#{systemSettingView.systemSettingPageVO.oroInfo.titleOfInCharge}" />
+					</p:panelGrid>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-3,ui-grid-col-9" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="OrgNameEn"
+							value="#{msgs['system.setting.oroInfo.content.column3']}" />
+						<p:inputText id="OrgNameEn"
+							value="#{systemSettingView.systemSettingPageVO.oroInfo.orgName}" />
+
+						<p:outputLabel for="OrgNameCn"
+							value="#{msgs['system.setting.oroInfo.content.column4']}" />
+						<p:inputText id="OrgNameCn"
+							value="#{systemSettingView.systemSettingPageVO.oroInfo.orgName}" />
+
+						<p:outputLabel
+							value="#{msgs['system.setting.oroInfo.content.column5']}" />
+						<p:inputText id="AddressEn1" placeholder="Flat, Floor, Block" />
+
+						<p:spacer width="0"></p:spacer>
+						<p:inputText id="AddressEn2" placeholder="Street, Road" />
+
+						<p:spacer width="0"></p:spacer>
+						<p:inputText id="AddressEn3" placeholder="District" />
+
+						<p:outputLabel
+							value="#{msgs['system.setting.oroInfo.content.column6']}" />
+						<p:inputText id="AddressCn1" placeholder="Area" />
+
+						<p:spacer width="0"></p:spacer>
+						<p:inputText id="AddressCn2" placeholder="District, Street" />
+
+						<p:spacer width="0"></p:spacer>
+						<p:inputText id="AddressCn3" placeholder="Flat, Floor, Block" />
+					</p:panelGrid>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['save.btn']}"
+							action="#{systemSettingView.saveOROInfo}" update="@form"
+							oncomplete="window.scrollTo(0,0);" />
+					</div>
+				</h:form>
+			</p:tab>
+			<p:tab title="#{msgs['system.setting.notification.tab.name']}"
+				id="notificationTab">
+				<h:form id="formSystemNotification">
+					<p:messages id="msgSystemNotification" closable="true"></p:messages>
+					<p:panelGrid columns="2"
+						columnClasses="ui-grid-col-1,ui-grid-col-11" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="content"
+							value="#{msgs['system.setting.notification.content']}" />
+						<p:textEditor id="content" widgetVar="editorWidget"
+							value="#{systemSettingView.systemSettingPageVO.sysNotification.notificationContent}"
+							maxlength="4000" height="600" />
+					</p:panelGrid>
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-3,ui-grid-col-3,ui-grid-col-3,ui-grid-col-3"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="StartDate"
+							value="#{msgs['system.setting.notification.eftDate.start']}" />
+						<p:calendar id="StartDate" showOn="button"
+							pattern="#{appResourceUtils.dateFormat}"
+							value="#{systemSettingView.systemSettingPageVO.sysNotification.notificationEffStartDate}" />
+						<p:outputLabel for="EndDate"
+							value="#{msgs['system.setting.notification.eftDate.end']}" />
+						<p:calendar id="EndDate" showOn="button"
+							pattern="#{appResourceUtils.dateFormat}"
+							value="#{systemSettingView.systemSettingPageVO.sysNotification.notificationEffEndDate}" />
+					</p:panelGrid>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['save.btn']}"
+							action="#{systemSettingView.saveNotification}" update="@form"
+							oncomplete="window.scrollTo(0,0);" />
+					</div>
+				</h:form>
+			</p:tab>
+		</p:tabView>
+	</ui:define>
+</ui:composition>
+
+

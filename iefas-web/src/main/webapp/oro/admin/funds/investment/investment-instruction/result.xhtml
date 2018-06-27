@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<h:form id="formC">
+		<p:dataTable var="item"
+			value="#{investmentInstructionSearchView.investmentItemDataModel}"
+			rowKey="#{item.accountInvestmentItemId}" lazy="true" reflow="true"
+			paginator="true" paginatorPosition="bottom" rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true"
+			rendered="#{investmentInstructionSearchView.investmentItemDataModel != null}">
+			<f:facet name="header">#{msgs['bank.account.result.title']}</f:facet>
+
+			<p:column headerText="#{msgs['instruction.number.column.header']}"
+				sortBy="#{item.investmentNumber}">
+				<p:commandLink href="javascript:void(0)" action="edit" ajax="false">
+					<h:outputText value="#{item.investmentNumber}" />
+					<f:param name="invItemId" value="#{item.accountInvestmentItemId}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column headerText="#{msgs['instruction.effective.date.column.header']}"
+				sortBy="#{item.investmentDate}">
+				<h:outputText value="#{item.investmentDate}">
+					<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="#{msgs['instruction.maturity.column.header']}"
+				sortBy="#{item.maturityDate}">
+				<h:outputText value="#{item.maturityDate}">
+					<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="#{msgs['instruction.deposit.amount.column.header']}"
+				sortBy="#{item.accountInvestmentAmount}">
+				<h:outputText value="#{item.accountInvestmentAmount}" />
+			</p:column>
+			
+			<p:column headerText="#{msgs['instruction.rate.column.header']}"
+				sortBy="#{item.interestRate}">
+				<h:outputText value="#{item.interestRate}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['status.column.header']}"
+				sortBy="#{item.status}" styleClass="ax-status-w-b">
+				<h:outputText value="#{msgs['inactive.status.label']}"
+					rendered="#{item.status eq 'ina'}" class="status-label red" />
+				<h:outputText value="#{msgs['active.status.label']}"
+					rendered="#{item.status eq 'act'}" class="status-label green" />
+			</p:column>
+
+			<p:column headerText="#{msgs['action.column.header']}"
+				styleClass="ax-action-w dont-print">
+				<p:menuButton value="#{msgs['action.menuButton.label']}">
+					<p:menuitem value="#{msgs['edit.menuitem.label']}" action="edit" ajax="false">
+						<f:param name="invItemId" value="#{item.accountInvestmentItemId}" />
+					</p:menuitem>
+					<p:menuitem value="#{msgs['inactive.status.label']}"
+						rendered="#{item.status eq 'act'}"
+						action="#{bankAccountView.changeStatus}" update="formC">
+						<f:setPropertyActionListener value="#{bank.bankInfoId}"
+							target="#{bankAccountView.bankInfoId}" />
+					</p:menuitem>
+					<p:menuitem value="#{msgs['active.status.label']}"
+						rendered="#{item.status eq 'ina'}"
+						action="#{bankAccountView.changeStatus}" update="formC">
+						<f:setPropertyActionListener value="#{item.accountInvestmentItemId}"
+							target="#{bankAccountView.bankInfoId}" />
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+
+	</h:form>
+</ui:composition>
+
+
+
+

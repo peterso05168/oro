@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<h:form id="formC">
+		<p:dataTable var="caseFeeComputation"
+			value="#{feeComputationSearchView.dividendCalculationDataModel}"
+			rowKey="#{caseFeeComputation.dividendCalculationId}"
+			rendered="#{feeComputationSearchView.dividendCalculationDataModel != null}"
+			lazy="true" reflow="true" paginator="true" paginatorPosition="bottom"
+			rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+			<p:columnGroup type="header">
+				<p:row>
+					<p:column colspan="6"
+						headerText="#{msgs['orsFeesComputation.case.number.label']} : #{feeComputationSearchView.caseName}" />
+				</p:row>
+				<p:row>
+					<p:column colspan="1"
+						headerText="#{msgs['orsFeesComputation.payment.type.header']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['orsFeesComputation.creditor.type.header']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['orsFeesComputation.date.header']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['orsFeesComputation.analysis.code.header']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['orsFeesComputation.charged.amount.header']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['orsFeesComputation.status.header']}" />
+				</p:row>
+			</p:columnGroup>
+
+			<p:column sortBy="#{caseFeeComputation.paymentType}">
+				<p:commandLink href="javascript:void(0)" action="edit" ajax="false">
+					<h:outputText
+						value="#{feeComputationSearchView.paymentTypeMap.get(caseFeeComputation.paymentType)}" />
+					<f:param name="dividendCalculationId"
+						value="#{caseFeeComputation.dividendCalculationId}" />
+				</p:commandLink>
+			</p:column>
+			<p:column sortBy="#{caseFeeComputation.creditorTypeStr}">
+				<h:outputText value="#{caseFeeComputation.creditorTypeStr}" />
+			</p:column>
+			<p:column sortBy="#{caseFeeComputation.paymentDate}">
+				<h:outputText value="#{caseFeeComputation.paymentDate}">
+					<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+				</h:outputText>
+			</p:column>
+			<p:column sortBy="#{caseFeeComputation.analysisCodes}">
+				<h:outputText value="#{caseFeeComputation.analysisCodes}" />
+			</p:column>
+			<p:column sortBy="#{caseFeeComputation.chargedAmounts}">
+				<p:inputNumber inputStyle="text-align: right;" disabled="true"
+					value="#{caseFeeComputation.chargedAmounts}" />
+			</p:column>
+			<p:column sortBy="#{caseFeeComputation.status}">
+				<h:outputText
+					value="#{feeComputationSearchView.statusMap.get(caseFeeComputation.status)}"
+					class="status-label green" />
+			</p:column>
+
+		</p:dataTable>
+	</h:form>
+</ui:composition>
+
+
+
+

@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<h:form id="postResultTable">
+		<p:dataTable var="post" value="#{postSearchView.postResultDataModel}"
+			rowKey="#{post.postId}" lazy="true" reflow="true" paginator="true"
+			paginatorPosition="bottom" rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true"
+			rendered="#{postSearchView.postResultDataModel != null}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+
+			<p:column headerText="#{msgs['post.postTitle.column.header']}"
+				sortBy="#{post.postTitle}">
+				<p:commandLink action="edit" ajax="false">
+					<h:outputText value="#{post.postTitle}" />
+					<f:param name="postId" value="#{post.postId}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column headerText="#{msgs['post.rank.column.header']}"
+				sortBy="#{post.rank.rankName}">
+				<h:outputText value="#{post.rankName}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['post.division.column.header']}"
+				sortBy="#{post.division.divisionName}">
+				<h:outputText value="#{post.divisionName}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['post.user.name.column.header']}"
+				sortBy="#{post.userProfiles.engName}" >
+				<h:outputText value="#{post.userName}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['status.column.header']}"
+				sortBy="#{post.status}" styleClass="ax-status-w-b">
+				<h:outputText value="#{msgs['inactive.status.label']}"
+					rendered="#{post.status eq 'INA'}" class="status-label red" />
+				<h:outputText value="#{msgs['active.status.label']}"
+					rendered="#{post.status eq 'ACT'}" class="status-label green" />
+			</p:column>
+
+			<p:column headerText="#{msgs['action.column.header']}"
+				styleClass="ax-action-w dont-print">
+				<p:menuButton value="Action">
+					<p:menuitem value="Edit" action="edit" ajax="false">
+						<f:param name="postId" value="#{post.postId}" />
+					</p:menuitem>
+					<p:menuitem value="Inactive" rendered="#{post.status eq 'ACT'}"
+						onclick="PF('cd').show()">
+						<f:setPropertyActionListener value="#{post.postId}"
+							target="#{postSearchView.postId}" />
+					</p:menuitem>
+					<p:menuitem value="Active" rendered="#{post.status eq 'INA'}"
+						onclick="PF('cd').show()">
+						<f:setPropertyActionListener value="#{post.postId}"
+							target="#{postSearchView.postId}" />
+					</p:menuitem>
+				</p:menuButton>
+				<p:confirmDialog widgetVar="cd" header="Confirm" showEffect="fade">
+					<f:facet name="message">
+						<h:outputText
+							value="Confirm to Active / Inactive the selected record ?" />
+					</f:facet>
+					<div align="center">
+						<p:commandButton value="Yes"
+							action="#{postSearchView.changeStatus}" update="postResultTable,searchForm"
+							oncomplete="PF('cd').hide()" />
+						<p:commandButton value="No" onclick="PF('cd').hide();"
+							type="button" />
+					</div>
+				</p:confirmDialog>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+</ui:composition>
+
+
+
+

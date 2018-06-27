@@ -1,0 +1,24 @@
+name: ORO-IEFAS Web
+iefas:
+  ws:
+    address: http://localhost:8080/iefas-ws
+  web:
+    address: https://localhost:8443/iefas-web
+server:
+  port: 8080
+  session:
+    timeout: 1800
+servlet:
+  container:
+    maxThreads: 513
+endpoints:
+  sessions:
+    web:
+      enabled: true
+spring:
+  session:
+    store-type: hazelcast
+cluster:
+  members: 127.0.0.1
+jsf:
+  project-stage: Development

@@ -1,0 +1,260 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui" template="./ors-fees.xhtml">
+
+
+
+	<ui:define name="title">
+		<h:outputLink styleClass="ax-back-icon-url" hreflang="search">
+			<i class="ax-icon ti-arrow-left"></i>
+			#{msgs['orsFees.title']}
+		</h:outputLink>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="caseType"
+								value="#{msgs['orsFees.caseType.label']}" />
+							<p:inputText id="caseType" disabled="true"
+								value="#{feeEditView.caseFeeTypeVO.caseType.caseTypeDesc}">
+							</p:inputText>
+							<p:column></p:column>
+							<p:column></p:column>
+							<p:outputLabel for="feesItem"
+								value="#{msgs['orsFees.feesItem.label']}" />
+							<p:inputText id="feesItem" disabled="true"
+								value="#{feeEditView.caseFeeTypeVO.caseFeeTypeName}">
+							</p:inputText>
+							<p:outputLabel for="feesName"
+								value="#{msgs['orsFees.feesName.label']}" />
+							<p:inputText id="feesName" disabled="true"
+								value="#{feeEditView.caseFeeTypeVO.caseFeeTypeDesc}">
+							</p:inputText>
+						</p:panelGrid>
+					</div>
+				</p:panel>
+
+				<p:tabView id="tabView" activeIndex="0">
+					<p:tab title="#{msgs['orsFees.calculation.label']}">
+						<p:dataTable id="resultTable" reflow="true" paginator="false"
+							var="calculationMaintenanceVO"
+							value="#{feeEditView.calculationMaintenanceVOs}">
+							<p:column
+								headerText="#{msgs['orsFees.periodFrom.column.header']}">
+								<p:commandLink href="javascript:void(0)"
+									action="#{feeEditView.editCalculationMaintenanceVO(calculationMaintenanceVO)}"
+									onmouseup="PF('editDialog').show();" update="createForm:pg">
+									<h:outputText
+										value="#{calculationMaintenanceVO.calculationInfo.periodFrom}">
+										<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+									</h:outputText>
+								</p:commandLink>
+							</p:column>
+
+							<p:column headerText="#{msgs['orsFees.periodTo.column.header']}">
+								<h:outputText
+									value="#{calculationMaintenanceVO.calculationInfo.periodTo}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+							</p:column>
+
+							<p:column
+								headerText="#{msgs['orsFees.calculationBasic.column.header']}">
+								<h:outputText
+									value="#{calculationMaintenanceVO.calculationInfo.calculationType}" />
+							</p:column>
+
+							<p:column headerText="#{msgs['action.column.header']}"
+								styleClass="ax-action-w dont-print">
+								<p:menuButton value="#{msgs['action.menuButton.label']}"
+									disabled="#{!feeEditView.editable}">
+									<p:menuitem value="#{msgs['edit.menuitem.label']}"
+										update="createForm:pg"
+										action="#{feeEditView.editCalculationMaintenanceVO(calculationMaintenanceVO)}"
+										onclick="PF('editDialog').show();" process="@this">
+									</p:menuitem>
+									<p:menuitem value="#{msgs['delete.menuitem.label']}"
+										action="#{feeEditView.deleteCalculationMaintenanceVO(calculationMaintenanceVO)}"
+										update="editForm:tabView">
+									</p:menuitem>
+								</p:menuButton>
+							</p:column>
+						</p:dataTable>
+						<div class="ax-btn-set">
+							<p:commandButton value="#{msgs['orsFees.value.btn']}"
+								update="createForm:pg" disabled="#{!feeEditView.editable}"
+								action="#{feeEditView.addCalculationRule}"
+								onclick="PF('editDialog').show();" icon="ti-plus" />
+						</div>
+					</p:tab>
+
+				</p:tabView>
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						disabled="#{!feeEditView.editable}"
+						action="#{feeEditView.saveORFeeItemWithCalculationMethod}" />
+					<p:commandButton value="#{msgs['edit.btn']}" update="@form"
+						action="#{feeEditView.changeToEdit}"
+						disabled="#{!feeEditView.clikable}" />
+				</div>
+			</h:form>
+
+			<h:form id="createForm">
+				<p:dialog id="editDialog"
+					header="#{msgs['orsFees.editCalculation.title']}"
+					widgetVar="editDialog" modal="true" width="1000" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:ajax event="close" update="@form,editForm" resetValues="true">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<p:messages id="msgs" closable="true" />
+
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="3"
+							columnClasses="ui-grid-col-3,ui-grid-col-10,ui-grid-col-3"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+							<p:outputLabel value="#{msgs['orsFees.periodToApply.label']}" />
+							<p:column>
+								<p:calendar id="from" placeholder="From" showOn="button"
+									required="true"
+									value="#{feeEditView.calculationMaintenanceVO.calculationInfo.periodFrom}"
+									pattern="#{appResourceUtils.dateFormat}">
+								</p:calendar>
+								<p:calendar id="to" placeholder="To" showOn="button"
+									value="#{feeEditView.calculationMaintenanceVO.calculationInfo.periodTo}"
+									pattern="#{appResourceUtils.dateFormat}">
+								</p:calendar>
+							</p:column>
+							<p:column>
+							</p:column>
+
+
+							<p:outputLabel value="#{msgs['orsFees.calculateBasis.label']}" />
+							<p:column>
+								<p:selectOneMenu id="calMethodMenu"
+									disabled="#{feeEditView.calculationMaintenanceVO.id != null}"
+									value="#{feeEditView.calculationMaintenanceVO.calculationInfo.calculationType}">
+									<f:selectItem itemLabel="- All -" itemValue=""
+										noSelectionOption="true" />
+									<f:selectItems value="#{feeEditView.calculationMethodMap}" />
+									<p:ajax event="change"
+										listener="#{feeEditView.calculateMethodChange}"
+										update="createForm:pg">
+									</p:ajax>
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+							</p:column>
+
+							<p:outputLabel value="#{msgs['orsFees.fixedAmount.label']}"
+								rendered="#{feeEditView.enableFix}" />
+							<p:inputNumber required="true" maxlength="16" inputStyle="text-align: right;"
+								value="#{feeEditView.calculationMaintenanceVO.caseFeeMaintenances[0].feeAmount}"
+								rendered="#{feeEditView.enableFix}" />
+							<p:column rendered="#{feeEditView.enableFix}">
+							</p:column>
+
+							<p:outputLabel value="#{msgs['orsFees.rate.label']}"
+								rendered="#{feeEditView.enableRat}" />
+							<p:inputNumber required="true" maxlength="16" placeholder="%" inputStyle="text-align: right;"
+								value="#{feeEditView.calculationMaintenanceVO.caseFeeMaintenances[0].percent}"
+								rendered="#{feeEditView.enableRat}">
+								<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+							</p:inputNumber>
+							<p:column rendered="#{feeEditView.enableRat}">
+							</p:column>
+
+
+							<p:outputLabel value="#{msgs['orsFees.slidingScale.label']}"
+								rendered="#{feeEditView.enableSli}" />
+							<p:column rendered="#{feeEditView.enableSli}">
+								<p:dataTable id="dt" reflow="true" var="caseFeeMaintenanceVO"
+									rowKey="#{caseFeeMaintenanceVO.caseFeeMaintenanceId}"
+									value="#{feeEditView.calculationMaintenanceVO.caseFeeMaintenances}">
+
+									<p:column
+										headerText="#{msgs['orsFees.valueFrom.column.header']}">
+										<p:inputNumber required="true" maxlength="16" disabled="true" inputStyle="text-align: right;"
+											value="#{caseFeeMaintenanceVO.valueFrom}" />
+									</p:column>
+									<p:column headerText="#{msgs['orsFees.valueTo.column.header']}">
+										<p:inputNumber maxlength="16" required="true" inputStyle="text-align: right;"
+											value="#{caseFeeMaintenanceVO.valueTo}">
+											<p:ajax event="change"
+												listener="#{feeEditView.resetCaseFeeMaintenanceListOfCalculationMaintenanceVO(caseFeeMaintenanceVO)}"
+												update="dt">
+											</p:ajax>
+										</p:inputNumber>
+									</p:column>
+									<p:column
+										headerText="#{msgs['orsFees.forEvery.column.header']}">
+										<p:inputNumber maxlength="16" minValue="0" required="true" inputStyle="text-align: right;"
+											value="#{caseFeeMaintenanceVO.roundingUnit}" />
+									</p:column>
+									<p:column
+										headerText="#{msgs['orsFees.roundUpTo.column.header']}">
+										<p:inputNumber maxlength="16" minValue="0" required="true" inputStyle="text-align: right;"
+											value="#{caseFeeMaintenanceVO.roundingAmount}" />
+									</p:column>
+
+									<p:column headerText="#{msgs['action.column.header']}"
+										styleClass="ax-action-w dont-print">
+										<p:menuButton value="#{msgs['action.menuButton.label']}">
+											<p:menuitem value="#{msgs['delete.menuitem.label']}"
+												process="@this"
+												action="#{feeEditView.deleteCaseFeeMaintenanceVO(caseFeeMaintenanceVO)}"
+												update="dt,createForm:msgs">
+											</p:menuitem>
+										</p:menuButton>
+									</p:column>
+								</p:dataTable>
+
+								<div class="ax-btn-set">
+									<p:commandButton value="#{msgs['orsFees.value.btn']}"
+										action="#{feeEditView.addCaseFeeMaintenanceVO()}"
+										update="dt,msgs" style="width: auto" icon="ti ti-plus" />
+								</div>
+							</p:column>
+
+							<p:column rendered="#{feeEditView.enableSli}">
+							</p:column>
+						</p:panelGrid>
+
+					</div>
+
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['save.btn']}" validateClient="true"
+							action="#{feeEditView.saveCalculationRule}"
+							update="pg,msgs,editForm:tabView:resultTable">
+						</p:commandButton>
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('editDialog').hide();" />
+					</div>
+				</p:dialog>
+
+			</h:form>
+		</div>
+	</ui:define>
+
+</ui:composition>
+
+
+
+

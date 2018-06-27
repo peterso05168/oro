@@ -1,0 +1,327 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui"
+	template="./ors-fees-computation-appropriation-account.xhtml">
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+			#{msgs['orsFeesComputation.title']}
+		</h:link>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+							<p:outputLabel
+								value="#{msgs['orsFeesComputation.case.number.label']}" />
+							<com:caseNumber
+								caseTypeCodeValue="#{feeComputationEditView.vcase.caseType.caseTypeCode}"
+								caseNoValue="#{feeComputationEditView.vcase.caseNo}"
+								caseYearValue="#{feeComputationEditView.vcase.caseYear}"
+								disabled="true" />
+
+							<p:outputLabel
+								value="#{msgs['orsFeesComputation.casename.label']}" />
+							<p:inputText id="caseName" disabled="true"
+								value="#{feeComputationEditView.vcase.caseName}" />
+
+							<p:outputLabel
+								value="#{msgs['orsFeesComputation.paymenttype.label']}" />
+							<p:column>
+								<p:inputText disabled="true"
+									value="#{feeComputationEditView.paymentType}" />
+							</p:column>
+
+							<p:outputLabel
+								value="#{msgs['orsFeesComputation.creditortype.label']}" />
+							<p:selectCheckboxMenu id="creditorTypes"
+								disabled="#{feeComputationEditView.formDisabled}"
+								multiple="true" filter="true" filterMatchMode="startsWith"
+								panelStyle="width:250px"
+								value="#{feeComputationEditView.selectedCreditorTypes}">
+								<f:selectItems value="#{feeComputationEditView.creditorTypes}"
+									var="creditorType" itemLabel="#{creditorType.creditorTypeName}"
+									itemValue="#{creditorType.creditorTypeName}" />
+								<f:ajax event="change"
+									listener="#{feeComputationEditView.changeCreditorType}"
+									execute="@this"
+									render="editForm:tabView:distributionTable editForm:tabView:totalDistribution editForm:msgs editForm:creditorTypes" />
+							</p:selectCheckboxMenu>
+
+							<p:outputLabel value="#{msgs['orsFeesComputation.status.label']}" />
+							<p:column>
+								<p:inputText disabled="true"
+									value="#{feeComputationEditView.status}" />
+							</p:column>
+
+							<p:outputLabel
+								value="#{msgs['orsFeesComputation.submitted.by.label']}" />
+							<p:inputText id="submittedBy" disabled="true"
+								value="#{feeComputationEditView.dividendCalculationVO.submittedBy}" />
+
+							<p:outputLabel
+								value="#{msgs['orsFeesComputation.submitted.date.label']}" />
+							<p:inputText id="submittedDate" disabled="true"
+								value="#{feeComputationEditView.dividendCalculationVO.submittedDate}" />
+
+							<p:outputLabel
+								value="#{msgs['orsFeesComputation.approved.by.label']}" />
+							<p:inputText id="approvedBy" disabled="true"
+								value="#{feeComputationEditView.dividendCalculationVO.approvedBy}" />
+
+							<p:outputLabel
+								value="#{msgs['orsFeesComputation.approved.date.label']}" />
+							<p:inputText id="approvedDate" disabled="true"
+								value="#{feeComputationEditView.dividendCalculationVO.approvedDate}" />
+						</p:panelGrid>
+					</div>
+				</p:panel>
+
+				<p:tabView id="tabView"
+					activeIndex="#{feeComputationEditView.activeIndex}">
+					<p:tab title="#{msgs['orsFeesComputation.details.label']}"
+						titleStyle="margin-right: 3px;">
+						<ui:include src="details-tab.xhtml"></ui:include>
+					</p:tab>
+					<p:tab id="provision"
+						title="#{msgs['orsFeesComputation.provision.label']}"
+						titleStyle="margin-right: 3px;">
+						<ui:include src="provision-tab.xhtml"></ui:include>
+					</p:tab>
+
+					<p:tab id="distribution"
+						title="#{msgs['orsFeesComputation.distribution.label']}"
+						titleStyle="margin-right: 3px;">
+						<ui:include src="distribution-tab.xhtml"></ui:include>
+					</p:tab>
+
+					<p:tab title="#{msgs['orsFeesComputation.history.label']}"
+						titleStyle="margin-right: 3px;">
+						<ui:include src="history-tab.xhtml"></ui:include>
+					</p:tab>
+				</p:tabView>
+
+				<div class="sep type-02"></div>
+				<p:panelGrid columns="6"
+					columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:column></p:column>
+					<p:column></p:column>
+					<p:column></p:column>
+					<p:column></p:column>
+					<p:outputLabel
+						value="#{msgs['orsFeesComputation.case.in.hand.label']}" />
+					<p:inputNumber inputStyle="text-align: right;" id="caseInHand"
+						disabled="true"
+						value="#{feeComputationEditView.dividendCalculationVO.caseInHand}" />
+
+					<p:column></p:column>
+					<p:column></p:column>
+					<p:column></p:column>
+					<p:column></p:column>
+					<p:outputLabel value="#{msgs['orsFeesComputation.balance.label']}" />
+					<p:inputNumber inputStyle="text-align: right;" id="balance"
+						disabled="true" value="#{feeComputationEditView.balance}" />
+				</p:panelGrid>
+
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"></p:button>
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						action="#{feeComputationEditView.saveORFeeComputation}"
+						rendered="#{feeComputationEditView.saveable}" />
+					<p:button value="#{msgs['report.btn']}" disabled="true" />
+					<p:commandButton value="#{msgs['create.schedule.btn']}"
+						action="#{feeComputationEditView.createSchedule}"
+						rendered="#{feeComputationEditView.dividendCalculationVO.status eq 'APP'}" />
+					<p:menuButton value="#{msgs['action.menuButton.label']}"
+						rendered="#{feeComputationEditView.submitable or feeComputationEditView.approvable or feeComputationEditView.rejectable or feeComputationEditView.deletable}">
+						<p:menuitem value="
+						#{msgs['submit.menuitem.label']}"
+							update="@form" rendered="#{feeComputationEditView.submitable}"
+							action="#{feeComputationEditView.submitORFeeComputation}" />
+						<p:menuitem value="#{msgs['approve.menuitem.label']}"
+							update="@form" rendered="#{feeComputationEditView.approvable}"
+							action="#{feeComputationEditView.approveORFeeComputation}" />
+						<p:menuitem value="#{msgs['reject.menuitem.label']}"
+							update="@form" rendered="#{feeComputationEditView.rejectable}"
+							onclick="PF('rejectDialog').show();" />
+						<p:menuitem update="@form"
+							rendered="#{feeComputationEditView.deletable}"
+							value="#{msgs['delete.menuitem.label']}"
+							action="#{feeComputationEditView.deleteORFeeComputation}">
+							<p:confirm header="#{msgs['delete.dialog.header']}"
+								message="#{msgs['delete.dialog.msg']}" icon="ui-icon-alert" />
+						</p:menuitem>
+					</p:menuButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="#{msgs['delete.yes.btn']}" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="#{msgs['delete.no.btn']}" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</div>
+			</h:form>
+
+			<!-- dialog to create/edit gazettes -->
+			<h:form id="createForm">
+				<p:dialog id="editDialog"
+					header="#{msgs['orsFeesComputation.gazette.title']}"
+					widgetVar="editDialog" modal="true" width="620" resizable="false"
+					dynamic="true" responsive="true">
+
+					<p:ajax event="close" update="@form" resetValues="true"
+						listener="#{feeComputationEditView.createHandleClose}">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid id="pd" columns="2" layout="grid"
+							columnClasses="ui-grid-col-2,ui-grid-col-8"
+							styleClass="ui-panelgrid-blank ui-fluid">
+
+							<p:outputLabel value="#{msgs['orsFeesComputation.dialog.date']}" />
+							<p:calendar id="gazetteDate" showOn="button" required="true"
+								value="#{feeComputationEditView.caseFeeForDividendCalculation.caseFeeDate}">
+								<f:ajax event="dateSelect"
+									listener="#{feeComputationEditView.changeGazetteFee}"
+									render="gazetteFee" />
+							</p:calendar>
+
+							<p:outputLabel
+								value="#{msgs['orsFeesComputation.dialog.description']}" />
+							<p:selectOneMenu id="gazetteDescription" required="true"
+								value="#{feeComputationEditView.caseFeeDesc}">
+								<f:selectItem itemLabel="- Select -" />
+								<f:selectItems value="#{feeComputationEditView.gazettes}"
+									var="gazette" itemLabel="#{gazette.gazetteName}"
+									itemValue="#{gazette.gazetteId}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="#{msgs['orsFeesComputation.dialog.fee']}" />
+							<p:inputNumber inputStyle="text-align: right;" id="gazetteFee"
+								disabled="true"
+								value="#{feeComputationEditView.caseFeeForDividendCalculation.caseFeeAmount}" />
+
+						</p:panelGrid>
+					</div>
+
+					<div class="ax-btn-set" align="left">
+						<p:commandButton value="#{msgs['save.btn']}"
+							update="msgs,editForm:tabView"
+							action="#{feeComputationEditView.saveGazetteCreate}" />
+						<p:commandButton value="#{msgs['cancel.btn']}" immediate="true"
+							styleClass="ui-priority-secondary"
+							onclick="PF('editDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to create/edit gazettes -->
+
+			<!-- dialog to view amounts -->
+			<h:form id="viewForm">
+				<p:dialog id="viewDialog"
+					header="#{msgs['orsFeesComputation.details.on.the.amount.distributed.to.creditors.label']}"
+					widgetVar="viewDialog" modal="true" width="642" resizable="false"
+					dynamic="true" responsive="true">
+
+					<div class="ui-fluid">
+						<p:dataTable id="detailsTable" var="distributedAmount"
+							value="#{feeComputationEditView.calculationOfDividendFee.distributedAmounts}">
+							<p:columnGroup type="header">
+								<p:row>
+									<p:column
+										headerText="#{msgs['orsFeesComputation.item.column.header']}" />
+									<p:column
+										headerText="#{msgs['orsFeesComputation.distributed.amount.column.header']}" />
+									<p:column
+										headerText="#{msgs['orsFeesComputation.ors.fees.charged.column.header']}" />
+								</p:row>
+							</p:columnGroup>
+							<p:column>#{distributedAmount.distribution}</p:column>
+							<p:column style="text-align:right">#{distributedAmount.amount}</p:column>
+							<p:column style="text-align:right">#{distributedAmount.charged}</p:column>
+
+							<p:columnGroup type="footer">
+								<p:row style="border:none">
+									<p:column colspan="2"
+										style="border:none;background-color:#ffffff;text-align:right"
+										footerText="#{msgs['orsFeesComputation.total.label']}" />
+									<p:column
+										style="border:none;background-color:#ffffff;text-align:right"
+										footerText="#{feeComputationEditView.calculationOfDividendFee.distributedToCreditors}">
+									</p:column>
+								</p:row>
+							</p:columnGroup>
+						</p:dataTable>
+					</div>
+
+					<div class="ax-btn-set" align="left">
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('viewDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to view amounts -->
+
+			<!-- dialog to reject or fee computation -->
+			<h:form id="rejectForm">
+				<p:dialog id="rejectDialog" header="#{msgs['reject.dialog.header']}"
+					widgetVar="rejectDialog" modal="true" width="500" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid columns="2" id="pd"
+							columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel value="#{msgs['common.reason.label']}" />
+							<p:selectOneMenu required="true"
+								value="#{feeComputationEditView.remarkReson}">
+								<f:selectItem itemLabel="- Select -" />
+								<f:selectItems var="reason"
+									value="#{feeComputationEditView.sysRejectReasons}"
+									itemLabel="#{reason.rejectReasonDesc}"
+									itemValue="#{reason.rejectReasonDesc}" />
+								<p:ajax event="change" update="rejectForm:pd" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="#{msgs['reject.reason.label']}" />
+							<p:inputTextarea value="#{feeComputationEditView.remarkReson}"
+								disabled="true">
+							</p:inputTextarea>
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['confirm.btn']}"
+							action="#{feeComputationEditView.rejectORFeeComputation}"
+							update="pd,msgs,editForm" validateClient="true" />
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('rejectDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to reject or fee computation -->
+		</div>
+	</ui:define>
+
+</ui:composition>
+
+
+
+

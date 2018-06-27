@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:*" PATH="*" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:*:0" NAME="item" PATH="*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="dashboard::#oro#admin#dashboard#dashboard.xhtml" NAME="output"
+    PATH="/oro/admin/dashboard/dashboard.xhtml"
+    TARGET="rules:#oro#admin#dashboard#dashboard.xhtml"
+    TITLE="dashboard" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="login::#oro#admin#index#login.xhtml"
+    NAME="output1" PATH="/oro/admin/index/login.xhtml"
+    TARGET="rules:#oro#admin#index#login.xhtml" TITLE="login" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="forgot-passowrd::#oro#admin#index#forgot-password.xhtml"
+    NAME="output2" PATH="/oro/admin/index/forgot-password.xhtml"
+    TARGET="rules:#oro#admin#index#forgot-password.xhtml"
+    TITLE="forgot-passowrd" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="profile-edit::#oro#admin#my-profile#edit.xhtml" NAME="output3"
+    PATH="/oro/admin/my-profile/edit.xhtml"
+    TARGET="rules:#oro#admin#my-profile#edit.xhtml" TITLE="profile-edit" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="user-search::#oro#admin#system#user#search.xhtml" NAME="output4"
+    PATH="/oro/admin/system/user/search.xhtml"
+    TARGET="rules:#oro#admin#system#user#search.xhtml"
+    TITLE="user-search" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="bankruptcy-search::#oro#admin#case#bankruptcy#search.xhtml"
+    NAME="output5" PATH="/oro/admin/case/bankruptcy/search.xhtml"
+    TARGET="rules:#oro#admin#case#bankruptcy#search.xhtml"
+    TITLE="bankruptcy-search" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="creditor-search::#oro#admin#case#parameter#creditor#search.xhtml"
+    NAME="output6"
+    PATH="/oro/admin/case/parameter/creditor/search.xhtml"
+    TARGET="rules:#oro#admin#case#parameter#creditor#search.xhtml"
+    TITLE="creditor-search" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="payment-search::#oro#admin#ledger#voucher#payment#search.xhtml"
+    NAME="output7" PATH="/oro/admin/ledger/voucher/payment/search.xhtml"
+    TARGET="rules:#oro#admin#ledger#voucher#payment#search.xhtml"
+    TITLE="payment-search" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="reports::#oro#admin#reports#reports.xhtml"
+    NAME="output8" PATH="/oro/admin/reports/reports.xhtml"
+    TARGET="rules:#oro#admin#reports#reports.xhtml" TITLE="reports" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="role-search::#oro#admin#system#role#search.xhtml" NAME="output9"
+    PATH="/oro/admin/system/role/search.xhtml"
+    TARGET="rules:#oro#admin#system#role#search.xhtml"
+    TITLE="role-search" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="system-setting::#oro#admin#system#setting#setting.xhtml"
+    NAME="output10" PATH="/oro/admin/system/setting/setting.xhtml"
+    TARGET="rules:#oro#admin#system#setting#setting.xhtml"
+    TITLE="system-setting" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="currency-rate-search::#oro#admin#funds#maintenance#currency-rate#search.xhtml"
+    NAME="output11"
+    PATH="/oro/admin/funds/maintenance/currency-rate/search.xhtml"
+    TARGET="rules:#oro#admin#funds#maintenance#currency-rate#search.xhtml"
+    TITLE="currency-rate-search" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="cash-requirement-search::#oro#admin#funds#maintenance#cash-requirement#search.xhtml"
+    NAME="output12"
+    PATH="/oro/admin/funds/maintenance/cash-requirement/search.xhtml"
+    TARGET="rules:#oro#admin#funds#maintenance#cash-requirement#search.xhtml"
+    TITLE="cash-requirement-search" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#oro#admin#dashboard#dashboard.xhtml"
+  PATH="/oro/admin/dashboard/dashboard.xhtml" SHAPE="304,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#oro#admin#my-profile#edit.xhtml"
+  PATH="/oro/admin/my-profile/edit.xhtml" SHAPE="304,721,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#oro#admin#reports#reports.xhtml"
+  PATH="/oro/admin/reports/reports.xhtml" SHAPE="304,1281,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#oro#admin#system#setting#setting.xhtml"
+  PATH="/oro/admin/system/setting/setting.xhtml" SHAPE="304,1505,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#oro#admin#case#bankruptcy#search.xhtml"
+  PATH="/oro/admin/case/bankruptcy/search.xhtml" SHAPE="304,945,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#oro#admin#ledger#voucher#payment#search.xhtml"
+  PATH="/oro/admin/ledger/voucher/payment/search.xhtml"
+  SHAPE="304,1169,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#oro#admin#case#parameter#creditor#search.xhtml"
+  PATH="/oro/admin/case/parameter/creditor/search.xhtml"
+  SHAPE="304,1057,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#oro#admin#index#login.xhtml"
+  PATH="/oro/admin/index/login.xhtml" SHAPE="304,497,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#oro#admin#system#role#search.xhtml"
+  PATH="/oro/admin/system/role/search.xhtml" SHAPE="304,1393,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#oro#admin#index#forgot-password.xhtml"
+  PATH="/oro/admin/index/forgot-password.xhtml" SHAPE="304,609,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#oro#admin#funds#maintenance#currency-rate#search.xhtml"
+  PATH="/oro/admin/funds/maintenance/currency-rate/search.xhtml"
+  SHAPE="304,1617,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#oro#admin#system#user#search.xhtml"
+  PATH="/oro/admin/system/user/search.xhtml" SHAPE="304,833,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#oro#admin#funds#maintenance#cash-requirement#search.xhtml"
+  PATH="/oro/admin/funds/maintenance/cash-requirement/search.xhtml"
+  SHAPE="304,529,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

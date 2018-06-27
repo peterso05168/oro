@@ -1,0 +1,79 @@
+<!DOCTYPE html [
+    <!ENTITY bull "&#8226;">
+]>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="../report.xhtml">
+
+	<ui:define name="breadcrumb-2">
+		<li><a title="">Detailed Ledger by Account Code by
+				Transaction Date</a><i class="ti-angle-right"></i></li>
+	</ui:define>
+
+	<ui:define name="title">
+		<h:outputLink styleClass="ax-back-icon-url" hreflang="search">
+			<i class="ax-icon ti-arrow-left"></i>
+			Detailed Ledger by Account Code by
+				Transaction Date
+		</h:outputLink>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<p:panel id="toggleable" header="#{msgs['report.generate.title']}"
+				toggleable="true" toggleSpeed="200" widgetVar="panel">
+				<p:messages id="msgs" closable="true" />
+				<h:form id="searchForm">
+					<div>
+						<div class="search-advance">
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+								<p:outputLabel for="caseNoStart"
+									value="#{msgs['report.caseNoStart.label']}" />
+								<p:inputText id="caseNoStart"
+									value="#{reportSearchView.reportGenerateVO.caseNo}">
+								</p:inputText>
+
+								<p:outputLabel for="caseNoEnd"
+									value="#{msgs['report.caseNoEnd.label']}" />
+								<p:inputText id="caseNoEnd">
+								</p:inputText>
+
+								<p:outputLabel for="caseNoEnd"
+									value="#{msgs['report.casePeriod.label']}" />
+								<p:panelGrid columns="2" layout="grid"
+									styleClass="ui-panelgrid-blank ui-fluid">
+									<p:calendar id="from" placeholder="From" showOn="button"
+										pattern="#{appResourceUtils.dateFormat}">
+									</p:calendar>
+									<p:calendar id="to" placeholder="To" showOn="button"
+										pattern="#{appResourceUtils.dateFormat}">
+									</p:calendar>
+								</p:panelGrid>
+							</p:panelGrid>
+						</div>
+					</div>
+					<div class="ax-btn-set">
+
+						<p:button value="#{msgs['back.btn']}" href="../report.xhtml"
+							styleClass="ui-priority-secondary" icon="ti-arrow-left">
+						</p:button>
+						<p:commandButton value="#{msgs['report.generate.btn.label']}"
+							ajax="false" action="#{reportSearchBean.generateReport}">
+							<p:fileDownload value="#{reportSearchBean.file}" />
+						</p:commandButton>
+					</div>
+				</h:form>
+			</p:panel>
+		</div>
+	</ui:define>
+</ui:composition>
+
+
+
+
+

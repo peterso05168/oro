@@ -1,0 +1,541 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	template="./receipt-voucher.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url" outcome="search">
+			<i class="ax-icon ti-arrow-left"></i>
+            #{msgs['receipt.voucher.title']}
+        </h:link>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<h:form id="editForm">
+			<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+				toggleable="true" toggleSpeed="200" widgetVar="panel">
+				<p:messages id="msgs" closable="true" />
+				<div>
+					<p:panelGrid>
+						<p:row>
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel for="groupCode"
+									value="#{msgs['receipt.voucher.group.code.label']}" />
+								<p:selectOneMenu id="groupCode"
+									value="#{receiptVoucherEditView.receiptVoucherDetailVO.receiptVoucherBasicInformation.groupCode}"
+									disabled="#{receiptVoucherEditView.isSubmitted || receiptVoucherEditView.isApproved}">
+									<f:selectItem itemLabel="- Select -" noSelectionOption="true" />
+									<f:selectItems value="#{GroupCodeEnum.entrySet().toArray()}"
+										var="gc" itemLabel="#{gc.value.desc}" itemValue="#{gc.value}" />
+								</p:selectOneMenu>
+								<p:outputLabel
+									value="#{msgs['receipt.voucher.submission.date.label']}" />
+								<p:inputText
+									value="#{receiptVoucherEditView.receiptVoucherDetailVO.receiptVoucherBasicInformation.submissionDate}"
+									disabled="true">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</p:inputText>
+							</p:panelGrid>
+						</p:row>
+						<p:row>
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel
+									value="#{msgs['receipt.voucher.voucher.number.label']}" />
+								<p:inputText
+									value="#{receiptVoucherEditView.receiptVoucherDetailVO.receiptVoucherBasicInformation.voucherNo}"
+									disabled="true" />
+
+								<p:outputLabel for="VoucherDate"
+									value="#{msgs['receipt.voucher.voucher.date.label']}" />
+								<p:calendar id="VoucherDate" showOn="button"
+									disabled="#{receiptVoucherEditView.isVerified}"
+									value="#{receiptVoucherEditView.receiptVoucherDetailVO.receiptVoucherBasicInformation.voucherDate}"
+									pattern="#{appResourceUtils.dateFormat}" />
+							</p:panelGrid>
+						</p:row>
+						<p:row>
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel value="#{msgs['receipt.voucher.approver.label']}" />
+								<p:selectOneMenu
+									value="#{receiptVoucherEditView.receiptVoucherDetailVO.receiptVoucherBasicInformation.firstApproverId}">
+									<f:selectItem itemLabel="- Select -" noSelectionOption="true" />
+									<f:selectItems value="#{receiptVoucherEditView.approvers}"
+										var="approver" itemLabel="#{approver.postName}"
+										itemValue="#{approver.postId}" />
+								</p:selectOneMenu>
+
+								<p:outputLabel value="#{msgs['status.label']}" />
+								<com:voucherStatusLabel
+									status="#{receiptVoucherEditView.receiptVoucherDetailVO.receiptVoucherBasicInformation.status}"
+									isEditPage="true" />
+							</p:panelGrid>
+						</p:row>
+
+						<p:row>
+							<p:panelGrid columns="2"
+								columnClasses="ui-grid-col-2,ui-grid-col-10,ui-grid-col-2,ui-grid-col-10"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel value="#{msgs['receipt.voucher.remark.label']}" />
+								<p:inputTextarea
+									value="#{receiptVoucherEditView.receiptVoucherDetailVO.receiptVoucherBasicInformation.remark}" />
+							</p:panelGrid>
+						</p:row>
+						<p:row>
+							<p:panelGrid columns="4"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+								layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel value="#{msgs['receipt.voucher.with.hardcopy']}" />
+								<p:selectBooleanCheckbox style="padding-top: 5px"
+									value="#{receiptVoucherEditView.receiptVoucherDetailVO.receiptVoucherBasicInformation.isHardCopy}" />
+								<p:outputLabel
+									value="#{msgs['receipt.voucher.with.charge.realization.fee']}" />
+								<p:selectBooleanCheckbox style="padding-top: 5px"
+									value="#{receiptVoucherEditView.receiptVoucherDetailVO.receiptVoucherBasicInformation.isChargeRealizationFee}" />
+							</p:panelGrid>
+						</p:row>
+					</p:panelGrid>
+				</div>
+			</p:panel>
+		</h:form>
+		<p:tabView id="tabView"
+			activeIndex="#{receiptVoucherEditView.activeIndex}">
+			<p:tab id="accountTab"
+				title="#{msgs['receipt.voucher.tab.account.title']}">
+				<h:form id="accountForm">
+					<div class="ui-fluid" style="border-style: none">
+						<p:panel style="border-style:none">
+							<p:panelGrid columns="4" layout="grid"
+								columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4">
+								<p:outputLabel for="Currency"
+									value="#{msgs['receipt.voucher.tab.account.currency.label']}" />
+								<p:selectOneMenu id="Currency"
+									value="#{receiptVoucherEditView.receiptVoucherDetailVO.receiptVoucherBasicInformation.currencyId}">
+									<f:selectItem itemLabel="- Select -" noSelectionOption="true" />
+									<f:selectItems
+										value="#{receiptVoucherEditView.currencyBasicInfos}"
+										var="currencyBasicInfo"
+										itemLabel="#{currencyBasicInfo.curcyName}"
+										itemValue="#{currencyBasicInfo.curcyId}" />
+									<p:ajax event="change"
+										listener="#{receiptVoucherEditView.toggleCaseButtonStatus}"
+										update="caseButton" />
+								</p:selectOneMenu>
+								<p:outputLabel for="ReceiveMethod"
+									value="#{msgs['receipt.voucher.tab.account.receive.method.label']}" />
+								<p:selectOneMenu id="ReceiveMethod"
+									value="#{receiptVoucherEditView.receiptVoucherDetailVO.receiptVoucherBasicInformation.receiveMethod}"
+									disabled="#{receiptVoucherEditView.isVerified}">
+									<f:selectItem itemLabel="- Select -" noSelectionOption="true" />
+									<f:selectItems value="#{receiptVoucherEditView.receiveMethods}"
+										var="method" itemLabel="#{method.codeDesc}"
+										itemValue="#{method.codeValue}" />
+								</p:selectOneMenu>
+								<p:outputLabel for="DebitAccount"
+									rendered="#{receiptVoucherEditView.isApproved}"
+									value="#{msgs['receipt.voucher.tab.account.debit.account.label']}" />
+								<p:selectOneMenu id="DebitAccount"
+									rendered="#{receiptVoucherEditView.isApproved}"
+									disabled="#{receiptVoucherEditView.isVerified}"
+									value="#{receiptVoucherEditView.receiptVoucherDetailVO.receiptVoucherBasicInformation.controlAccount.ctlAcId}">
+									<f:selectItem itemLabel="- Select -" noSelectionOption="true" />
+									<f:selectItems
+										value="#{receiptVoucherEditView.controlAccountVOs}"
+										var="controlAccount" itemLabel="#{controlAccount.ctlAcName}"
+										itemValue="#{controlAccount.ctlAcId}" />
+									<p:ajax event="itemSelect"
+										listener="#{receiptVoucherEditView.onControlAccountSelect}" />
+								</p:selectOneMenu>
+							</p:panelGrid>
+						</p:panel>
+					</div>
+					<p:dataTable id="accountTable" reflow="true" paginator="true"
+						paginatorPosition="bottom" rows="5"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15"
+						value="#{receiptVoucherEditView.receiptVoucherAccountItemList}"
+						var="item" sortBy="#{item.voucherItemNo}">
+						<p:column
+							headerText="#{msgs['receipt.voucher.tab.account.no.column.header']}">
+							<h:outputText value="#{item.voucherItemNo}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['receipt.voucher.tab.account.account.number.column.header']}">
+							<h:outputText value="#{item.account.caseAcNumber}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['receipt.voucher.tab.account.case.name.column.header']}">
+							<h:outputText value="#{item.account.caseInfo.caseName}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['receipt.voucher.tab.account.analysis.code.column.header']}">
+							<h:outputText value="#{item.analysisCode}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['receipt.voucher.tab.account.cheque.number.column.header']}">
+							<h:outputText value="#{item.chequeNo}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['receipt.voucher.tab.account.cheque.date.column.header']}">
+							<h:outputText value="#{item.chequeDate}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</h:outputText>
+						</p:column>
+						<p:column
+							headerText="#{msgs['receipt.voucher.tab.account.nature.column.header']}">
+							<h:outputText value="#{item.nature}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['receipt.voucher.tab.account.payer.name.column.header']}">
+							<h:outputText value="#{item.payerName}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['receipt.voucher.tab.account.amount.column.header']}">
+							<h:outputText value="#{item.voucherAmount}" />
+						</p:column>
+						<p:column headerText="#{msgs['action.column.header']}"
+							styleClass="ax-action-w dont-print">
+							<p:menuButton value="#{msgs['action.menuButton.label']}"
+								rendered="#{!receiptVoucherEditView.isSubmitted}">
+								<p:menuitem value="#{msgs['edit.menuitem.label']}"
+									action="#{receiptVoucherEditView.prepareAccount}"
+									oncomplete="PF('accountDialog').show();"
+									update="accountCreateForm:pg" process="@this">
+									<f:setPropertyActionListener value="#{item}"
+										target="#{receiptVoucherEditView.receiptVoucherAccountItem}" />
+								</p:menuitem>
+								<p:menuitem value="#{msgs['delete.menuitem.label']}"
+									update="tabView:accountForm:accountTable"
+									action="#{receiptVoucherEditView.deleteAccount}">
+									<f:setPropertyActionListener value="#{item}"
+										target="#{receiptVoucherEditView.receiptVoucherAccountItem}" />
+								</p:menuitem>
+							</p:menuButton>
+						</p:column>
+						<p:columnGroup type="footer">
+							<p:row>
+								<p:column colspan="8"
+									footerText="#{msgs['receipt.voucher.tab.account.total.label']}"
+									style="text-align:right;background-color:white;border:none;font-weight:bold"></p:column>
+								<p:column colspan="2"
+									footerText="#{receiptVoucherEditView.receiptVoucherDetailVO.receiptVoucherBasicInformation.voucherTotalAmount}"
+									style="text-align:left;background-color:white;border:none" />
+							</p:row>
+						</p:columnGroup>
+					</p:dataTable>
+					<div class="ax-btn-set aR">
+						<p:commandButton icon="ti-plus" value="#{msgs['case.btn']}"
+							id="caseButton" onclick="PF('accountDialog').show()"
+							immediate="true" update="accountCreateForm:pg"
+							disabled="#{receiptVoucherEditView.caseBtnDisable}" />
+					</div>
+				</h:form>
+			</p:tab>
+			<p:tab title="#{msgs['receipt.voucher.tab.import.account.title']}">
+				<h:form id="importAccountForm" enctype="multipart/form-data">
+					<p:messages id="msgs" closable="true" />
+					<h:panelGroup rendered="#{!receiptVoucherEditView.isUploaded}">
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-7,ui-grid-col-2,ui-grid-col-7"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel
+								value="#{msgs['receipt.voucher.tab.import.account.upload.label']}" />
+							<p:fileUpload mode="simple" skinSimple="true"
+								value="#{receiptVoucherEditView.accountFile}"
+								allowTypes=" /(\.|\/)(csv|CSV)$/" accept=".csv" />
+						</p:panelGrid>
+						<div class="ax-btn-set">
+							<p:commandButton rendered="#{!receiptVoucherEditView.isUploaded}"
+								value="#{msgs['receipt.voucher.tab.import.account.upload.btn.label']}"
+								update="tabView:importAccountForm"
+								process="@this,tabView:importAccountForm" ajax="false"
+								action="#{receiptVoucherEditView.uploadAccountFile(receiptVoucherEditView.getVoucherTypeCode)}" />
+							<div class="ax-button type-a">
+								<p:commandButton
+									rendered="#{!receiptVoucherEditView.isUploaded}"
+									value="#{msgs['receipt.voucher.tab.import.account.download.template.btn.label']}"
+									action="#{receiptVoucherEditView.downloadTemplate(receiptVoucherEditView.getVoucherTypeCode)}"
+									update="tabView:importAccountForm" partialSubmit="true"
+									process="@this" ajax="false">
+									<p:fileDownload value="#{receiptVoucherEditView.downloadFile}" />
+								</p:commandButton>
+							</div>
+						</div>
+					</h:panelGroup>
+
+					<h:panelGroup rendered="#{receiptVoucherEditView.isUploaded}">
+						<p:dataTable id="importItemTable" reflow="true" var="item"
+							rendered="#{receiptVoucherEditView.isUploaded}"
+							value="#{receiptVoucherEditView.importReceiptItemList}">
+							<p:column
+								headerText="#{msgs['receipt.voucher.tab.import.account.account.number.column.header']}">
+								<h:outputLabel value="#{item.accountNumber}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['receipt.voucher.tab.import.account.case.name.column.header']}">
+								<h:outputLabel value="#{item.caseName}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['receipt.voucher.tab.import.account.analysis.code.column.header']}">
+								<h:outputLabel value="#{item.analysisCode}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['receipt.voucher.tab.import.account.nature.column.header']}">
+								<h:outputLabel value="#{item.nature}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['receipt.voucher.tab.import.account.amount.column.header']}">
+								<h:outputLabel value="#{item.voucherAmount}" />
+							</p:column>
+						</p:dataTable>
+						<div class="ax-btn-set">
+							<p:commandButton value="#{msgs['confirm.btn']}"
+								rendered="#{receiptVoucherEditView.isUploaded}"
+								update="tabView:importAccountForm,tabView:accountForm"
+								action="#{receiptVoucherEditView.confirmImportAccount}" />
+							<p:commandButton value="#{msgs['cancel.btn']}"
+								rendered="#{receiptVoucherEditView.isUploaded}"
+								update="tabView:importAccountForm"
+								action="#{receiptVoucherEditView.cancelImport}" />
+						</div>
+					</h:panelGroup>
+				</h:form>
+			</p:tab>
+			<!-- Supporting Document Start -->
+			<p:tab title="#{msgs['receipt.voucher.tab.sup.doc.title']}">
+				<h:form id="supDocForm" enctype="multipart/form-data">
+					<p:dataTable id="supDocTable" reflow="true" paginator="true"
+						paginatorPosition="bottom" rows="5"
+						value="#{receiptVoucherEditView.attachmentList}" var="doc"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<p:column
+							headerText="#{msgs['receipt.voucher.tab.sup.doc.file.name.column.header']}">
+							<p:commandLink
+								action="#{dialogBean.openUploadDocDialog(receiptVoucherEditView.voucherId, doc.voucherAttachmentId)}">
+								<h:outputText value="#{doc.fileName}" />
+							</p:commandLink>
+						</p:column>
+						<p:column
+							headerText="#{msgs['receipt.voucher.tab.sup.doc.remarks.column.header']}">
+							<h:outputLabel value="#{doc.remark}" />
+						</p:column>
+						<p:column headerText="#{msgs['status.column.header']}">
+							<h:outputText value="#{msgs['active.status.label']}"
+								rendered="#{doc.status eq 'ACT'}" class="status-label green" />
+						</p:column>
+						<p:column headerText="#{msgs['action.column.header']}"
+							styleClass="ax-action-w dont-print">
+							<p:menuButton value="#{msgs['action.menuButton.label']}">
+								<p:menuitem value="#{msgs['download.menuitem.label']}"
+									action="#{receiptVoucherEditView.downloadDoc}" process="@this"
+									ajax="false">
+									<f:setPropertyActionListener value="#{doc}"
+										target="#{receiptVoucherEditView.attachment}" />
+									<p:fileDownload value="#{receiptVoucherEditView.downloadFile}" />
+								</p:menuitem>
+								<p:menuitem value="#{msgs['delete.menuitem.label']}"
+									update="tabView:supDocForm" oncomplete="PF('cd').show()">
+									<f:setPropertyActionListener value="#{doc}"
+										target="#{receiptVoucherEditView.attachment}" />
+								</p:menuitem>
+							</p:menuButton>
+						</p:column>
+					</p:dataTable>
+					<p:confirmDialog widgetVar="cd" header="Confirm" showEffect="fade">
+						<f:facet name="message">
+							<h:outputText value="Confirm to Delete the selected record ?" />
+						</f:facet>
+						<div align="center">
+							<p:commandButton value="Yes"
+								action="#{receiptVoucherEditView.deleteDoc}"
+								update="tabView:supDocForm" process="@this"
+								oncomplete="PF('cd').hide()" />
+							<p:commandButton value="No" onclick="PF('cd').hide()"
+								type="button" />
+						</div>
+					</p:confirmDialog>
+					<div class="ax-btn-set aR">
+						<p:commandButton icon="ti-plus" value="#{msgs['document.btn']}"
+							action="#{dialogBean.openUploadDocDialog(receiptVoucherEditView.voucherId, null)}"
+							process="@this" />
+					</div>
+				</h:form>
+			</p:tab>
+			<!-- Supporting Document End -->
+			<p:tab title="#{msgs['receipt.voucher.tab.history.title']}">
+				<p:dataTable id="historyTable"
+					value="#{receiptVoucherEditView.approveHistories}"
+					var="approveHistory" reflow="true" paginator="true"
+					paginatorPosition="bottom" rows="5"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+					<p:column
+						headerText="#{msgs['receipt.voucher.tab.history.wf.type.column.header']}">
+						<h:outputText value="Approval" />
+					</p:column>
+					<p:column
+						headerText="#{msgs['receipt.voucher.tab.history.action.column.header']}">
+						<h:outputText value="#{approveHistory.action}" />
+					</p:column>
+					<p:column
+						headerText="#{msgs['receipt.voucher.tab.history.action.by.column.header']}">
+						<h:outputText value="#{approveHistory.actionByPerson}" />
+					</p:column>
+					<p:column
+						headerText="#{msgs['receipt.voucher.tab.history.date.time.column.header']}">
+						<h:outputText value="#{approveHistory.actionDate}">
+							<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+						</h:outputText>
+					</p:column>
+					<p:column
+						headerText="#{msgs['receipt.voucher.tab.history.remark.reason.column.header']}">
+						<h:outputText value="#{approveHistory.remark}" />
+					</p:column>
+				</p:dataTable>
+			</p:tab>
+		</p:tabView>
+
+		<h:form id="btnForm">
+			<div class="ax-btn-set">
+				<p:button value="#{msgs['back.btn']}"
+					styleClass="ui-priority-secondary" icon="ti-arrow-left"
+					outcome="search"></p:button>
+				<p:commandButton value="#{msgs['save.btn']}"
+					action="#{receiptVoucherEditView.save}" partialSubmit="true"
+					process="@this,editForm,tabView:accountForm"
+					update="editForm,btnForm,tabView"
+					rendered="#{receiptVoucherEditView.action.saveable}" />
+				<p:menuButton value="#{msgs['action.menuButton.label']}">
+					<p:menuitem value="#{msgs['submit.menuitem.label']}"
+						action="#{receiptVoucherEditView.submitVoucher}"
+						process="@this,editForm,tabView:accountForm"
+						update="editForm,btnForm,tabView" partialSubmit="true"
+						rendered="#{receiptVoucherEditView.action.submitable}">
+					</p:menuitem>
+					<p:menuitem value="#{msgs['approve.menuitem.label']}"
+						action="#{receiptVoucherEditView.approveVoucher}"
+						process="@this,editForm" update="editForm,btnForm,tabView"
+						partialSubmit="true"
+						rendered="#{receiptVoucherEditView.action.approvable}">
+					</p:menuitem>
+					<p:menuitem value="#{msgs['reject.menuitem.label']}"
+						action="#{receiptVoucherEditView.rejectVoucher}"
+						process="@this,editForm" update="editForm,btnForm,tabView"
+						partialSubmit="true"
+						rendered="#{receiptVoucherEditView.action.rejectable}">
+					</p:menuitem>
+					<p:menuitem value="#{msgs['delete.menuitem.label']}"
+						action="#{receiptVoucherEditView.deleteVoucher}"
+						process="@this,editForm,tabView:accountForm"
+						update="editForm,btnForm,tabView" partialSubmit="true"
+						rendered="#{receiptVoucherEditView.action.deletable}">
+					</p:menuitem>
+					<p:menuitem value="#{msgs['verify.menuitem.label']}"
+						action="#{receiptVoucherEditView.verifyVoucher}"
+						process="@this,editForm,tabView:accountForm"
+						update="editForm,btnForm,tabView" partialSubmit="true"
+						rendered="#{receiptVoucherEditView.action.verifiable}">
+					</p:menuitem>
+					<p:menuitem value="#{msgs['reverse.menuitem.label']}"
+						action="#{receiptVoucherEditView.reverseVoucher}"
+						process="@this,editForm" update="editForm,btnForm,tabView"
+						partialSubmit="true"
+						rendered="#{receiptVoucherEditView.action.reversible}">
+					</p:menuitem>
+				</p:menuButton>
+			</div>
+		</h:form>
+
+		<h:form id="accountCreateForm">
+			<p:dialog id="accountDialog"
+				header="#{msgs['receipt.voucher.account.dialog.header']}"
+				widgetVar="accountDialog" modal="true" width="920" minHeight="50"
+				resizable="false" dynamic="true" style="position: fixed">
+				<p:messages id="msgs" closable="true" />
+				<p:ajax event="close" resetValues="true"
+					listener="#{receiptVoucherEditView.handleAccountCreateDialogClose}"
+					update="@form">
+					<p:resetInput target="@form" />
+				</p:ajax>
+				<p:panelGrid id="pg" columns="4"
+					columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:outputLabel for="accountNumber"
+						value="#{msgs['receipt.voucher.account.dialog.account.number.label']}" />
+					<com:accountNumber id="accountNumber"
+						caseTypeCodeValue="#{receiptVoucherEditView.receiptVoucherAccountItem.caseTypeCodeValue}"
+						caseNoValue="#{receiptVoucherEditView.receiptVoucherAccountItem.caseNoValue}"
+						caseYearValue="#{receiptVoucherEditView.receiptVoucherAccountItem.caseYearValue}"
+						accountTypeCodeValue="#{receiptVoucherEditView.receiptVoucherAccountItem.accountTypeCodeValue}"
+						disabled="false" allMandatory="true" autoSearchEnabled="true"
+						autoSearchListener="#{receiptVoucherEditView.searchAccountInfo}"
+						autoSearchUpdate="accountCreateForm:caseName" />
+					<p:outputLabel for="caseName"
+						value="#{msgs['receipt.voucher.account.dialog.case.name.label']}"
+						disabled="true" />
+					<p:inputText id="caseName"
+						value="#{receiptVoucherEditView.receiptVoucherAccountItem.account.caseInfo.caseName}" />
+					<p:outputLabel for="chequeNumber"
+						value="#{msgs['receipt.voucher.account.dialog.cheque.number.label']}" />
+					<p:inputText id="chequeNumber"
+						disabled="#{receiptVoucherEditView.receiptVoucherAccountItem.chequeNo != null}"
+						value="#{receiptVoucherEditView.receiptVoucherAccountItem.chequeNo}" />
+					<p:outputLabel for="chequeDate"
+						value="#{msgs['receipt.voucher.account.dialog.cheque.date.label']}" />
+					<p:calendar id="chequeDate" showOn="button"
+						disabled="#{receiptVoucherEditView.receiptVoucherAccountItem.chequeDate != null}"
+						value="#{receiptVoucherEditView.receiptVoucherAccountItem.chequeDate}"
+						pattern="#{appResourceUtils.dateFormat}" />
+					<p:outputLabel for="amount"
+						value="#{msgs['receipt.voucher.account.dialog.amount.label']}" />
+					<p:inputText id="amount"
+						value="#{receiptVoucherEditView.receiptVoucherAccountItem.voucherAmount}"
+						required="true"
+						requiredMessage="#{appResourceUtils.getRequiredMessage('VoucherItemAmount')}" />
+					<p:outputLabel for="payerName"
+						value="#{msgs['receipt.voucher.account.dialog.payer.name.label']}" />
+					<p:inputText id="payerName"
+						value="#{receiptVoucherEditView.receiptVoucherAccountItem.payerName}"
+						required="true"
+						requiredMessage="#{appResourceUtils.getRequiredMessage('PayerName')}" />
+					<p:outputLabel for="analysisCode"
+						value="#{msgs['receipt.voucher.account.dialog.analysis.code.label']}" />
+					<p:autoComplete id="analysisCode"
+						value="#{receiptVoucherEditView.selectedAnalysisCode}"
+						completeMethod="#{receiptVoucherEditView.completeAnalysisCode}"
+						var="analysisCode" itemLabel="#{analysisCode.analysisCode}"
+						itemValue="#{analysisCode}" converter="analysisCodeConverter"
+						cache="true" cacheTimeout="30000" minQueryLength="3"
+						forceSelection="true" required="true"
+						requiredMessage="#{appResourceUtils.getRequiredMessage('AnalysisCode')}">
+						<p:ajax event="itemSelect"
+							listener="#{receiptVoucherEditView.onAnalysisCodeSelect}" />
+					</p:autoComplete>
+					<p:outputLabel
+						value="#{msgs['receipt.voucher.account.dialog.nature.label']}" />
+					<p:inputText
+						value="#{receiptVoucherEditView.receiptVoucherAccountItem.nature}" />
+				</p:panelGrid>
+				<div class="ax-btn-set">
+					<p:commandButton value="#{msgs['save.btn']}"
+						action="#{receiptVoucherEditView.saveAccount}"
+						update="tabView:accountForm:accountTable,msgs" />
+					<p:commandButton value="#{msgs['cancel.btn']}"
+						styleClass="ui-priority-secondary"
+						onclick="PF('accountDialog').hide();" immediate="true" />
+				</div>
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

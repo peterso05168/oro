@@ -1,0 +1,170 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="./demo.xhtml">
+
+	<ui:define name="breadcrumb-3">
+		<li><a title="">Edit</a><i class="ti-angle-right"></i></li>
+	</ui:define>
+
+	<ui:define name="title">
+		<a class="ax-back-icon-url" onclick="_ACTION('result')"
+			href="javascript:void(0)"> <i class="ax-icon ti-arrow-left"></i>
+			User Management
+		</a>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div class="extra-info aR">
+			<button type="button" class="info-btn" data-toggle="popover"
+				data-trigger="focus" data-placement="left">
+				<i class="ti-more-alt"></i>
+			</button>
+			<div id="info-box-01" style="display: none">
+				<div class="info-popover">
+					<div>
+						<b>Created By：</b>Mary Lee
+					</div>
+					<div>
+						<b>Created Date：</b>2016-09-02 18:55:16
+					</div>
+					<div>
+						<b>Modified By：</b>Winnie Chan
+					</div>
+					<div>
+						<b>Modified Date：</b>2017-05-10 15:45:12
+					</div>
+				</div>
+			</div>
+			<script>
+				_axPopover({
+					content : 'info-box-01'
+				});
+			</script>
+		</div>
+		<div class="ax-basic-info">
+			<div class="ax-thumbnail-img">
+				<img
+					src="#{request.contextPath}/resources/oro/images/resource/profile-icon-dummy.png" />
+			</div>
+			<div class="ax-text">
+				<h2>Mary Chan</h2>
+				<div>Super Admin</div>
+			</div>
+		</div>
+		<p:tabView activeIndex="0">
+			<p:tab title="Basic Info">
+				<h:form id="formA">
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:column>
+							<div class="ax-tooltip">
+								<div class="icon" data-toggle="popover" data-trigger="focus"
+									tabindex="0" role="button">
+									<i class="ti-help"></i>
+								</div>
+								<div class="content">
+									<div class="info-popover">Transcript_Associate
+										Degree/Higher Diploma photocopy</div>
+								</div>
+							</div>
+							<p:outputLabel id="atoolTipFocus" for="UserAccount"
+								value="User IDs" />
+						</p:column>
+						<p:column>
+							<div class="ax-input-group">
+								<div class="ax-checkbox right">
+									<p:selectBooleanCheckbox id="dddd" value="usertextvalue" />
+								</div>			 
+								<div class="ax-fields">
+									<p:inputText id="UserAccount" />
+								</div>
+							</div>
+						</p:column>
+
+						<p:column>
+							<div class="ax-tooltip">
+								<div class="icon" data-toggle="popover" data-trigger="focus"
+									tabindex="0" role="button">
+									<i class="ti-help"></i>
+								</div>
+								<div class="content">
+									<div class="info-popover">Transcript_Associate
+										Degree/Higher Diploma ph sdf otocopy</div>
+								</div>
+							</div>
+							<p:outputLabel  for="UseraAccount"
+								value="User adf IDs" />
+						</p:column>
+						<p:column>
+							<div class="ax-input-group">
+							 
+								<div class="ax-checkbox left">
+									<p:selectBooleanCheckbox id="ddsdaaaaaaaaaaaaaaaaad" value="usertextvalue" />
+								</div>
+								<div class="ax-fields">
+									<p:inputText id="UseraAccount" />
+								</div>
+							</div>
+						</p:column>
+
+						<p:outputLabel for="Email" id="aaaaa" value="Email" />
+						<p:inputText id="Email" />
+
+						<p:outputLabel for="FirstName" value="Last Name" />
+						<p:inputText id="FirstName" />
+
+						<p:outputLabel for="LastName" value="First Name" />
+						<p:inputText id="LastName" />
+
+						<p:outputLabel for="JobTitle" value="Job Title" />
+						<p:inputText id="JobTitle" />
+						<p:outputLabel for="Department" value="Department" />
+						<p:inputText id="Department" />
+						<p:outputLabel for="TelNo" value="Tel. No." />
+						<p:inputText id="TelNo" />
+						<p:outputLabel for="Profile" value="Profile" />
+						<p:inputText id="Profile" />
+						<p:outputLabel for="Status" value="Status" />
+						<p:inputText id="Status" value="Active" disabled="true" />
+						<p:column></p:column>
+						<p:column></p:column>
+					</p:panelGrid>
+					<div class="ax-btn-set">
+						<p:commandButton value="Back" styleClass="ui-priority-secondary"
+							icon="ti-arrow-left" onclick="_ACTION('result')" />
+						<p:commandButton value="Save" onclick="_ACTION('edit-save')"/>
+					</div>
+				</h:form>
+			</p:tab>
+			<p:tab title="Role">
+				<h:form id="formB">
+					<p:dataTable var="car" value="#{dtSelectionView.cars6}"
+						rowKey="#{car.id}" selection="#{dtSelectionView.selectedCars}"
+						reflow="true" paginator="false" rows="5"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<p:column selectionMode="multiple" styleClass="ax-checkbox-w" />
+						<p:column headerText="Role Name" sortBy="#{car.brand}">
+							<h:outputText value="#{car.brand}" />
+						</p:column>
+						<p:column headerText="Role Type" sortBy="#{car.brand}">
+							<h:outputText value="#{car.brand}" />
+						</p:column>
+						<p:column headerText="Description" sortBy="#{car.brand}">
+							<h:outputText value="#{car.brand}" />
+						</p:column>
+					</p:dataTable>
+					<div class="ax-btn-set">
+						<p:commandButton value="Back" styleClass="ui-priority-secondary"
+							icon="ti-arrow-left" onclick="_ACTION('result')" />
+						<p:commandButton value="Save" onclick="_ACTION('role-save')"/>
+					</div>
+				</h:form>
+			</p:tab>
+		</p:tabView>
+		<ui:insert name="main-content-2" />
+	</ui:define>
+</ui:composition>

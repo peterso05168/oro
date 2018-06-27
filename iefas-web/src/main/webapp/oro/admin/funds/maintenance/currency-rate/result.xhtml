@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<h:form id="formC">
+		<p:dataTable var="curcy"
+			value="#{currencyRateSearchView.currencyRateDataModel}"
+			rowKey="#{curcy.curcyId}" lazy="true" reflow="true" paginator="true"
+			paginatorPosition="bottom" rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true"
+			rendered="#{currencyRateSearchView.currencyRateDataModel != null}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+
+			<p:column headerText="#{msgs['currency.name.column.header']}"
+				sortBy="#{curcy.curcyName}">
+				<p:commandLink href="javascript:void(0)" action="edit" ajax="false">
+					<h:outputText value="#{curcy.curcyName}" />
+					<f:param name="curcyId" value="#{curcy.curcyId}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column headerText="#{msgs['currency.code.column.header']}"
+				sortBy="#{curcy.curcyCode}">
+				<h:outputText value="#{curcy.curcyCode}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['currency.rate.column.header']}"
+				sortBy="#{curcy.rateAmount}">
+				<h:outputText value="#{curcy.rateAmount}">
+					<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="#{msgs['status.column.header']}"
+				sortBy="#{curcy.status}" styleClass="ax-status-w-b">
+				<h:outputText value="Inactive" rendered="#{curcy.status eq 'INA'}" class="status-label red"/>
+				<h:outputText value="Active" rendered="#{curcy.status eq 'ACT'}" class="status-label green" />
+			</p:column>
+
+			<p:column headerText="#{msgs['action.column.header']}"
+				styleClass="ax-action-w dont-print">
+				<p:menuButton value="Action">
+					<p:menuitem value="Edit" action="edit" ajax="false">
+						<f:param name="curcyId" value="#{curcy.curcyId}" />
+					</p:menuitem>
+					<p:menuitem value="Inactive" rendered="#{curcy.status eq 'ACT'}"
+						action="#{currencyRateSearchView.changeStatus}" update="formC">
+						<f:setPropertyActionListener value="#{curcy.curcyId}"
+							target="#{currencyRateSearchView.curcyId}" />
+					</p:menuitem>
+					<p:menuitem value="Active" rendered="#{curcy.status eq 'INA'}"
+						action="#{currencyRateSearchView.changeStatus}" update="formC">
+						<f:setPropertyActionListener value="#{curcy.curcyId}"
+							target="#{currencyRateSearchView.curcyId}" />
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+
+	</h:form>
+</ui:composition>
+
+
+
+

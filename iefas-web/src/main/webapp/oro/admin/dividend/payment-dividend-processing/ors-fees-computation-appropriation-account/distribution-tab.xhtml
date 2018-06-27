@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+	<p:dataTable id="distributionTable" var="distritubtion" reflow="true"
+		paginator="false"
+		value="#{feeComputationEditView.dividendCalculationVO.calculatedCreditorDividendDistributions}">
+		<p:column
+			headerText="#{msgs['orsFeesComputation.distribution.distribution.column.header']}">
+			<h:outputText
+				value="#{distritubtion.adjudicationType.adjudicationTypeName}" />
+		</p:column>
+		<p:column
+			headerText="#{msgs['orsFeesComputation.distribution.amount.column.header']}">
+			<p:inputNumber inputStyle="text-align: right;"
+				value="#{distritubtion.distAmount}" id="distAmount" disabled="true" />
+		</p:column>
+		<p:column
+			headerText="#{msgs['orsFeesComputation.distribution.percentage.column.header']}">
+			<p:inputNumber inputStyle="text-align: right;" placeholder="%"
+				maxValue="100" value="#{distritubtion.percent}" required="true"
+				disabled="#{feeComputationEditView.formDisabled}" id="percentage">
+				<f:convertNumber pattern="#{appResourceUtils.rateFormat}" />
+				<p:ajax event="change" execute="percentage"
+					update="distAmount,editForm:tabView:totalDistribution"
+					listener="#{feeComputationEditView.calculateAmountPaid(distritubtion)}">
+				</p:ajax>
+			</p:inputNumber>
+		</p:column>
+	</p:dataTable>
+	<p:panelGrid columns="6"
+		columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:column></p:column>
+		<p:outputLabel
+			value="#{msgs['orsFeesComputation.distribution.total.distribution.label']}" />
+		<p:inputText type="number" style="text-align:right"
+			id="totalDistribution" disabled="true"
+			value="#{feeComputationEditView.totalDistribution}" />
+	</p:panelGrid>
+</ui:composition>

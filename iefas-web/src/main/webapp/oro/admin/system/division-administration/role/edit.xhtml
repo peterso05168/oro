@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui" template="./role.xhtml">
+
+	<ui:define name="title">
+		<h:outputLink styleClass="ax-back-icon-url" hreflang="search">
+			<i class="ax-icon ti-arrow-left"></i>
+           #{msgs['role.title']}
+        </h:outputLink>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable" header="Basic Information"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="RoleName"
+								value="#{msgs['role.role.name.label']}" />
+							<p:inputText id="RoleName" required="true"
+								value="#{roleDetailView.roleVO.roleName}"
+								validator="#{roleValidator.validateRoleName}" />
+							<p:outputLabel for="Division"
+								value="#{msgs['role.division.label']}" />
+							<p:selectOneMenu id="Division"
+								disabled="#{roleDetailView.roleId != null}"
+								value="#{roleDetailView.roleVO.division.divisionId}"
+								required="true">
+								<f:selectItem itemLabel="- Please select -" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{roleDetailView.divisionVOs}"
+									var="division" itemLabel="#{division.divisionName}"
+									itemValue="#{division.divisionId}" />
+								<p:ajax update="tabView" event="itemSelect"
+									listener="#{roleDetailView.getPrivilegeListByDivision}" />
+							</p:selectOneMenu>
+							<p:outputLabel for="Status" value="#{msgs['status.label']}" />
+							<p:inputText id="Status"
+								value="#{roleDetailView.roleVO.status eq 'INA' ? msgs['inactive.status.label'] : msgs['active.status.label']}"
+								disabled="true" />
+							<p:outputLabel for="Description"
+								value="#{msgs['role.desc.label']}" />
+							<p:inputTextarea id="Description"
+								value="#{roleDetailView.roleVO.roleDesc}" />
+						</p:panelGrid>
+					</div>
+				</p:panel>
+
+				<p:tabView id="tabView" activeIndex="0">
+					<p:tab title="#{msgs['role.privilege.title']}">
+						<p:dataTable id="privilegeTable" var="p"
+							value="#{roleDetailView.originalPrivilegeList}"
+							rowKey="#{p.privilege.privilegeId}" rowSelectMode="checkbox"
+							selection="#{roleDetailView.selectedPrivilegeList}" reflow="true"
+							paginator="true" rows="5" paginatorPosition="bottom"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15"
+							rendered="#{roleDetailView.originalPrivilegeList != null}">
+							<p:column selectionMode="multiple" class="ax-checkbox-w" />
+							<p:column headerText="#{msgs['role.privilege.name.label']}"
+								sortBy="#{p.privilege.privilegeName}">
+								<h:outputText value="#{p.privilege.privilegeName}" />
+							</p:column>
+							<p:column headerText="#{msgs['role.privilege.type.label']}"
+								sortBy="#{p.privilege.privilegeType}">
+								<h:outputText value="#{p.privilege.privilegeType}" />
+							</p:column>
+							<p:column headerText="#{msgs['role.privilege.desc.label']}"
+								sortBy="#{p.privilege.privilegeName}">
+								<h:outputText value="#{p.privilege.privilegeName}" />
+							</p:column>
+							<p:column headerText="#{msgs['role.privilege.report.label']}"
+								sortBy="#{p.reportName}">
+								<h:outputText value="#{p.reportName}" escape="false" />
+							</p:column>
+							<p:column headerText="#{msgs['role.privilege.menu.label']}"
+								sortBy="#{p.menuName}">
+								<h:outputText value="#{p.menuName}" escape="false" />
+							</p:column>
+						</p:dataTable>
+					</p:tab>
+				</p:tabView>
+
+				<div class="ax-btn-set">
+					<p:button value="Back" styleClass="ui-priority-secondary"
+						icon="ti-arrow-left" outcome="search" />
+					<p:commandButton value="Save" action="#{roleDetailView.save}"
+						update="@form" />
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

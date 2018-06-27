@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:com="http://java.sun.com/jsf/composite/common">
+
+	<h:form id="memoListResultTable">
+		<p:dataTable var="memo" lazy="true" reflow="true" paginator="true"
+			rowKey="#{voucher.paymentVoucherId}" paginatorPosition="bottom"
+			rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+
+			<p:column
+				headerText="#{msgs['instrution.memo.list.list.name.column.header']}">
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['instrution.memo.list.import.date.column.header']}">
+				<h:outputText>
+					<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column headerText="#{msgs['status.column.header']}"
+				styleClass="ax-status-w-b">
+			</p:column>
+
+			<p:column headerText="#{msgs['action.column.header']}"
+				styleClass="ax-action-w dont-print">
+				<p:menuButton value="#{msgs['action.menuButton.label']}">
+					<p:menuitem value="#{msgs['edit.menuitem.label']}" action="edit"
+						ajax="false">
+					</p:menuitem>
+					<p:menuitem value="#{msgs['delete.menuitem.label']}"
+						oncomplete="PF('cd').show()">
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+		<p:confirmDialog widgetVar="cd" header="Confirm" showEffect="fade">
+			<f:facet name="message">
+				<h:outputText value="Confirm to Delete the selected record ?" />
+			</f:facet>
+			<div align="center">
+				<p:commandButton value="Yes" update="searchForm,memoListResultTable"
+					oncomplete="PF('cd').hide()" />
+				<p:commandButton value="No" onclick="PF('cd').hide()" type="button" />
+			</div>
+		</p:confirmDialog>
+	</h:form>
+</ui:composition>
+
+
+
+

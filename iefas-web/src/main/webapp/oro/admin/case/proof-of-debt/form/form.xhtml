@@ -1,0 +1,309 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	xmlns:i="http://iefas.oro.hk/ui" template="../proof-of-debt.xhtml">
+
+	<ui:define name="title">
+		<h:link styleClass="ax-back-icon-url">
+           #{msgs['proof.of.debt.title']}
+        </h:link>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="basicPanel" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="300" widgetVar="basicPanel">
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="ProofNumber"
+								value="#{msgs['proof.of.debt.form.proof.number.label']}" />
+							<p:inputText id="ProofNumber" disabled="true"
+								value="#{proofOfDebtFormView.proofOfDebtVO.proofNo}" />
+
+							<p:outputLabel for="ReferenceNumber"
+								value="#{msgs['proof.of.debt.form.reference.number.label']}" />
+							<p:inputText id="ReferenceNumber"
+								value="#{proofOfDebtFormView.proofOfDebtVO.refNo}" />
+
+							<p:outputLabel
+								value="#{msgs['proof.of.debt.form.case.number.label']}" />
+							<com:caseNumber allMandatory="true"
+								caseTypeCodeValue="#{proofOfDebtFormView.caseNumberVO.caseType}"
+								caseNoValue="#{proofOfDebtFormView.caseNumberVO.caseSequence}"
+								caseYearValue="#{proofOfDebtFormView.caseNumberVO.caseYear}"
+								autoSearchListener="#{proofOfDebtFormView.searchCaseInfo}"
+								autoSearchEnabled="true" autoSearchUpdate="@form:CaseName">
+							</com:caseNumber>
+
+							<p:outputLabel for="CaseName"
+								value="#{msgs['proof.of.debt.form.case.name.label']}" />
+							<p:inputText id="CaseName" disabled="true"
+								value="#{proofOfDebtFormView.proofOfDebtVO.caseInfo.caseName}" />
+
+							<p:outputLabel for="DateOfReciept"
+								value="#{msgs['proof.of.debt.form.date.of.receipt.label']}" />
+							<p:calendar id="DateOfReciept" required="true"
+								value="#{proofOfDebtFormView.proofOfDebtVO.receiptDate}"
+								pattern="#{appResourceUtils.dateFormat}" showOn="button">
+							</p:calendar>
+
+							<p:outputLabel for="UncapitalisedInterest"
+								value="#{msgs['proof.of.debt.form.uncapitalised.interest.label']}" />
+							<p:inputNumber id="UncapitalisedInterest" decimalPlaces="2"
+								required="true"
+								value="#{proofOfDebtFormView.proofOfDebtVO.uncapInt}" />
+
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<p:panel id="proofOfDebtItemPanel"
+					header="#{msgs['proof.of.debt.form.amount.panel.title']}"
+					toggleable="true" toggleSpeed="300"
+					widgetVar="proofOfDebtItemPanel">
+					<p:dataTable var="item" reflow="true" paginator="false"
+						rowKey="#{item.proofOfDebtitemId}" paginatorPosition="bottom"
+						rows="5" value="#{proofOfDebtFormView.itemVOs}"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15" draggableColumns="true"
+						rendered="#{proofOfDebtFormView.itemVOs != null}">
+						<p:column
+							headerText="#{msgs['proof.of.debt.form.amount.panel.amount.column.header']}">
+							<p:inputNumber value="#{item.debtAmount}" />
+						</p:column>
+
+						<p:column
+							headerText="#{msgs['proof.of.debt.form.amount.panel.currency.column.header']}">
+							<p:selectOneMenu value="#{item.currencyId}">
+								<f:selectItem itemLabel="-Please Select-"
+									noSelectionOption="true" />
+								<f:selectItems value="#{proofOfDebtFormView.currencyInfoVOs}"
+									var="currency" itemLabel="#{currency.curcyName}"
+									itemValue="#{currency.curcyId}">
+								</f:selectItems>
+							</p:selectOneMenu>
+						</p:column>
+
+						<p:column headerText="#{msgs['action.column.header']}"
+							styleClass="ax-action-w dont-print">
+							<p:menuButton value="#{msgs['action.menuButton.label']}">
+								<p:menuitem value="#{msgs['delete.menuitem.label']}"
+									actionListener="#{proofOfDebtFormView.removeProofOfDebtItem}"
+									process="editForm:proofOfDebtItemPanel"
+									update="editForm:proofOfDebtItemPanel">
+									<f:setPropertyActionListener value="#{item}"
+										target="#{proofOfDebtFormView.proofOfDebtItemVO}" />
+									<p:confirm icon="ui-icon-alert" header="Confirm"
+										message="Confirm to Remove the selected record ?"></p:confirm>
+								</p:menuitem>
+							</p:menuButton>
+						</p:column>
+					</p:dataTable>
+
+					<div class="ax-btn-set aR">
+						<p:commandButton process="editForm:proofOfDebtItemPanel"
+							value="#{msgs['proof.of.debt.form.amount.panel.amount.btn.label']}"
+							icon="ti-plus" action="#{proofOfDebtFormView.addProofOfDebtItem}"
+							update="proofOfDebtItemPanel" />
+					</div>
+				</p:panel>
+
+				<!-- Creditor Panel -->
+				<p:panel id="creditorPanel"
+					header="#{msgs['proof.of.debt.form.creditor.panel.title']}"
+					toggleable="true" toggleSpeed="300" widgetVar="creditorPanel">
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="CommonCreditorNumber"
+							value="#{msgs['proof.of.debt.form.creditor.panel.common.creditor.number.label']}" />
+						<p:autoComplete id="CommonCreditorNumber" minQueryLength="3"
+							value="#{proofOfDebtFormView.proofOfDebtVO.commonCreditorSeqNo}"
+							completeMethod="#{proofOfDebtFormView.getCommonCreditorInfoBySeqNo}">
+							<f:validateRegex pattern="^[0-9]*$" />
+							<p:ajax event="itemSelect"
+								listener="#{proofOfDebtFormView.changeCreditorInfo}"
+								update="creditorPanel"></p:ajax>
+						</p:autoComplete>
+
+						<p:outputLabel for="Telephone"
+							value="#{msgs['proof.of.debt.form.creditor.panel.telephone.label']}" />
+						<p:inputText id="Telephone"
+							value="#{proofOfDebtFormView.proofOfDebtVO.contactNo}" />
+
+						<p:outputLabel for="CreditorNameEnglish"
+							value="#{msgs['proof.of.debt.form.creditor.panel.creditor.name.english.label']}" />
+						<p:autoComplete id="CreditorNameEnglish" required="true"
+							minQueryLength="5"
+							value="#{proofOfDebtFormView.proofOfDebtVO.commonCreditorName}"
+							completeMethod="#{proofOfDebtFormView.getCommonCreditorInfoByName}">
+							<p:ajax event="itemSelect"
+								listener="#{proofOfDebtFormView.changeCreditorInfo}"
+								update="creditorPanel"></p:ajax>
+						</p:autoComplete>
+
+						<p:outputLabel for="CreditorNameChinese"
+							value="#{msgs['proof.of.debt.form.creditor.panel.creditor.name.chinese.label']}" />
+						<p:inputText id="CreditorNameChinese"
+							value="#{proofOfDebtFormView.proofOfDebtVO.commonCreditorNameChi}" />
+
+						<p:outputLabel for="CreditorAddressEnglish1"
+							value="#{msgs['proof.of.debt.form.creditor.panel.creditor.address.english.label']}" />
+						<p:inputText id="CreditorAddressEnglish1" required="true"
+							placeholder="Flat,Floor,Block"
+							value="#{proofOfDebtFormView.proofOfDebtVO.creditorAddress1}" />
+
+						<p:outputLabel for="CreditorAddressChinese1"
+							value="#{msgs['proof.of.debt.form.creditor.panel.creditor.address.chinese.label']}" />
+						<p:inputText id="CreditorAddressChinese1"
+							placeholder="Flat,Floor,Block"
+							value="#{proofOfDebtFormView.proofOfDebtVO.creditorAddressChi1}" />
+
+						<p:outputLabel for="CreditorAddressEnglish2" />
+						<p:inputText id="CreditorAddressEnglish2"
+							placeholder="Street,Road"
+							value="#{proofOfDebtFormView.proofOfDebtVO.creditorAddress2}" />
+
+						<p:outputLabel for="CreditorAddressChinese2" />
+						<p:inputText id="CreditorAddressChinese2"
+							placeholder="Street,Road"
+							value="#{proofOfDebtFormView.proofOfDebtVO.creditorAddressChi2}" />
+
+						<p:outputLabel for="CreditorAddressEnglish3" />
+						<p:inputText id="CreditorAddressEnglish3" placeholder="District"
+							value="#{proofOfDebtFormView.proofOfDebtVO.creditorAddress3}" />
+
+						<p:outputLabel for="CreditorAddressChinese3" />
+						<p:inputText id="CreditorAddressChinese3" placeholder="District"
+							value="#{proofOfDebtFormView.proofOfDebtVO.creditorAddressChi3}" />
+
+					</p:panelGrid>
+				</p:panel>
+				<!-- Creditor Panel -->
+
+				<!-- Section Panel -->
+				<p:panel id="sectionPanel"
+					header="#{msgs['proof.of.debt.form.section.panel.title']}"
+					toggleable="true" toggleSpeed="300" widgetVar="sectionPanel">
+					<p:panelGrid columns="4"
+						columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel for="SectionNumber"
+							value="#{msgs['proof.of.debt.form.section.panel.section.number.label']}" />
+						<p:autoComplete id="SectionNumber" minQueryLength="3"
+							completeMethod="#{proofOfDebtFormView.getSectionInfoBySeqNo}"
+							value="#{proofOfDebtFormView.proofOfDebtVO.sectionSeqNo}">
+							<f:validateRegex pattern="^[0-9]*$" />
+							<p:ajax event="itemSelect"
+								listener="#{proofOfDebtFormView.changeSectionInfo}"
+								update="sectionPanel"></p:ajax>
+						</p:autoComplete>
+						<p:outputLabel />
+						<p:outputLabel />
+
+						<p:outputLabel for="SectionNameEnglish"
+							value="#{msgs['proof.of.debt.form.section.panel.section.name.english.label']}" />
+						<p:autoComplete id="SectionNameEnglish" minQueryLength="5"
+							completeMethod="#{proofOfDebtFormView.getSectionInfoByName}"
+							value="#{proofOfDebtFormView.proofOfDebtVO.sectionName}">
+							<p:ajax event="itemSelect"
+								listener="#{proofOfDebtFormView.changeSectionInfo}"
+								update="sectionPanel"></p:ajax>
+						</p:autoComplete>
+
+						<p:outputLabel for="SectionNameChinese"
+							value="#{msgs['proof.of.debt.form.section.panel.section.name.chinese.label']}" />
+						<p:inputText id="SectionNameChinese"
+							value="#{proofOfDebtFormView.proofOfDebtVO.sectionNameChi}" />
+
+						<p:outputLabel for="SectionContactNumber"
+							value="#{msgs['proof.of.debt.form.section.panel.section.contact.number.label']}" />
+						<p:inputText id="SectionContactNumber"
+							value="#{proofOfDebtFormView.proofOfDebtVO.sectionContactNoNo}" />
+						<p:outputLabel />
+						<p:outputLabel />
+
+						<p:outputLabel for="SectionContactPersonEnglish"
+							value="#{msgs['proof.of.debt.form.section.panel.section.contact.person.english.label']}" />
+						<p:inputText id="SectionContactPersonEnglish"
+							value="#{proofOfDebtFormView.proofOfDebtVO.sectionContactPerson}" />
+						<p:outputLabel for="SectionContactPersonChinese"
+							value="#{msgs['proof.of.debt.form.section.panel.section.contact.person.chinese.label']}" />
+						<p:inputText id="SectionContactPersonChinese"
+							value="#{proofOfDebtFormView.proofOfDebtVO.sectionContactPerson}" />
+
+						<p:outputLabel for="SectionAddressEnglish1"
+							value="#{msgs['proof.of.debt.form.section.panel.section.address.english.label']}" />
+						<p:inputText id="SectionAddressEnglish1"
+							placeholder="Flat,Floor,Block"
+							value="#{proofOfDebtFormView.proofOfDebtVO.sectionAddress1}" />
+
+						<p:outputLabel for="SectionAddressChinese1"
+							value="#{msgs['proof.of.debt.form.section.panel.section.address.chinese.label']}" />
+						<p:inputText id="SectionAddressChinese1"
+							placeholder="Flat,Floor,Block"
+							value="#{proofOfDebtFormView.proofOfDebtVO.sectionAddressChi1}" />
+
+						<p:outputLabel for="SectionAddressEnglish2" />
+						<p:inputText id="SectionAddressEnglish2" placeholder="Street,Road"
+							value="#{proofOfDebtFormView.proofOfDebtVO.sectionAddress2}" />
+
+						<p:outputLabel for="SectionAddressChinese2" />
+						<p:inputText id="SectionAddressChinese2" placeholder="Street,Road"
+							value="#{proofOfDebtFormView.proofOfDebtVO.sectionAddressChi2}" />
+
+						<p:outputLabel for="SectionAddressEnglish3" />
+						<p:inputText id="SectionAddressEnglish3" placeholder="District"
+							value="#{proofOfDebtFormView.proofOfDebtVO.sectionAddress3}" />
+
+						<p:outputLabel for="SectionAddressChinese3" />
+						<p:inputText id="SectionAddressChinese3" placeholder="District"
+							value="#{proofOfDebtFormView.proofOfDebtVO.sectionAddressChi3}" />
+
+					</p:panelGrid>
+				</p:panel>
+				<!-- Section Panel -->
+
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search"
+						rendered="#{proofOfDebtFormView.proofOfDebtId != null}" />
+					<p:commandButton value="#{msgs['save.btn']}"
+						action="#{proofOfDebtFormView.save}" update="@form" />
+					<p:commandButton
+						rendered="#{proofOfDebtFormView.proofOfDebtId != null}"
+						value="#{msgs['proof.of.debt.form.create.new.btn.label']}"
+						action="#{proofOfDebtFormView.createNew}" update="@form" />
+					<p:menuButton value="#{msgs['action.menuButton.label']}"
+						rendered="#{proofOfDebtFormView.proofOfDebtId != null}">
+						<p:menuitem
+							value="#{msgs['proof.of.debt.form.create.new.with.same.case.btn.label']}"
+							action="#{proofOfDebtFormView.createNewWithSameCase}"
+							update="@form" />
+						<p:menuitem
+							value="#{msgs['proof.of.debt.form.create.new.with.same.case.creditor.btn.label']}"
+							action="#{proofOfDebtFormView.createNewWithSameCreditor}"
+							update="@form" />
+					</p:menuButton>
+				</div>
+
+				<p:confirmDialog global="true" showEffect="fade">
+					<div align="center">
+						<p:commandButton value="Yes" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="No" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</div>
+				</p:confirmDialog>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

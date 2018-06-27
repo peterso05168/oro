@@ -1,0 +1,147 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="breadcrumb-3">
+		<li><a title="">Search Result</a><i class="ti-angle-right"></i></li>
+	</ui:define>
+
+	<h:form id="divisionSearchTable">
+		<p:dataTable var="divisionAdmin"
+			value="#{divisionAdministratorSearchView.lazyDataModel}"
+			rowKey="#{divisionAdmin.divisionAdminId}" reflow="true"
+			paginator="true" paginatorPosition="bottom" rows="5" lazy="true"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true"
+			rendered="#{divisionAdministratorSearchView.lazyDataModel != null}">
+			<f:facet name="header">Search Result</f:facet>
+			<p:column
+				headerText="#{msgs['division.administrator.division.column.header']}"
+				sortBy="#{divisionAdmin.division.divisionId}">
+				<p:commandLink
+					action="#{divisionAdministratorSearchView.dialogHandleOpen}"
+					update="createForm">
+					<h:outputText value="#{divisionAdmin.divisionName}" />
+					<f:setPropertyActionListener
+						value="#{divisionAdmin.divisionAdminId}"
+						target="#{divisionAdministratorSearchView.divisionAdminId}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['division.administrator.post.column.header']}"
+				sortBy="#{divisionAdmin.post.postId}">
+				<h:outputText value="#{divisionAdmin.postTitle}" />
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['division.administrator.user.name.column.header']}"
+				sortBy="#{divisionAdmin.post.postId}">
+				<h:outputText value="#{divisionAdmin.userName}" />
+			</p:column>
+
+			<p:column headerText="#{msgs['status.column.header']}"
+				sortBy="#{divisionAdmin.status}" styleClass="ax-status-w-b">
+				<h:outputText value="#{msgs['inactive.status.label']}"
+					rendered="#{divisionAdmin.status eq 'INA'}"
+					class="status-label red" />
+				<h:outputText value="#{msgs['active.status.label']}"
+					rendered="#{divisionAdmin.status eq 'ACT'}"
+					class="status-label green" />
+			</p:column>
+
+			<p:column headerText="#{msgs['action.column.header']}"
+				styleClass="ax-action-w dont-print">
+				<p:menuButton value="Action">
+					<p:menuitem value="Edit"
+						action="#{divisionAdministratorSearchView.dialogHandleOpen}"
+						process="@this" update="createForm">
+						<f:setPropertyActionListener
+							value="#{divisionAdmin.divisionAdminId}"
+							target="#{divisionAdministratorSearchView.divisionAdminId}" />
+					</p:menuitem>
+					<p:menuitem value="#{msgs['delete.menuitem.label']}"
+						rendered="#{divisionAdmin.status eq 'ACT'}"
+						onclick="PF('cd').show()">
+						<f:setPropertyActionListener
+							value="#{divisionAdmin.divisionAdminId}"
+							target="#{divisionAdministratorSearchView.divisionAdminId}" />
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+		<p:confirmDialog widgetVar="cd" header="Confirm" showEffect="fade">
+			<f:facet name="message">
+				<h:outputText value="Confirm to Delete the selected record ?" />
+			</f:facet>
+			<div align="center">
+				<p:commandButton value="Yes"
+					action="#{divisionAdministratorSearchView.deleteDivisionAdmin}"
+					update="divisionSearchTable,searchForm"
+					oncomplete="PF('cd').hide()" />
+				<p:commandButton value="No" onclick="PF('cd').hide();" type="button" />
+			</div>
+		</p:confirmDialog>
+	</h:form>
+
+	<h:form id="createForm">
+		<p:dialog id="createDialog"
+			header="#{msgs['division.administrator.dialog.title']}"
+			widgetVar="createDialog" modal="true" width="520" minHeight="70"
+			resizable="false" dynamic="true" style="position: fixed">
+			<p:ajax event="close" update="createForm" resetValues="true"
+				listener="#{divisionAdministratorSearchView.dialogHandleClose}">
+				<p:resetInput target="createForm" />
+			</p:ajax>
+			<p:messages id="msgs" closable="true" />
+			<div class="ui-fluid">
+				<p:panelGrid id="pg" columns="1" layout="grid"
+					styleClass="ui-panelgrid-blank ui-fluid">
+					<p:outputLabel for="Division" style="text-align:left; width:auto"
+						value="#{msgs['division.administrator.dialog.division.label']}" />
+					<p:selectOneMenu id="Division" required="true"
+						value="#{divisionAdministratorSearchView.divisionId}">
+						<f:selectItem itemLabel="- Please select -"
+							noSelectionOption="true" />
+						<f:selectItems
+							value="#{divisionAdministratorSearchView.divisionVOs}"
+							var="division" itemLabel="#{division.divisionName}"
+							itemValue="#{division.divisionId}" />
+						<p:ajax update="Post, UserName" event="itemSelect" resetValues="true"
+							listener="#{divisionAdministratorSearchView.getPostByDivision}" />
+					</p:selectOneMenu>
+					<p:outputLabel for="Post" style="text-align:left; width:auto"
+						value="#{msgs['division.administrator.dialog.post.label']}" />
+					<p:selectOneMenu id="Post" required="true"
+						value="#{divisionAdministratorSearchView.postId}">
+						<f:selectItem itemLabel="- Please select -" />
+						<f:selectItems value="#{divisionAdministratorSearchView.postVOs}"
+							var="post" itemLabel="#{post.postTitle}"
+							itemValue="#{post.postId}" />
+						<p:ajax update="UserName" event="itemSelect" resetValues="true"
+							listener="#{divisionAdministratorSearchView.getUserNameByPost}" />
+					</p:selectOneMenu>
+					<p:outputLabel for="UserName" style="text-align:left; width:auto"
+						value="#{msgs['division.administrator.dialog.user.name.label']}" />
+					<p:inputText id="UserName" disabled="true" immediate="true"
+						value="#{divisionAdministratorSearchView.userName}" />
+				</p:panelGrid>
+			</div>
+			<div class="ax-btn-set" align="right">
+				<p:commandButton value="#{msgs['save.btn']}"
+					action="#{divisionAdministratorSearchView.save}"
+					update="pg,msgs,divisionSearchTable" validateClient="true">
+				</p:commandButton>
+				<p:commandButton value="#{msgs['cancel.btn']}"
+					styleClass="ui-priority-secondary"
+					onclick="PF('createDialog').hide()" />
+			</div>
+		</p:dialog>
+	</h:form>
+</ui:composition>
+
+
+
+

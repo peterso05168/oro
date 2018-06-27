@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TESTMAINREPORT" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="99d38d89-86e6-4680-90c0-980ce9423ec1">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<style name="Style1" isDefault="true" fontName="Courier" fontSize="9" isBold="true"/>
+	<parameter name="ORACLE_REF_CURSOR" class="java.sql.ResultSet" isForPrompting="false"/>
+	<parameter name="REQUEST_REPORT_ID" class="java.lang.Long" isForPrompting="false"/>
+	<parameter name="REQUEST_CRITERIA_ID" class="java.lang.Long" isForPrompting="false"/>
+	<parameter name="RPT_ROOT" class="java.lang.String"/>
+	<parameter name="RPT_ENV" class="java.lang.String"/>
+	<parameter name="RPT_CONT_PATH" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[($P{RPT_ROOT} != null && !$P{RPT_ROOT}.isEmpty() ? "/" + $P{RPT_ROOT} + "/" : "") + ($P{RPT_ENV} != null && !$P{RPT_ENV}.isEmpty() ? $P{RPT_ENV} + "/" : "")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RPT_CONT_TMPL" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<queryString language="plsql">
+		<![CDATA[{call MAINREPORT.MAIN_PROC($P{ORACLE_REF_CURSOR},$P{REQUEST_REPORT_ID},$P{REQUEST_CRITERIA_ID})}]]>
+	</queryString>
+	<field name="CRI_NAME" class="java.lang.String"/>
+	<field name="CRI_VALUE" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="595" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<subreport isUsingCache="true" runToBottom="true">
+				<reportElement key="" x="0" y="0" width="842" height="595" uuid="a201ef93-2458-482d-a5c8-767b81206300">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<subreportParameter name="REQUEST_REPORT_ID">
+					<subreportParameterExpression><![CDATA[$P{REQUEST_REPORT_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CRI_VALUE">
+					<subreportParameterExpression><![CDATA[$F{CRI_VALUE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="CRI_NAME">
+					<subreportParameterExpression><![CDATA[$F{CRI_NAME}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="RPT_CONT_PATH">
+					<subreportParameterExpression><![CDATA[$P{RPT_CONT_PATH}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="RPT_ENV">
+					<subreportParameterExpression><![CDATA[$P{RPT_ENV}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{RPT_CONT_PATH}+$P{RPT_CONT_TMPL}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

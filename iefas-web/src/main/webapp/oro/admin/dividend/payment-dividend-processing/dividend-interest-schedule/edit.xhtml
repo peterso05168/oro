@@ -1,0 +1,743 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:i="http://iefas.oro.hk/ui"
+	xmlns:com="http://java.sun.com/jsf/composite/common"
+	template="./dividend-interest-schedule.xhtml">
+	<ui:define name="title">
+		<h:outputLink styleClass="ax-back-icon-url" hreflang="search">
+			<i class="ax-icon ti-arrow-left"></i>
+			#{msgs['dividend.interest.schedule.edit.title']}
+		</h:outputLink>
+	</ui:define>
+
+	<ui:define name="main-content">
+		<div>
+			<h:form id="editForm">
+				<p:panel id="toggleable" header="#{msgs['basic.info.title']}"
+					toggleable="true" toggleSpeed="200" widgetVar="panel">
+					<p:messages id="msgs" closable="true" />
+					<div>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="caseNumberValue"
+								value="#{msgs['dividend.interest.schedule.edit.case.number.label']}" />
+							<com:caseNumber id="caseNumberValue" disabled="true"
+								caseTypeCodeValue="#{dividendScheduleEditView.caseNumberVO.caseType}"
+								caseNoValue="#{dividendScheduleEditView.caseNumberVO.caseSequence}"
+								caseYearValue="#{dividendScheduleEditView.caseNumberVO.caseYear}" />
+							<p:outputLabel for="caseName"
+								value="#{msgs['dividend.interest.schedule.edit.case.name.label']}" />
+							<p:inputText id="caseName" disabled="true"
+								value="#{dividendScheduleEditView.caseName}">
+							</p:inputText>
+							<p:outputLabel for="pledgeType"
+								value="#{msgs['dividend.interest.schedule.edit.pledge.type.label']}" />
+							<p:selectOneMenu id="pledgeType"
+								disabled="#{dividendScheduleEditView.formDisabled}"
+								value="#{dividendScheduleEditView.dividendScheduleVO.pledgeType}">
+								<f:selectItems value="#{dividendScheduleEditView.pledgeTypes}" />
+							</p:selectOneMenu>
+							<p:column></p:column>
+							<p:column></p:column>
+							<p:outputLabel for="scheduleType"
+								value="#{msgs['dividend.interest.schedule.edit.schedule.type.label']}" />
+							<p:selectOneMenu id="scheduleType" disabled="true"
+								value="#{dividendScheduleEditView.dividendScheduleVO.scheduleType}">
+								<f:selectItems
+									value="#{dividendScheduleEditView.dividendScheduleTypes}" />
+								<f:ajax event="change" render="@form" />
+							</p:selectOneMenu>
+							<p:outputLabel for="paymentEffectiveDate"
+								value="#{msgs['dividend.interest.schedule.edit.payment.effective.date.label']}" />
+							<p:calendar id="paymentEffectiveDate" disabled="true"
+								readonlyInput="true"
+								value="#{dividendScheduleEditView.dividendScheduleVO.paymentEffectiveDate}"
+								pattern="#{appResourceUtils.dateFormat}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</p:calendar>
+							<p:outputLabel for="preparedBy"
+								value="#{msgs['dividend.interest.schedule.edit.preparedby.label']}" />
+							<p:inputText id="preparedBy" disabled="true"
+								value="#{dividendScheduleEditView.dividendScheduleVO.submittedBy}">
+							</p:inputText>
+							<p:outputLabel for="preparedDate"
+								value="#{msgs['dividend.interest.schedule.edit.prepared.date.label']}" />
+							<p:inputText id="preparedDate" disabled="true"
+								value="#{dividendScheduleEditView.dividendScheduleVO.submittedDate}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</p:inputText>
+							<p:outputLabel for="reviewedBy"
+								value="#{msgs['dividend.interest.schedule.edit.reviewedby.label']}" />
+							<p:inputText id="reviewedBy" disabled="true"
+								value="#{dividendScheduleEditView.dividendScheduleVO.reviewedBy}">
+							</p:inputText>
+							<p:outputLabel for="reviewedDate"
+								value="#{msgs['dividend.interest.schedule.edit.reviewed.date.label']}" />
+							<p:inputText id="reviewedDate" disabled="true"
+								value="#{dividendScheduleEditView.dividendScheduleVO.reviewedDate}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</p:inputText>
+							<p:outputLabel for="approvedBy"
+								value="#{msgs['dividend.interest.schedule.edit.approvedBy.label']}" />
+							<p:inputText id="approvedBy" disabled="true"
+								value="#{dividendScheduleEditView.dividendScheduleVO.approvedBy}">
+							</p:inputText>
+							<p:outputLabel for="approvedDate"
+								value="#{msgs['dividend.interest.schedule.edit.approved.date.label']}" />
+							<p:inputText id="approvedDate" disabled="true"
+								value="#{dividendScheduleEditView.dividendScheduleVO.approvedDate}">
+								<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+							</p:inputText>
+							<p:outputLabel for="status"
+								value="#{msgs['dividend.interest.schedule.edit.status.label']}" />
+							<p:inputText id="status" disabled="true"
+								value="#{dividendScheduleEditView.statusMap.get(dividendScheduleEditView.dividendScheduleVO.status)}">
+							</p:inputText>
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<p:dataTable id="creditorTypeTable" reflow="true" paginator="false"
+					var="dividendScheduleCreditor"
+					value="#{dividendScheduleEditView.showDividendScheduleCreditorList}">
+					<p:column width="200"
+						headerText="#{msgs['dividend.interest.schedule.edit.creditor.type.column']}">
+						<h:outputText
+							value="#{dividendScheduleCreditor.adjCredType.creditorTypeName}" />
+					</p:column>
+					<p:column
+						headerText="#{msgs['dividend.interest.schedule.edit.remark.column']}">
+						<h:outputText value="#{dividendScheduleCreditor.remark}" />
+					</p:column>
+					<p:column
+						headerText="#{msgs['dividend.interest.schedule.edit.action.column']}"
+						styleClass="ax-action-w dont-print">
+						<p:menuButton value="#{msgs['action.menuButton.label']}">
+							<p:menuitem value="#{msgs['edit.menuitem.label']}"
+								update="editForm"
+								action="#{dividendScheduleEditView.toEditCreditorType}"
+								disabled="#{dividendScheduleEditView.formDisabled}"
+								process="@this">
+								<f:setPropertyActionListener value="#{dividendScheduleCreditor}"
+									target="#{dividendScheduleEditView.editDividendScheduleCreditor}" />
+							</p:menuitem>
+							<p:menuitem value="#{msgs['delete.menuitem.label']}"
+								action="#{dividendScheduleEditView.deleteCreditorType}"
+								disabled="#{dividendScheduleEditView.formDisabled}"
+								update="editForm,@form">
+								<f:setPropertyActionListener value="#{dividendScheduleCreditor}"
+									target="#{dividendScheduleEditView.editDividendScheduleCreditor}" />
+							</p:menuitem>
+						</p:menuButton>
+					</p:column>
+				</p:dataTable>
+				<div class="ax-btn-set aR">
+					<p:commandButton
+						value="#{msgs['dividend.interest.schedule.edit.add.btn']}"
+						action="#{dividendScheduleEditView.toAddCreditorType}"
+						disabled="#{dividendScheduleEditView.formDisabled}" icon="ti-plus" />
+				</div>
+				<!-- tab start -->
+				<p:tabView id="tabView" activeIndex="0">
+					<p:tab
+						title="#{msgs['dividend.interest.schedule.tab.dividend.title']}">
+						<p:dataTable var="divScheItem" id="dividendTable"
+							value="#{dividendScheduleEditView.dividendScheduleItemShowList}"
+							rowKey="#{divScheItem.dividendScheduleItemId}" lazy="true"
+							reflow="true" paginator="true" paginatorPosition="bottom"
+							rows="11"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15">
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.tab.dividend.proof.number.column']}">
+								<h:outputText value="#{divScheItem.creditor.creditorId}" />
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.tab.dividend.creditor.name.column']}">
+								<h:outputText value="#{divScheItem.creditor.creditorNameEng}" />
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.tab.dividend.payee.name.column']}">
+								<h:outputText value="#{divScheItem.creditor.payeeName}" />
+								<br />
+							</p:column>
+							<p:column
+								rendered="#{dividendScheduleEditView.dividendScheduleVO.scheduleType eq 'DS' or dividendScheduleEditView.dividendScheduleVO.scheduleType eq 'ADS'}"
+								headerText="#{msgs['dividend.interest.schedule.tab.dividend.natureofclaim.column']}">
+								<h:outputText
+									value="#{dividendScheduleEditView.natureOfClaimMap.get(divScheItem.natureOfClaim)}" />
+								<br />
+							</p:column>
+							<p:column
+								rendered="#{dividendScheduleEditView.dividendScheduleVO.scheduleType eq 'ADS' or dividendScheduleEditView.dividendScheduleVO.scheduleType eq 'AIS'}"
+								headerText="#{msgs['dividend.interest.schedule.tab.dividend.claimed.amount.column']}">
+								<h:outputText value="#{divScheItem.totalClaimAmount}"
+									style="text-align: right;">
+									<f:convertNumber type="number"
+										pattern="#{appResourceUtils.moneyFormat}" />
+								</h:outputText>
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.tab.dividend.distributed.percentage.column']}">
+								<h:outputText value="#{divScheItem.distributionPercentage}"
+									style="text-align: right;">
+									<f:convertNumber type="percent" currencySymbol="%" />
+								</h:outputText>
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.tab.dividend.distributed.amount.column']}">
+								<h:outputText value="#{divScheItem.distributionAmount}"
+									style="text-align: right;">
+									<f:convertNumber type="number"
+										pattern="#{appResourceUtils.moneyFormat}" />
+								</h:outputText>
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.tab.dividend.withheld.amount.column']}">
+								<h:outputText value="#{divScheItem.withheldAmount}"
+									style="text-align: right;">
+									<f:convertNumber type="number"
+										pattern="#{appResourceUtils.moneyFormat}" />
+								</h:outputText>
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.tab.dividend.withheld.reasons.column']}">
+								<h:outputText
+									value="#{divScheItem.withheldReason.withheldReasonCode}" />
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.tab.dividend.voucher.particulars.column']}">
+								<h:outputText value="#{divScheItem.voucherPart}" />
+								<br />
+							</p:column>
+							<p:column width="100"
+								headerText="#{msgs['dividend.interest.schedule.tab.dividend.action.column']}">
+								<p:menuButton value="#{msgs['action.menuButton.label']}">
+									<p:menuitem
+										value="#{msgs['dividend.interest.schedule.tab.dividend.edit.btn']}"
+										action="#{dividendScheduleEditView.toEditDivScheItem}"
+										disabled="#{dividendScheduleEditView.formDisabled}"
+										update="editForm">
+										<f:setPropertyActionListener value="#{divScheItem}"
+											target="#{dividendScheduleEditView.editDividendScheduleItem}" />
+									</p:menuitem>
+									<p:menuitem
+										value="#{msgs['dividend.interest.schedule.tab.dividend.delete.btn']}"
+										action="#{dividendScheduleEditView.deleteDivSchedultItem}"
+										disabled="#{dividendScheduleEditView.formDisabled}"
+										update="editForm">
+										<f:setPropertyActionListener value="#{divScheItem}"
+											target="#{dividendScheduleEditView.editDividendScheduleItem}" />
+									</p:menuitem>
+								</p:menuButton>
+								<br />
+							</p:column>
+						</p:dataTable>
+						<div class="ax-btn-set aR">
+							<p:commandButton
+								value="#{msgs['dividend.interest.schedule.edit.add.btn']}"
+								action="#{dividendScheduleEditView.toAddDivScheItem}"
+								icon="ti-plus"
+								disabled="#{dividendScheduleEditView.formDisabled}"
+								rendered="#{dividendScheduleEditView.dividendScheduleVO.scheduleType ne 'IS' and dividendScheduleEditView.dividendScheduleVO.scheduleType ne 'DS'}" />
+						</div>
+					</p:tab>
+
+					<p:tab
+						title="#{msgs['dividend.interest.schedule.tab.history.title']}">
+						<p:dataTable id="historyTable" reflow="true" paginator="false"
+							var="actionHistory"
+							value="#{dividendScheduleEditView.dividendScheduleVO.approveHistory}">
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.tab.history.workflow.type.column']}">
+								<h:outputText value="#{actionHistory.action}">
+								</h:outputText>
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.tab.history.action.column']}">
+								<h:outputText value="#{actionHistory.action}" />
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.tab.history.actionby.column']}">
+								<h:outputText value="#{actionHistory.actionByPerson}" />
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.tab.history.datetime.column']}">
+								<h:outputText value="#{actionHistory.actionDate}">
+									<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+								</h:outputText>
+								<br />
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.tab.history.remark.reason.type.column']}">
+								<h:outputText value="#{actionHistory.remark}" />
+								<br />
+							</p:column>
+						</p:dataTable>
+					</p:tab>
+				</p:tabView>
+				<!-- tab end -->
+				<div class="ax-btn-set">
+					<p:button value="#{msgs['back.btn']}"
+						styleClass="ui-priority-secondary" icon="ti-arrow-left"
+						outcome="search" />
+					<p:commandButton
+						value="#{msgs['dividend.interest.schedule.print.cheque.btn']}"
+						update="@form"
+						disabled="#{dividendScheduleEditView.dividendScheduleVO.status ne 'CON'}"
+						action="#{dividendScheduleEditView.toEditPrintCheque}" />
+					<p:commandButton value="#{msgs['save.btn']}" update="@form"
+						disabled="#{! dividendScheduleEditView.saveable}"
+						action="#{dividendScheduleEditView.saveDividendSchedule}" />
+					<!-- button below -->
+					<p:menuButton value="#{msgs['action.menuButton.label']}"
+						disabled="#{dividendScheduleEditView.dividendScheduleVO.status eq 'INA'}">
+						<p:menuitem update="@form"
+							rendered="#{dividendScheduleEditView.confirmable}"
+							value="#{msgs['confirm.btn']}"
+							action="#{dividendScheduleEditView.confirmDividendSchedule}">
+						</p:menuitem>
+						<p:menuitem update="@form"
+							rendered="#{dividendScheduleEditView.approvable}"
+							value="#{msgs['approve.btn']}"
+							action="#{dividendScheduleEditView.approveDividendSchedule}">
+						</p:menuitem>
+						<p:menuitem update="@form"
+							rendered="#{dividendScheduleEditView.rejectable}"
+							value="#{msgs['reject.btn']}"
+							onclick="PF('rejectDialog').show();">
+						</p:menuitem>
+						<p:menuitem update="@form"
+							rendered="#{dividendScheduleEditView.deletable}"
+							value="#{msgs['delete.menuitem.label']}"
+							action="#{dividendScheduleEditView.deleteDividendSchedule}">
+							<p:confirm header="#{msgs['delete.dialog.header']}"
+								message="#{msgs['delete.dialog.msg']}" icon="ui-icon-alert" />
+						</p:menuitem>
+					</p:menuButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="#{msgs['delete.yes.btn']}" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="#{msgs['delete.no.btn']}" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+					<!-- button below -->
+				</div>
+			</h:form>
+			<!-- dialog to edit divSchedule result -->
+			<h:form id="createDivScheItemForm">
+				<p:dialog id="createDivScheItemDialog"
+					header="#{msgs['dividend.interest.schedule.edit.schedule.item.table.title']}"
+					widgetVar="createDivScheItemDialog" modal="true" width="900"
+					minHeight="50" resizable="false" dynamic="true"
+					style="position: fixed">
+					<p:messages id="msgs" closable="true" />
+					<p:ajax event="close" update="@form" resetValues="true">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="creditorList"
+								value="#{msgs['dividend.interest.schedule.edit.schedule.item.creditors.column']}" />
+							<p:selectOneMenu id="creditorList"
+								value="#{dividendScheduleEditView.editDividendScheduleItem.creditor.creditorId}">
+								<f:selectItem itemLabel=" - - Select - -" />
+								<f:selectItems
+									value="#{dividendScheduleEditView.creditorSelectList}"
+									var="cred" itemLabel="#{cred.creditorNameEng}"
+									itemValue="#{cred.creditorId}" />
+							</p:selectOneMenu>
+							<p:spacer />
+							<p:spacer />
+						</p:panelGrid>
+						<p:panelGrid id="amountpg" columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="totalAmount"
+								rendered="#{dividendScheduleEditView.dividendScheduleVO.scheduleType eq 'DS' or dividendScheduleEditView.dividendScheduleVO.scheduleType eq 'IS'}"
+								value="#{msgs['dividend.interest.schedule.edit.schedule.item.distributed.amount.column']}" />
+							<p:outputLabel for="totalAmount"
+								rendered="#{dividendScheduleEditView.dividendScheduleVO.scheduleType eq 'ADS' or dividendScheduleEditView.dividendScheduleVO.scheduleType eq 'AIS'}"
+								value="#{msgs['dividend.interest.schedule.edit.schedule.item.agreed.amount.column']}" />
+							<p:inputText id="totalAmount"
+								disabled="#{dividendScheduleEditView.dividendScheduleVO.scheduleType eq 'DS' or dividendScheduleEditView.dividendScheduleVO.scheduleType eq 'ADS'}"
+								value="#{dividendScheduleEditView.editDividendScheduleItem.distributionAmount}">
+								<f:convertNumber type="number"
+									pattern="#{appResourceUtils.moneyFormat}" />
+							</p:inputText>
+						</p:panelGrid>
+						<p:panelGrid id="dividendpg" columns="4"
+							rendered="#{dividendScheduleEditView.dividendScheduleVO.scheduleType eq 'DS' or dividendScheduleEditView.dividendScheduleVO.scheduleType eq 'ADS'}"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="preferential"
+								value="#{msgs['dividend.interest.schedule.edit.schedule.item.preferential.column']}" />
+							<p:inputText id="preferential"
+								value="#{dividendScheduleEditView.preferentialAmount}">
+								<f:convertNumber type="number"
+									pattern="#{appResourceUtils.moneyFormat}" />
+								<f:ajax event="blur"
+									listener="#{dividendScheduleEditView.calculateTotalAmount}"
+									render="createDivScheItemForm:totalAmount" />
+							</p:inputText>
+							<p:outputLabel for="deferredPreferential"
+								value="#{msgs['dividend.interest.schedule.edit.schedule.item.deferred.preferential.column']}" />
+							<p:inputText id="deferredPreferential"
+								value="#{dividendScheduleEditView.deferredPreferentialAmount}">
+								<f:convertNumber type="number"
+									pattern="#{appResourceUtils.moneyFormat}" />
+								<f:ajax event="blur"
+									listener="#{dividendScheduleEditView.calculateTotalAmount}"
+									render="createDivScheItemForm:totalAmount" />
+							</p:inputText>
+							<p:outputLabel for="ordinary"
+								value="#{msgs['dividend.interest.schedule.edit.schedule.item.ordinary.column']}" />
+							<p:inputText id="ordinary"
+								value="#{dividendScheduleEditView.ordinaryAmount}">
+								<f:convertNumber type="number"
+									pattern="#{appResourceUtils.moneyFormat}" />
+								<f:ajax event="blur"
+									listener="#{dividendScheduleEditView.calculateTotalAmount}"
+									render="createDivScheItemForm:totalAmount" />
+							</p:inputText>
+							<p:outputLabel for="deferredordinary"
+								value="#{msgs['dividend.interest.schedule.edit.schedule.item.deferred.ordinary.column']}" />
+							<p:inputText id="deferredordinary"
+								value="#{dividendScheduleEditView.deferredOrdinaryAmount}">
+								<f:convertNumber type="number"
+									pattern="#{appResourceUtils.moneyFormat}" />
+								<p:ajax event="blur"
+									listener="#{dividendScheduleEditView.calculateTotalAmount}"
+									update="createDivScheItemForm:amountpg,createDivScheItemForm:dividendpg" />
+							</p:inputText>
+						</p:panelGrid>
+						<p:panelGrid id="commonpg" columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="withheldAmount"
+								value="#{msgs['dividend.interest.schedule.edit.schedule.item.withheld.amount.column']}" />
+							<p:inputText id="withheldAmount"
+								value="#{dividendScheduleEditView.editDividendScheduleItem.withheldAmount}">
+								<f:convertNumber type="number"
+									pattern="#{appResourceUtils.moneyFormat}" />
+							</p:inputText>
+							<p:outputLabel for="withheldReasons"
+								value="#{msgs['dividend.interest.schedule.edit.schedule.item.withheld.reasons.column']}" />
+							<p:selectOneMenu id="withheldReasons"
+								value="#{dividendScheduleEditView.editDividendScheduleItem.withheldReason.withheldReasonId}">
+								<f:selectItem itemLabel=" - - Select - -" />
+								<f:selectItems
+									value="#{dividendScheduleEditView.withheldReasonList}"
+									var="withheldReason"
+									itemLabel="#{withheldReason.withheldReasonCode}"
+									itemValue="#{withheldReason.withheldReasonId}" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+						<p:panelGrid columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="voucherParticulars"
+								value="#{msgs['dividend.interest.schedule.edit.schedule.item.voucher.particulars.column']}" />
+							<p:inputTextarea id="voucherParticulars"
+								value="#{dividendScheduleEditView.editDividendScheduleItem.voucherPart}"
+								cols="8" rows="4">
+							</p:inputTextarea>
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('createDivScheItemDialog').hide();"
+							update="editForm,@form" />
+						<p:commandButton value="#{msgs['save.btn']}"
+							action="#{dividendScheduleEditView.saveDivScheItem}"
+							update="pg,msgs,editForm:tabView" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to edit divSchedule result end-->
+			<h:form id="dividendForm">
+				<p:dialog id="dividendEditDialog"
+					header="#{msgs['orsFeesToBeCharged.editAnalysis.title']}"
+					widgetVar="dividendEditDialog" modal="true" width="850"
+					minHeight="80" resizable="false" dynamic="true"
+					style="position: fixed">
+					<p:ajax event="close" update="@form,editForm" resetValues="true">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<p:messages id="msgs" closable="true" />
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="2"
+							columnClasses="ui-grid-col-2,ui-grid-col-7" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="creditorType"
+								value="#{msgs['dividend.interest.schedule.edit.table.creditortype.label']}" />
+							<p:selectOneMenu id="creditorType"
+								value="#{dividendScheduleEditView.editDividendScheduleCreditor.adjCredType.creditorTypeId}">
+								<f:selectItems
+									value="#{dividendScheduleEditView.creditorTypeList}"
+									var="creditorType" itemLabel="#{creditorType.creditorTypeName}"
+									itemValue="#{creditorType.creditorTypeId}" />
+							</p:selectOneMenu>
+							<p:outputLabel
+								value="#{msgs['dividend.interest.schedule.edit.table.predefined.label']}" />
+							<p:selectManyCheckbox id="basic"
+								value="#{dividendScheduleEditView.selectValues}">
+								<f:selectItem itemLabel="Retrospective"
+									itemValue="RETROSPECTIVE" />
+								<f:ajax event="change"
+									listener="#{dividendScheduleEditView.toEditRemarks}"
+									render="dividendForm:editRemarks" />
+							</p:selectManyCheckbox>
+							<p:outputLabel />
+							<p:selectManyCheckbox
+								value="#{dividendScheduleEditView.selectFirstGroupValues}">
+								<f:selectItem itemLabel="First" itemValue="FIRST" />
+								<f:selectItem itemLabel="second" itemValue="SECOND" />
+								<f:selectItem itemLabel="third" itemValue="THIRD" />
+								<f:ajax event="change"
+									listener="#{dividendScheduleEditView.toEditRemarks}"
+									render="dividendForm:editRemarks" />
+							</p:selectManyCheckbox>
+							<p:outputLabel />
+							<p:selectManyCheckbox
+								value="#{dividendScheduleEditView.selectSecondGroupValues}"
+								layout="pageDirection">
+								<f:selectItem itemLabel="and Final" itemValue="FINAL" />
+								<f:selectItem itemLabel="Preferential payment"
+									itemValue="PREFERENTIAL PAYMENT" />
+								<f:selectItem itemLabel="Deferred Preferenial payment"
+									itemValue="DEFERRED PREFERENIAL PAYMENT" />
+								<f:selectItem itemLabel="Dividend" itemValue="DIVIDEND" />
+								<f:selectItem itemLabel="Deferred Dividend"
+									itemValue="DEFERRED DIVIDEND" />
+								<f:selectItem itemLabel="Supplementary Dividend"
+									itemValue="SUPPLEMENTARY DIVIDEND" />
+								<f:selectItem
+									itemLabel="Interest under section 38(9) of the Bankruptcy Ordinance (Cap. 6)"
+									itemValue="Interest under section 38(9) OF the Bankruptcy Ordinance (Cap. 6)" />
+								<f:ajax event="change"
+									listener="#{dividendScheduleEditView.toEditRemarks}"
+									render="dividendForm:editRemarks" />
+							</p:selectManyCheckbox>
+							<p:outputLabel for="editRemarks"
+								value="#{msgs['dividend.interest.schedule.edit.table.remark.label']}" />
+							<p:inputTextarea value="#{dividendScheduleEditView.editRemarks}"
+								id="editRemarks" cols="4" rows="4">
+							</p:inputTextarea>
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['save.btn']}"
+							action="#{dividendScheduleEditView.saveEditCreditorType}"
+							update="pg,msgs">
+						</p:commandButton>
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('dividendEditDialog').hide();" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to Print Cheque start -->
+			<h:form id="PrintChequeForm">
+				<p:dialog id="printChequeDialog"
+					header="#{msgs['dividend.interest.schedule.print.cheque.title']}"
+					widgetVar="printChequeDialog" modal="true" width="1000"
+					minHeight="50" resizable="false" dynamic="true"
+					style="position: fixed">
+					<p:messages id="msgs" closable="true" />
+					<p:ajax event="close" update="@form" resetValues="true">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<div class="ui-fluid">
+						<p:panelGrid id="pg" columns="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="printChequeCaseNumberValue"
+								value="#{msgs['dividend.interest.schedule.edit.case.number.label']}" />
+							<com:caseNumber id="printChequeCaseNumberValue" disabled="true"
+								caseTypeCodeValue="#{dividendScheduleEditView.caseNumberVO.caseType}"
+								caseNoValue="#{dividendScheduleEditView.caseNumberVO.caseSequence}"
+								caseYearValue="#{dividendScheduleEditView.caseNumberVO.caseYear}" />
+							<p:outputLabel for="printChequeCaseName"
+								value="#{msgs['dividend.interest.schedule.edit.case.name.label']}" />
+							<p:inputText id="printChequeCaseName" disabled="true"
+								value="#{dividendScheduleEditView.caseName}">
+							</p:inputText>
+							<p:outputLabel for="chquePaymentEffectiveDate"
+								value="#{msgs['dividend.interest.schedule.edit.payment.effective.date.label']}" />
+							<p:inputText id="chquePaymentEffectiveDate" disabled="true"
+								value="#{dividendScheduleEditView.dividendScheduleVO.paymentEffectiveDate}">
+								<f:convertDateTime type="date"
+									pattern="#{appResourceUtils.dateFormat}" />
+							</p:inputText>
+							<p:outputLabel for="chequeCreditorType"
+								value="#{msgs['dividend.interest.schedule.creditor.type.label']}" />
+							<p:inputText id="chequeCreditorType" disabled="true"
+								value="#{dividendScheduleEditView.chequeCreditorType}">
+							</p:inputText>
+
+							<p:outputLabel for="chequeDateOfNotice"
+								value="#{msgs['dividend.interest.schedule.date.of.notice.label']}" />
+							<p:calendar id="chequeDateOfNotice" showOn="button"
+								readonlyInput="true"
+								value="#{dividendScheduleEditView.dateOfNotice}"
+								pattern="#{appResourceUtils.dateFormat}">
+							</p:calendar>
+
+							<p:outputLabel for="startChequeNumber"
+								value="#{msgs['dividend.interest.schedule.start.cheuqe.number.label']}" />
+							<p:inputText id="startChequeNumber"
+								value="#{dividendScheduleEditView.startChequeNumber}">
+							</p:inputText>
+
+							<p:outputLabel for="endChequeNumber"
+								value="#{msgs['dividend.interest.schedule.end.cheque.number.label']}" />
+							<p:inputText id="endChequeNumber" disabled="true"
+								value="#{dividendScheduleEditView.endCheuqeNumber}">
+							</p:inputText>
+							<p:spacer />
+							<p:spacer />
+							<p:spacer />
+							<p:spacer />
+						</p:panelGrid>
+
+						<p:dataTable id="printChequeTable" reflow="true" paginator="false"
+							var="dividendCheque"
+							value="#{dividendScheduleEditView.dividendChequeList}">
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.cheque.proof.number.column']}">
+								<h:outputText
+									value="#{dividendCheque.dividendScheduleItem.creditor.proofNo}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.cheque.creditor.name.column']}">
+								<h:outputText
+									value="#{dividendCheque.dividendScheduleItem.creditor.creditorNameEng}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.edit.creditor.type.column']}">
+								<h:outputText
+									value="#{dividendCheque.dividendScheduleItem.creditor.creditorType.creditorTypeName}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.cheque.amount.column']}">
+								<h:outputText value="#{dividendCheque.cheque.chequeAmount}">
+									<f:convertNumber type="number"
+										pattern="#{appResourceUtils.moneyFormat}" />
+								</h:outputText>
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.cheque.status.column']}">
+								<h:outputText value="#{dividendCheque.cheque.status}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.cheque.remark.column']}">
+								<h:outputText value="#{dividendCheque.cheque.remark}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.cheque.voucher.particulars.column']}">
+								<h:outputText
+									value="#{dividendCheque.dividendScheduleItem.voucherPart}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.cheque.number.column']}">
+								<p:inputText value="#{dividendCheque.cheque.chequeNo}"
+									disabled="#{dividendCheque.dividendChequeId!=null and dividendCheque.status ne 'ISU' }">
+									<f:ajax event="blur"
+										listener="#{dividendScheduleEditView.checkExistChequeNumber}"
+										render="pg,msgs" />
+								</p:inputText>
+							</p:column>
+							<p:column
+								headerText="#{msgs['dividend.interest.schedule.edit.action.column']}"
+								styleClass="ax-action-w dont-print">
+								<p:menuButton value="#{msgs['action.menuButton.label']}">
+									<p:menuitem
+										value="#{msgs['dividend.interest.schedule.cheque.Reprint.btn']}"
+										process="@this">
+									</p:menuitem>
+								</p:menuButton>
+							</p:column>
+						</p:dataTable>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('printChequeDialog').hide();" update="editForm,@form" />
+						<p:commandButton
+							value="#{msgs['dividend.interest.schedule.cheque.print.btn']}"
+							styleClass="ui-priority-secondary"
+							update="pg,msgs,PrintChequeForm:printChequeTable"
+							action="#{dividendScheduleEditView.toPrintCheque}" />
+						<p:commandButton value="#{msgs['save.btn']}"
+							action="#{dividendScheduleEditView.saveCheque}"
+							update="pg,msgs,PrintChequeForm:printChequeTable" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to Print Cheque end -->
+			<!-- dialog to reject -->
+			<h:form id="rejectForm">
+				<p:dialog id="rejectDialog" header="#{msgs['reject.dialog.header']}"
+					widgetVar="rejectDialog" modal="true" width="500" minHeight="50"
+					resizable="false" dynamic="true" style="position: fixed">
+					<p:messages id="msgs" closable="true" />
+					<p:ajax event="close" update="@form" resetValues="true">
+						<p:resetInput target="@form" />
+					</p:ajax>
+					<div class="ui-fluid">
+						<p:panelGrid columns="2" id="pd"
+							columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel value="#{msgs['common.reason.label']}" />
+							<p:selectOneMenu required="true"
+								value="#{dividendScheduleEditView.remarkReson}">
+								<f:selectItem itemLabel="- Select -" />
+								<f:selectItems var="reason"
+									value="#{dividendScheduleEditView.sysRejectReasons}"
+									itemLabel="#{reason.rejectReasonDesc}"
+									itemValue="#{reason.rejectReasonDesc}" />
+								<p:ajax event="change" update="rejectForm:pd" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="#{msgs['reject.reason.label']}" />
+							<p:inputTextarea value="#{dividendScheduleEditView.remarkReson}"
+								disabled="true">
+							</p:inputTextarea>
+						</p:panelGrid>
+					</div>
+					<div class="ax-btn-set">
+						<p:commandButton value="#{msgs['confirm.btn']}"
+							action="#{dividendScheduleEditView.rejectDividendSchedule}"
+							update="pd,msgs,editForm" validateClient="true" />
+						<p:commandButton value="#{msgs['cancel.btn']}"
+							styleClass="ui-priority-secondary"
+							onclick="PF('rejectDialog').hide();" update="editForm" />
+					</div>
+				</p:dialog>
+			</h:form>
+			<!-- dialog to reject -->
+		</div>
+	</ui:define>
+</ui:composition>
+
+
+
+

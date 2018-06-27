@@ -1,0 +1,108 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<h:form id="resultTable">
+		<p:dataTable var="dividendSchedule"
+			value="#{dividendScheduleSearchView.lazyDataModel}"
+			rowKey="#{dividendSchedule.dividendScheduleId}" lazy="true"
+			reflow="true" paginator="true" paginatorPosition="bottom" rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15"
+			rendered="#{dividendScheduleSearchView.lazyDataModel != null}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+			<p:columnGroup type="header">
+				<p:row>
+					<p:column colspan="10"
+						headerText="#{msgs['dividend.interest.schedule.case.name.column']} : #{dividendScheduleSearchView.caseName}" />
+				</p:row>
+				<p:row>
+					<p:column colspan="1"
+						headerText="#{msgs['dividend.interest.schedule.paymentdate.column']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['dividend.interest.schedule.paymenttype.column']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['dividend.interest.schedule.distributedamount.column']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['dividend.interest.schedule.approvalstatus.column']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['dividend.interest.schedule.preparedby.column']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['dividend.interest.schedule.prepareddate.column']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['dividend.interest.schedule.reviewedby.column']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['dividend.interest.schedule.revieweddate.column']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['dividend.interest.schedule.approvedby.column']}" />
+					<p:column colspan="1"
+						headerText="#{msgs['dividend.interest.schedule.approveddate.column']}" />
+				</p:row>
+			</p:columnGroup>
+			<p:column>
+				<p:commandLink href="javascript:void(0)" action="edit" ajax="false">
+					<h:outputText value="#{dividendSchedule.paymentEffectiveDate}" />
+					<f:param name="divScheduleId"
+						value="#{dividendSchedule.dividendScheduleId}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column>
+				<h:outputText value="#{dividendSchedule.scheduleType}" />
+			</p:column>
+
+			<p:column>
+				<h:outputText value="#{dividendSchedule.totalDistributedAmount}"
+					style="text-align: right;">
+					<f:convertNumber type="number"
+						pattern="#{appResourceUtils.moneyFormat}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column>
+				<h:outputText
+					value="#{dividendScheduleSearchView.statusMap.get(dividendSchedule.status)}" />
+			</p:column>
+
+			<p:column>
+				<h:outputText value="#{dividendSchedule.submittedBy}" />
+			</p:column>
+
+			<p:column>
+				<h:outputText value="#{dividendSchedule.submittedDate}">
+					<f:convertDateTime type="date"
+						pattern="#{appResourceUtils.dateFormat}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column>
+				<h:outputText value="#{dividendSchedule.reviewedBy}" />
+			</p:column>
+
+			<p:column>
+				<h:outputText value="#{dividendSchedule.reviewedDate}">
+					<f:convertDateTime type="date"
+						pattern="#{appResourceUtils.dateFormat}" />
+				</h:outputText>
+			</p:column>
+
+			<p:column>
+				<h:outputText value="#{dividendSchedule.approvedBy}" />
+			</p:column>
+
+			<p:column>
+				<h:outputText value="#{dividendSchedule.approvedDate}">
+					<f:convertDateTime type="date"
+						pattern="#{appResourceUtils.dateFormat}" />
+				</h:outputText>
+			</p:column>
+		</p:dataTable>
+
+	</h:form>
+</ui:composition>
+
+
+
+

@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="paymentFileResultTable">
+        <p:dataTable var="paymentFile"
+                     value="#{paymentFileSearchView.lazyDataModel}"
+                     rowKey="" lazy="true" reflow="true"
+                     paginator="true" paginatorPosition="bottom" rows="5"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rowsPerPageTemplate="5,10,15" draggableColumns="true"
+                     rendered="#{paymentFileSearchView.lazyDataModel != null}">
+            <f:facet name="header">#{msgs['result.title']}</f:facet>
+
+            <p:column
+                    headerText="#{msgs['payment.handling.payment.file.payment.file.id.column.head']}">
+                <p:commandLink ajax="false" rendered="#{paymentFile.paymentFileType eq 'Bank Transfer'}">
+                    <h:outputText value="#{paymentFile.paymentFileId}"/>
+                </p:commandLink>
+                <p:commandLink ajax="false" rendered="#{paymentFile.paymentFileType eq 'Cheque File'}">
+                    <h:outputText value="#{paymentFile.paymentFileId}"/>
+                </p:commandLink>
+            </p:column>
+
+            <p:column
+                    headerText="#{msgs['payment.handling.payment.file.payment.type.column.head']}">
+                <h:outputText value="#{paymentFile.paymentFileType}"/>
+            </p:column>
+
+            <p:column
+                    headerText="#{msgs['payment.handling.payment.file.process.date.column.head']}">
+                <h:outputText value="#{paymentFile.processDate}">
+                    <f:convertDateTime pattern="#{appResourceUtils.dateFormat}"/>
+                </h:outputText>
+            </p:column>
+            <p:column
+                    headerText="#{msgs['payment.handling.payment.file.currency.column.head']}">
+                <h:outputText value="#{paymentFile.currency}"/>
+            </p:column>
+            <p:column
+                    headerText="#{msgs['payment.handling.payment.file.total.amount.column.head']}">
+                <h:outputText value="#{paymentFile.totalAmount}"/>
+            </p:column>
+            <p:column
+                    headerText="#{msgs['payment.handling.payment.file.status.column.head']}">
+                <h:outputText value="#{msgs['inactive.status.label']}"
+                              rendered="#{paymentFile.status eq 'INA'}" class="status-label red"/>
+                <h:outputText value="#{msgs['active.status.label']}"
+                              rendered="#{paymentFile.status eq 'ACT'}" class="status-label green"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+</ui:composition>
+
+
+
+

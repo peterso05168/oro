@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<h:form id="transferResultTable">
+		<p:dataTable var="transfer"
+			value="#{transferToGrOrBeaSearchView.lazyDataModel}"
+			rowKey="#{transfer.transferId}" lazy="true" reflow="true"
+			paginator="true" paginatorPosition="bottom" rows="5"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15" draggableColumns="true"
+			rendered="#{transferToGrOrBeaSearchView.lazyDataModel != null}">
+			<f:facet name="header">#{msgs['result.title']}</f:facet>
+
+			<p:column
+				headerText="#{msgs['transfer.to.gr.bea.transfer.no.column.header']}">
+				<p:commandLink action="edit" ajax="false">
+					<h:outputText value="#{transfer.transferNo}" />
+					<f:param name="transferId" value="#{transfer.transferId}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['transfer.to.gr.bea.transfer.type.column.header']}">
+				<h:outputText value="#{transfer.transferType}" />
+			</p:column>
+
+			<p:column
+				headerText="#{msgs['transfer.to.gr.bea.account.type.column.header']}">
+				<h:outputText value="#{transfer.accountType}" />
+			</p:column>
+			<p:column
+				headerText="#{msgs['transfer.to.gr.bea.process.date.column.header']}">
+				<h:outputText value="#{transfer.processDate}">
+					<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+				</h:outputText>
+			</p:column>
+			<p:column
+				headerText="#{msgs['transfer.to.gr.bea.payment.voucher.number.column.header']}">
+				<h:outputText value="#{transfer.paymentVoucherNumber}" />
+			</p:column>
+			<p:column
+				headerText="#{msgs['transfer.to.gr.bea.total.amount.column.header']}">
+				<h:outputText value="#{transfer.totalAmount}" />
+			</p:column>
+			<p:column
+				headerText="#{msgs['transfer.to.gr.bea.cut.off.date.column.header']}">
+				<h:outputText value="#{transfer.cutOffDate}">
+					<f:convertDateTime pattern="#{appResourceUtils.dateFormat}" />
+				</h:outputText>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+</ui:composition>
+
+
+
+
